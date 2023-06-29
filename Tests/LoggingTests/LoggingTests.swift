@@ -1,0 +1,129 @@
+import Analytics
+@testable import Logging
+import MockNetworking
+@testable import Networking
+import XCTest
+
+enum MockEvent: String, LoggingEvent {
+    case testEvent
+}
+
+final class LoggingTests: XCTestCase {
+    private var sessionID: String!
+    private var sut: Logger!
+    private var mockRequest: String!
+    private var client: NetworkClient!
+    private var configuration: URLSessionConfiguration!
+    
+    override func setUp() {
+        super.setUp()
+        configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockURLProtocol.self]
+        client = NetworkClient(configuration: configuration)
+        
+        sessionID = UUID().uuidString
+        
+        sut = .init(sessionID: sessionID,
+                    url: URL(string: "https://example.com/dev")!,
+                    networkClient: client)
+        
+        mockRequest =
+        """
+         {
+          "sessionId": "\(sessionID!)",
+          "eventName": "\(MockEvent.testEvent.rawValue)"
+         }
+        """
+    }
+    
+    override func tearDown() {
+        sessionID = nil
+        sut = nil
+        mockRequest = nil
+        client = nil
+        MockURLProtocol.clear()
+        configuration = nil
+        super.tearDown()
+    }
+}
+
+extension LoggingTests {
+    func test_successfulTXMAEventLog() throws {
+        // GIVEN network client returns 200
+        MockURLProtocol.handler = {
+            (Data(), HTTPURLResponse(statusCode: 200))
+        }
+        
+        // WHEN an event is logged
+        sut.logEvent(MockEvent.testEvent)
+        
+        wait(for: [
+            XCTNSPredicateExpectation(predicate: .init(block: { _, _ in
+                MockURLProtocol.requests.count == 1
+            }), object: nil)
+        ], timeout: 3)
+        
+        // THEN the request succeeds
+        let request = try XCTUnwrap(MockURLProtocol.requests.first)
+        XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.url?.scheme, "https")
+        XCTAssertEqual(request.url?.host, "example.com")
+        XCTAssertEqual(request.url?.path, "/dev")
+        
+        let httpBody = try XCTUnwrap(request.bodySteamAsJSON() as? [String: Any])
+        
+        let ID = try XCTUnwrap(httpBody["sessionId"] as? String)
+        XCTAssertEqual(sessionID, ID)
+        
+        let eventName = try XCTUnwrap(httpBody["eventName"] as? String)
+        XCTAssertEqual(MockEvent.testEvent.rawValue, eventName)
+    }
+    
+    func test_TXMAEventLog_throwsError() throws {
+        // GIVEN network client returns 401 error
+        MockURLProtocol.handler = {
+            (Data(), HTTPURLResponse(statusCode: 401))
+        }
+        
+        // WHEN a TXMA event is logged
+        sut.logEvent(MockEvent.testEvent)
+        wait(for: [
+            XCTNSPredicateExpectation(predicate: .init(block: { _, _ in
+                MockURLProtocol.requests.count == 1
+            }), object: nil)
+        ], timeout: 3)
+        // XCTAssertEqual(error.errorCode, 401)
+        
+        XCTAssertEqual(MockURLProtocol.requests.count, 1)
+        
+        let request = try XCTUnwrap(MockURLProtocol.requests.first)
+        XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.url?.scheme, "https")
+        XCTAssertEqual(request.url?.host, "example.com")
+        XCTAssertEqual(request.url?.path, "/dev")
+        
+        let httpBody = try XCTUnwrap(request.bodySteamAsJSON() as? [String: Any])
+        
+        let ID = try XCTUnwrap(httpBody["sessionId"] as? String)
+        XCTAssertEqual(sessionID, ID)
+        
+        let eventName = try XCTUnwrap(httpBody["eventName"] as? String)
+        XCTAssertEqual(MockEvent.testEvent.rawValue, eventName)
+    }
+}
+
+
+private struct LogRequest: Codable {
+    let sessionID: String
+    let eventName: String
+    
+    init(authSessionID: String, event: LoggingEvent) {
+        self.sessionID = authSessionID
+        self.eventName = event.name
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case sessionID = "sessionId"
+        case eventName
+    }
+}
