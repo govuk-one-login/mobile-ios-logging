@@ -16,7 +16,10 @@ let package = Package(
         url: "https://github.com/firebase/firebase-ios-sdk.git",
         .upToNextMajor(from: "9.4.1")
       ),
-      .package(path: "../Networking")
+      .package(
+        url: "https://github.com/alphagov/di-mobile-ios-networking.git",
+        .upToNextMajor(from: "1.0.0")
+      )
     ],
     targets: [
         .target(name: "Analytics",
@@ -27,13 +30,14 @@ let package = Package(
         
         .target(
             name: "Logging",
-            dependencies: ["Analytics", "Networking"],
+            dependencies: ["Analytics", .product(name: "Networking",
+                                                 package: "di-mobile-ios-networking")],
             swiftSettings: [
                 .define("DEBUG", .when(configuration: .debug))
             ]),
         .testTarget(name: "LoggingTests", dependencies: [
             "Logging",
-            .product(name: "MockNetworking", package: "Networking")
+            .product(name: "MockNetworking", package: "di-mobile-ios-networking")
         ]),
         
         .target(name: "GAnalytics", dependencies: [

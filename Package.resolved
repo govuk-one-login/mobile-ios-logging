@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "di-mobile-ios-networking",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alphagov/di-mobile-ios-networking",
+      "state" : {
+        "revision" : "9cc300c9e4e966aaa4df232b388b574262ee4537",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk.git",
