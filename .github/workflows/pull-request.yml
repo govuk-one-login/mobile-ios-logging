@@ -12,9 +12,18 @@ concurrency:
 jobs:
   build:
     name: Build and Test default scheme using any available iPhone simulator
-    runs-on: self-hosted
+    runs-on: macos-13
 
     steps:
+      - name: Add path globally
+        run: echo "/usr/local/bin" >> $GITHUB_PATH
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: 'true'
+          fetch-depth: 0
+          
       - name: Build and Test
         run: |
           xcodebuild -scheme Logging test -destination "platform=iOS Simulator,name=iPhone 14,OS=latest"
