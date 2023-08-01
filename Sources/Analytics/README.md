@@ -25,15 +25,15 @@ To use Analytics in a project using Swift Package Manager:
 
 ## Package description
 
-The `Analytics` module contains protocols that can be used for conforming Types to build analytics into an app. Conforming Types would serve as an interface between business logic and a third-party analytics service, 
+The `Analytics` module contains protocols that can be used for conforming Types to build analytics into an app.
 
-> Within this directory exist the following protocols for enabling screens and events being logged to a third-party service for app analytics.
+> Within this directory exist the following protocols and Types for enabling screens and events being logged to a third-party service for app analytics.
 
-`LoggingEvent` is usable for logging events to the `AnalyticsService`
+`AnalyticsEvent` is usable for logging events to the `AnalyticsService`
 
 `AnalyticsScreen` is usable for logging screens to the `AnalyticsService`
 
-`AnalyticsService` is usable for passing events and screens to a cloud analytics package
+`AnalyticsService` is usable for conforming Types to pass events and screens to a cloud analytics package
 
 `AnalyticsStatusProtocol` is usable for checking and setting device preferences on analytics permissions, applying the protocol on `UserDefaults` within the same file
 
