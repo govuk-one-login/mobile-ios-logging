@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Analytics"
-               BuildableName = "Analytics"
-               BlueprintName = "Analytics"
+               BlueprintIdentifier = "Logging"
+               BuildableName = "Logging"
+               BlueprintName = "Logging"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,7 +29,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:.swiftpm/Analytics.xctestplan"
+            reference = "container:.swiftpm/Logging.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -54,9 +54,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Analytics"
-            BuildableName = "Analytics"
-            BlueprintName = "Analytics"
+            BlueprintIdentifier = "Logging"
+            BuildableName = "Logging"
+            BlueprintName = "Logging"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

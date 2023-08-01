@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "DC60D248-9D0C-4FAA-B9BD-7A151FF1B36E",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "LoggingTests",
+        "name" : "LoggingTests"
+      }
+    }
+  ],
+  "version" : 1
+}
