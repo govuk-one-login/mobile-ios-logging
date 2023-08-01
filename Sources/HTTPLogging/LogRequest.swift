@@ -1,3 +1,4 @@
+import Logging
 import Foundation
 
 struct LogRequest: Encodable {

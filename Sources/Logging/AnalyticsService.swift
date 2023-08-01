@@ -3,15 +3,13 @@ import Foundation
 /// AnalyticsService
 ///
 /// A protocol for Types to write to Google's cloud analytics service, Firebase.
-public protocol AnalyticsService {
+public protocol AnalyticsService: LoggingService {
     var additionalParameters: [String: Any] { get set }
     
-    func trackScreen(_ screen: AnalyticsScreen)
-    func trackScreen(_ screen: AnalyticsScreen, parameters: [String: Any])
+    func trackScreen(_ screen: LoggingScreen)
+    func trackScreen(_ screen: LoggingScreen, parameters: [String: Any])
     
-    func logEvent(_ event: AnalyticsEvent)
-    func logEvent(_ event: AnalyticsEvent, parameters: [String: Any])
-    
+    func logCrash(_ crash: NSError)
     func logCrash(_ crash: Error)
     
     func grantAnalyticsPermission()
@@ -20,12 +18,8 @@ public protocol AnalyticsService {
 
 extension AnalyticsService {
     /// Protocol method for screen tracking, calling the conforming type's method for adding screen tracking parameters.
-    public func trackScreen(_ screen: AnalyticsScreen) {
+    public func trackScreen(_ screen: LoggingScreen) {
         trackScreen(screen, parameters: [:])
-    }
-    
-    public func logEvent(_ event: AnalyticsEvent) {
-        logEvent(event, parameters: [:])
     }
     
     public func logCrash(_ crash: Error) {

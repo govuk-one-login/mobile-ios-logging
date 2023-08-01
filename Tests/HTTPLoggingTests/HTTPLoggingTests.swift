@@ -1,5 +1,5 @@
-import Analytics
-@testable import Logging
+import Logging
+@testable import HTTPLogging
 import MockNetworking
 @testable import Networking
 import XCTest
@@ -8,7 +8,7 @@ enum MockEvent: String, LoggingEvent {
     case testEvent
 }
 
-final class LoggingTests: XCTestCase {
+final class HTTPLoggingTests: XCTestCase {
     private var sessionID: String!
     private var sut: Logger!
     private var mockRequest: String!
@@ -47,7 +47,7 @@ final class LoggingTests: XCTestCase {
     }
 }
 
-extension LoggingTests {
+extension HTTPLoggingTests {
     func test_successfulTXMAEventLog() throws {
         // GIVEN network client returns 200
         MockURLProtocol.handler = {

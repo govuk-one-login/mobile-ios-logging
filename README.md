@@ -30,6 +30,6 @@ For individual descriptions of the modules in this package, head to the README f
 
 [Logging](./Sources/Logging/README.md)
 
-[Analytics](./Sources/Analytics/README.md)
-
 [GAnalytics](./Sources/GAnalytics/README.md)
+
+[HTTPLogging](./Sources/HTTPLogging/README.md)

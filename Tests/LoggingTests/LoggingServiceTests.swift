@@ -1,32 +1,32 @@
-@testable import Analytics
+@testable import Logging
 import XCTest
 
-class MockAnalyticsService: AnalyticsService {
+class MockLoggingService: AnalyticsService {
     var additionalParameters: [String: Any] = [:]
     
     var screensVisited: [String] = []
     var screenParamsLogged: [String: Any] = [:]
-    var eventsLogged: [AnalyticsEvent] = []
+    var eventsLogged: [LoggingEvent] = []
     
     func logCrash(_ crash: NSError) { }
     func grantAnalyticsPermission() { }
     func denyAnalyticsPermission() { }
     
-    func trackScreen(_ screen: Analytics.AnalyticsScreen,
+    func trackScreen(_ screen: Logging.LoggingScreen,
                      parameters: [String: Any]) {
         screensVisited.append(screen.name)
         screenParamsLogged = parameters
     }
     
-    func logEvent(_ event: Analytics.AnalyticsEvent,
+    func logEvent(_ event: Logging.LoggingEvent,
                   parameters: [String: Any]) {
         eventsLogged.append(event)
     }
 }
 
-final class AnalyticsServiceTests: XCTestCase {
+final class LoggingServiceTests: XCTestCase {
     func testAnalyticsService() {
-        let service = MockAnalyticsService()
+        let service = MockLoggingService()
         service.logEvent(MockAnalyticsEvent.completedIDCheck, parameters: [:])
         XCTAssertEqual(service.eventsLogged.count, 1)
         
