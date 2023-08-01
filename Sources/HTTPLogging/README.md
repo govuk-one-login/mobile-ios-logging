@@ -1,10 +1,10 @@
-# Logging
+# HTTPLogging
 
-A Logging module containing protocols and Types usable for HTTP logging.
+A HTTPLogging module containing Types usable for HTTP logging.
 
 ## Installation
 
-To use Logging in a project using Swift Package Manager:
+To use HTTPLogging in a project using Swift Package Manager:
 
 1. Add the following line to the dependencies in your `Package.swift` file:
 
@@ -12,26 +12,22 @@ To use Logging in a project using Swift Package Manager:
 .package(url: "https://github.com/alphagov/di-mobile-ios-logging", from: "1.0.0"),
 ```
 
-2. Add `Logging` as a dependency for your target:
+2. Add `HTTPLogging` as a dependency for your target:
 
 ```swift
 .target(name: "MyTarget", dependencies: [
-  .product(name: "Logging", package: "dcmaw-logging"),
+  .product(name: "HTTPLogging", package: "dcmaw-httplogging"),
   "AnotherModule"
 ]),
 ```
 
-3. Add `import Logging` in your source code.
+3. Add `import HTTPLogging` in your source code.
 
 ## Package description
 
-The `Logging` module contains protocols and Types that can be used to build HTTP logging into an app. Conforming Types would serve as an interface between app business logic and a third-party analytics service.
+The `HTTPLogging` module contains Types that can be used to build HTTP logging into an app. These Types serve as an interface between app business logic and a third-party analytics service.
 
-> Within this directory exist the following protocols for enabling screens and events being logged to a third-party service for app analytics.
-
-`LoggingEvent` is usable for logging events to the `LoggingService`.
-
-`LoggingService` is usable for conforming Types to pass events through a HTTP client.
+> Within this directory exist the following Types for enabling events to be logged to a third-party service for app analytics.
 
 `Logger` is usable for logging HTTP events through a HTTP network client.
 
@@ -41,7 +37,7 @@ The `Logging` module contains protocols and Types that can be used to build HTTP
 
 #### Implementing concrete Types conforming to the above protocols:
 
-Having access to values for event names loggable through a HTTP client, conforming to `LoggingEvent` is appropriate. `Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
+Having access to values for event names loggable through a HTTP client, conforming to `LoggingEvent` is appropriate. However, this protocol exists in the `Logging` module, in order to conform to this protocol, ensure installation steps 2 and 3 are completed for that module.`Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
 
 ```swift
 enum MyAppEvents: String, LoggingEvent {
