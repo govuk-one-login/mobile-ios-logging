@@ -4,7 +4,7 @@ import Networking
 
 /// Logger
 ///
-/// A class for sending HTTP requests to log user-specific insights for app metrics and performance.
+/// A struct for sending HTTP requests to log user/journey specific insights for app metrics and performance.
 public struct Logger: LoggingService {
     /// `NetworkClient` from the Networking package dependency to handle HTTP networking
     let networkClient: NetworkClient
