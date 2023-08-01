@@ -64,10 +64,10 @@ func application(_ application: UIApplication,
 }
 ```
 
-This instance of `GAnalytics` can then be injected into other Type instances through your main coodordinator. A common use case is creating a view controller (A custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller
+This instance of `GAnalytics` can then be injected into other Type instances through your main coodordinator. A common use case is creating a view controller (a custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller.
 
 ```swift
-final class ViewController: UIViewController {
+final class MyViewController: UIViewController {
     let analyticsService: AnalyticsService
 
     init(analyticsService: AnalyticsService = .none) {

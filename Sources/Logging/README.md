@@ -29,13 +29,13 @@ The `Logging` module contains protocols and Types that can be used to build HTTP
 
 > Within this directory exist the following protocols for enabling screens and events being logged to a third-party service for app analytics.
 
-`LoggingEvent` is usable for logging events to the `LoggingService`
+`LoggingEvent` is usable for logging events to the `LoggingService`.
 
-`LoggingService` is usable for conforming Types to pass events through a HTTP client
+`LoggingService` is usable for conforming Types to pass events through a HTTP client.
 
-`Logger` is usable for logging HTTP events through a HTTP network client
+`Logger` is usable for logging HTTP events through a HTTP network client.
 
-`LogRequest` is usable as a model for passing logging events in JSON format
+`LogRequest` is usable as a model for passing logging events in JSON format.
 
 ## Example Implementation
 

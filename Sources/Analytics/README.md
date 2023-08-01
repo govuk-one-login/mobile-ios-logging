@@ -29,13 +29,13 @@ The `Analytics` module contains protocols that can be used for conforming Types 
 
 > Within this directory exist the following protocols and Types for enabling screens and events being logged to a third-party service for app analytics.
 
-`AnalyticsEvent` is usable for logging events to the `AnalyticsService`
+`AnalyticsEvent` is usable for logging events to the `AnalyticsService`.
 
-`AnalyticsScreen` is usable for logging screens to the `AnalyticsService`
+`AnalyticsScreen` is usable for logging screens to the `AnalyticsService`.
 
-`AnalyticsService` is usable for conforming Types to pass events and screens to a cloud analytics package
+`AnalyticsService` is usable for conforming Types to pass events and screens to a cloud analytics package.
 
-`AnalyticsStatusProtocol` is usable for checking and setting device preferences on analytics permissions, applying the protocol on `UserDefaults` within the same file
+`AnalyticsStatusProtocol` is usable for checking and setting device preferences on analytics permissions, applying the protocol on `UserDefaults` within the same file.
 
 ## Example Implementation
 
@@ -59,7 +59,7 @@ enum MyAppEvents: String, AnalyticsEvent {
 
 For larger apps, screens can be name-spaced into different enumerations, as required.
 
-`GAnalytics` is an appropriate implementation of `AnalyticsService` if the chosen analytics platform is Google's Firebase, the below example will detail typical use based on the assumption of this choice
+`GAnalytics` is an appropriate implementation of `AnalyticsService` if the chosen analytics platform is Google's Firebase, the below example will detail typical use based on the assumption of this choice.
 
 #### Example of logging analytic screens and events with the above Types:
 
@@ -92,7 +92,7 @@ func application(_ application: UIApplication,
 }
 ```
 
-This instance of `MyAnalyticsClass` can then be injected into other Type instances through your main coordinator. A common use case is creating a view controller (A custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller
+This instance of `MyAnalyticsClass` can then be injected into other Type instances through your main coordinator. A common use case is creating a view controller (a custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller.
 
 ```swift
 final class MyViewController: UIViewController {
