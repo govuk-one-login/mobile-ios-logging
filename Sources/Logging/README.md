@@ -25,7 +25,7 @@ To use Logging in a project using Swift Package Manager:
 
 ## Package description
 
-The `Logging` module contains protocols and Types that can be used to build HTTP logging into an app. Conforming Types would serve as an interface between business logic and a third-party analytics service, 
+The `Logging` module contains protocols and Types that can be used to build HTTP logging into an app. Conforming Types would serve as an interface between app business logic and a third-party analytics service.
 
 > Within this directory exist the following protocols for enabling screens and events being logged to a third-party service for app analytics.
 
@@ -75,6 +75,6 @@ final class MyViewController: UIViewController {
 Initialising:
 ```swift
 let logger = Logger(sessionId: 22222222-2222-2222-0222-222222222222,
-                    url: URL(string: "https://www.logging.co.uk/endpoint")
+                    url: URL(string: "https://www.logging.co.uk/endpoint"))
 let vc = MyViewController(logger: logger)
 ```

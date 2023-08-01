@@ -47,7 +47,7 @@ public class GAnalytics: AnalyticsService {
     }
     
     /// Logs events accepting the event name and parameters in Firebase package.
-    public func logEvent(_ event: LoggingEvent, parameters params: [String: Any]) {
+    public func logEvent(_ event: AnalyticsEvent, parameters params: [String: Any]) {
         let parameters = mergeAdditionalParameters(params)
         Analytics.logEvent(event.name, parameters: parameters)
     }
