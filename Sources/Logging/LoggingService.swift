@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol LoggingService {
+protocol LoggingService {
     func logEvent(_ event: LoggingEvent, parameters: [String: Any])
 }
 

@@ -1,10 +1,10 @@
 # Analytics
 
-Implementation of Analytics.
+An Analytics module containing protocols usable for conforming Types to pass analytics data to a third-party SDK.
 
 ## Installation
 
-To use Analytics in a SwiftPM project:
+To use Analytics in a project using Swift Package Manager:
 
 1. Add the following line to the dependencies in your `Package.swift` file:
 
@@ -25,9 +25,9 @@ To use Analytics in a SwiftPM project:
 
 ## Package description
 
-The main `Analytics` Package contains protocols and an empty implementation that can be used to build analytics into the app before a concrete implementation is known.
+The `Analytics` module contains protocols that can be used for conforming Types to build analytics into an app. Conforming Types would serve as an interface between business logic and a third-party analytics service, 
 
-> Within Sources/Analytics exist the following protocols and Type for enabling screens and events being logged to a service for app analytics
+> Within this directory exist the following protocols for enabling screens and events being logged to a third-party service for app analytics.
 
 `LoggingEvent` is usable for logging events to the `AnalyticsService`
 
@@ -37,13 +37,11 @@ The main `Analytics` Package contains protocols and an empty implementation that
 
 `AnalyticsStatusProtocol` is usable for checking and setting device preferences on analytics permissions, applying the protocol on `UserDefaults` within the same file
 
-`GAnalytics` is usable for a concrete implementation of `AnalyticsServide` which is explicitly tied to Google's Firebase analytics platform
-
 ## Example Implementation
 
 #### Implementing concrete Types conforming to the above protocols:
 
-Having access to values for screen names loggable in an analytics platform, conforming to `AnalyticsScreen` or `LoggingEvent` is appropriate. `Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
+Having access to values for screen or event names loggable in an analytics platform, conforming to `AnalyticsScreen` or `AnalyticsEvent` is appropriate. `Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
 
 ```swift
 enum MyAppScreens: String, AnalyticsScreen {
@@ -53,7 +51,7 @@ enum MyAppScreens: String, AnalyticsScreen {
 ```
 
 ```swift
-enum MyAppEvents: String, LoggingEvent {
+enum MyAppEvents: String, AnalyticsEvent {
     case buttonTapped
     case linkAccessed
 }
@@ -65,7 +63,7 @@ For larger apps, screens can be name-spaced into different enumerations, as requ
 
 #### Example of logging analytic screens and events with the above Types:
 
-Using the Coordinator pattern as detailed in the README.md file of the `Coordination` package in this repository, initialising the `GAnalytics` class is appropriate. Typically, initialising the `GAnalytics` class by deault when initialising a main coordinator. Alternatively, initialising the `GAnalytics` class within the `AppDelegate`'s `application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool` is appropriate.
+Using the Coordinator pattern as detailed in the README.md file of this [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package, initialising a concrete class implementation of `AnalyticsService` is appropriate. Typically, initialising the concrete implementation of `AnalyticsService`  by default when initialising a main coordinator. Alternatively, initialising the concrete implementation of `AnalyticsService` within the `AppDelegate`'s `application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool` is appropriate.
 
 ```swift
 final class MainCoordinator: NavigationCoordinator {
@@ -73,7 +71,7 @@ final class MainCoordinator: NavigationCoordinator {
     let analyticsService: AnalyticsService
     
     init(root: UINavigationController,
-         analyticsService: AnalyticsService = GAnalytics()) {
+         analyticsService: AnalyticsService = MyAnalyticsClass()) {
          self.root = root
          self.analyticsService = analyticsService
     }
@@ -89,20 +87,20 @@ OR
 ```swift
 func application(_ application: UIApplication,
                  didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    GAnalytics().configure()
+    MyAnalyticsClass().configure()
     return true
 }
 ```
 
-This instance of `GAnalytics` can then be injected into other Type instances through your main coodordinator. A common use case is creating a view controller (A vustom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller
+This instance of `MyAnalyticsClass` can then be injected into other Type instances through your main coordinator. A common use case is creating a view controller (A custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller
 
 ```swift
-final class ViewController: UIViewController {
+final class MyViewController: UIViewController {
     let analyticsService: AnalyticsService
 
     init(analyticsService: AnalyticsService = .none) {
-        self.analyticsService = analyticsService
         super.init()
+        self.analyticsService = analyticsService
     }
     
     override func viewDidAppear(_ animated: Bool) {

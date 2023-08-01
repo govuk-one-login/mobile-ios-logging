@@ -1,4 +1,3 @@
-import Analytics
 import Foundation
 
 struct LogRequest: Encodable {
