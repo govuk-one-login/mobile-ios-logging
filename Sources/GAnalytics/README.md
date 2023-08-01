@@ -33,9 +33,30 @@ The `GAnalytics` module contains a concrete class implementation of the `Analyti
 
 ## Example Implementation
 
+#### Implementing concrete Types conforming to the above protocols:
+
+Having access to values for screen and event names loggable through a third-party analytics service, conforming to `LoggingScreen` and `LoggingEvent` is appropriate. 
+However, these protocols exist in the `Logging` module. In order to conform to this protocol, ensure installation steps 2 and 3 are completed for that module. 
+
+`Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
+
+```swift
+enum MyAppScreens: String, LoggingScreen {
+    case home
+    case settings
+}
+```
+
+```swift
+enum MyAppEvents: String, LoggingEvent {
+    case buttonTapped
+    case linkAccessed
+}
+```
+
 #### Using the concrete Type above conforming to the `AnalyticsService`:
 
-Using the Coordinator pattern as detailed in the README.md file of the `Coordination` package in this repository, initialising the `GAnalytics` class is appropriate. Typically, initialising the `GAnalytics` class by deault when initialising a main coordinator. Alternatively, initialising the `GAnalytics` class within the `AppDelegate`'s `application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool` is appropriate.
+Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package in this repository, initialising the `GAnalytics` class is appropriate. Typically, initialising the `GAnalytics` class by deault when initialising a main coordinator. Alternatively, initialising the `GAnalytics` class within the `AppDelegate`'s `application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool` method is appropriate.
 
 ```swift
 final class MainCoordinator: NavigationCoordinator {
@@ -70,7 +91,7 @@ This instance of `GAnalytics` can then be injected into other Type instances thr
 final class MyViewController: UIViewController {
     let analyticsService: AnalyticsService
 
-    init(analyticsService: AnalyticsService = .none) {
+    init(analyticsService: AnalyticsService) {
         self.analyticsService = analyticsService
         super.init()
     }

@@ -37,7 +37,10 @@ The `HTTPLogging` module contains Types that can be used to build HTTP logging i
 
 #### Implementing concrete Types conforming to the above protocols:
 
-Having access to values for event names loggable through a HTTP client, conforming to `LoggingEvent` is appropriate. However, this protocol exists in the `Logging` module, in order to conform to this protocol, ensure installation steps 2 and 3 are completed for that module.`Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
+Having access to values for event names loggable through a HTTP client, conforming to `LoggingEvent` is appropriate. However, this protocol exists in the `Logging` module. 
+In order to conform to this protocol, ensure installation steps 2 and 3 are completed for that module.
+
+`Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
 
 ```swift
 enum MyAppEvents: String, LoggingEvent {
@@ -68,7 +71,7 @@ final class MyViewController: UIViewController {
 }
 ```
 
-Initialising:
+Initialisation:
 ```swift
 let logger = Logger(sessionId: 22222222-2222-2222-0222-222222222222,
                     url: URL(string: "https://www.logging.co.uk/endpoint"))
