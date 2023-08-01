@@ -6,7 +6,7 @@ class MockAnalyticsService: AnalyticsService {
     
     var screensVisited: [String] = []
     var screenParamsLogged: [String: Any] = [:]
-    var eventsLogged: [LoggingEvent] = []
+    var eventsLogged: [AnalyticsEvent] = []
     
     func logCrash(_ crash: NSError) { }
     func grantAnalyticsPermission() { }
@@ -18,7 +18,7 @@ class MockAnalyticsService: AnalyticsService {
         screenParamsLogged = parameters
     }
     
-    func logEvent(_ event: Analytics.LoggingEvent,
+    func logEvent(_ event: Analytics.AnalyticsEvent,
                   parameters: [String: Any]) {
         eventsLogged.append(event)
     }

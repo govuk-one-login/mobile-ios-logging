@@ -8,6 +8,6 @@ final class AnalyticsEventTests: XCTestCase {
     }
 }
 
-enum MockAnalyticsEvent: String, LoggingEvent {
+enum MockAnalyticsEvent: String, AnalyticsEvent {
     case completedIDCheck
 }
