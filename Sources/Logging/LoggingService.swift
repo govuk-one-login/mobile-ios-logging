@@ -1,5 +1,8 @@
 import Foundation
 
+/// LogginService
+///
+/// A protocol for Types to log events to a HTTP analytics service.
 public protocol LoggingService {
     func logEvent(_ event: LoggingEvent, parameters: [String: Any])
 }

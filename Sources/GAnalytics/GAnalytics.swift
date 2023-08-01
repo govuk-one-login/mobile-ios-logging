@@ -5,7 +5,7 @@ import FirebaseCrashlytics
 
 /// GAnalytics
 ///
-/// An abstraction class for bringing Google Analytics (GA4) and Crashlytics into the app from the Firebase package.
+/// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.
 public class GAnalytics: AnalyticsService {
     /// Additional parameters for the application
@@ -75,6 +75,7 @@ public class GAnalytics: AnalyticsService {
         // it is required to initialise this outside of the package
     }
     
+    /// Merging `parameters` dictionary parameter with `additionalParameters` property
     private func mergeAdditionalParameters(_ parameters: [String: Any]) -> [String: Any] {
         additionalParameters.merging(parameters) { $1 }
     }

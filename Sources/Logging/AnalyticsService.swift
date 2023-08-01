@@ -2,7 +2,7 @@ import Foundation
 
 /// AnalyticsService
 ///
-/// A protocol for Types to write to Google's cloud analytics service, Firebase.
+/// A protocol for Types to log analytics to a third-party analytics service.
 public protocol AnalyticsService: LoggingService {
     var additionalParameters: [String: Any] { get set }
     
@@ -22,6 +22,7 @@ extension AnalyticsService {
         trackScreen(screen, parameters: [:])
     }
     
+    /// Protocol method for crash logging, calling the conforming type's method for passing errors as `NSError`s.
     public func logCrash(_ crash: Error) {
         logCrash(crash as NSError)
     }
