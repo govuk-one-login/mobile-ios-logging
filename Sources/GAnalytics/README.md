@@ -29,6 +29,8 @@ The `GAnalytics` module contains a concrete class implementation of the `Analyti
 
 > Within this directory exists the following Type for enabling events to be logged to a third-party service for app analytics, in this case, Google's Firebase.
 
+`GAnalytics` is usable for logging events and tracking screens to the `Firebase` module.
+
 ## Example Implementation
 
 #### Using the concrete Type above conforming to the `AnalyticsService`:

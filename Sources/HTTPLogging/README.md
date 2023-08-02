@@ -31,4 +31,4 @@ The `HTTPLogging` module contains Types that can be used to build HTTP logging i
 
 `Logger` is usable for logging HTTP events through a HTTP network client.
 
-`LogRequest` is usable as a model for passing logging events in JSON format.
+`LogRequest` is usable as a model for posting `LoggableEvent`s in JSON format.

@@ -108,7 +108,7 @@ final class MyCoordinator: NavigationCoordinator {
 }
 ```
 
-This instance of AnalyticsService can then be injected into other Type instances through your coodordinator. A common use case is creating a view controller (a custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller.
+This instance of AnalyticsService can then be injected into other Type instances through your coordinator. A common use case is creating a view controller (a custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller.
 
 ```swift
 final class MyViewController: UIViewController {
@@ -130,4 +130,4 @@ final class MyViewController: UIViewController {
 }
 ```
 
-Example implementations for the protocols in this module can be seen in the files and `README`s of the [HTTPLogging](../HTTPLogging) and [GAnalytics](../GAnalytics) directories in this package.
+Example implementations for the protocols in this module can be seen in the files of the [HTTPLogging](../HTTPLogging) and [GAnalytics](../GAnalytics) directories in this package.
