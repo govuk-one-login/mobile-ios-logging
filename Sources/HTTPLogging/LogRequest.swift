@@ -10,7 +10,7 @@ struct LogRequest: Encodable {
     /// event name taken from `LoggingEvent` protocol extension property, `name`
     let eventName: String
     /// Initialiser for properties `sessionID` and `eventName`
-    init(authSessionID: String, event: LoggingEvent) {
+    init(authSessionID: String, event: LoggableEvent) {
         self.sessionID = authSessionID
         self.eventName = event.name
     }

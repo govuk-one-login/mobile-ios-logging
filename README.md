@@ -16,13 +16,13 @@ To use this Logging package in a project using Swift Package Manager:
 
 ```swift
 .target(name: "MyTarget", dependencies: [
-  .product(name: "Logging", package: "dcmaw-logging"),
-  .product(name: "Analytics", package: "dcmaw-logging"),
-  .product(name: "GAnalytics", package: "dcmaw-logging"),
+  .product(name: "Logging", package: "di-mobile-ios-logging"),
+  .product(name: "GAnalytics", package: "di-mobile-ios-logging"),
+  .product(name: "HTTPLogging", package: "di-mobile-ios-logging")
 ]),
 ```
 
-3. Add `import Logging`, `import Analytics` and/or `import GAnalytics` into your source codewhere necessary.
+3. Add `import Logging`, `import Analytics` and/or `import GAnalytics` into your source code where necessary.
 
 ## Package description
 

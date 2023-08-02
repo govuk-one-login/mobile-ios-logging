@@ -16,7 +16,7 @@ public struct Logger: LoggingService {
     let handleError: ((Error) -> Void)?
     
     /// Sends HTTP POST request to designated URL, handling errors received back from `NetworkClient`'s `makeRequest` method
-    public func logEvent(_ event: LoggingEvent,
+    public func logEvent(_ event: LoggableEvent,
                          parameters: [String: Any]) {
         let logRequest = LogRequest(authSessionID: sessionID, event: event)
         guard let jsonData = try? JSONEncoder().encode(logRequest) else {

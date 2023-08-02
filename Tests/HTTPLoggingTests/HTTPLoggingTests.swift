@@ -4,7 +4,7 @@ import MockNetworking
 @testable import Networking
 import XCTest
 
-enum MockEvent: String, LoggingEvent {
+enum MockEvent: String, LoggableEvent {
     case testEvent
 }
 
@@ -117,7 +117,7 @@ private struct LogRequest: Codable {
     let sessionID: String
     let eventName: String
     
-    init(authSessionID: String, event: LoggingEvent) {
+    init(authSessionID: String, event: LoggableEvent) {
         self.sessionID = authSessionID
         self.eventName = event.name
     }

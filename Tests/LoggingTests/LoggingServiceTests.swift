@@ -6,19 +6,19 @@ class MockLoggingService: AnalyticsService {
     
     var screensVisited: [String] = []
     var screenParamsLogged: [String: Any] = [:]
-    var eventsLogged: [LoggingEvent] = []
+    var eventsLogged: [LoggableEvent] = []
     
     func logCrash(_ crash: NSError) { }
     func grantAnalyticsPermission() { }
     func denyAnalyticsPermission() { }
     
-    func trackScreen(_ screen: Logging.LoggingScreen,
+    func trackScreen(_ screen: LoggableScreen,
                      parameters: [String: Any]) {
         screensVisited.append(screen.name)
         screenParamsLogged = parameters
     }
     
-    func logEvent(_ event: Logging.LoggingEvent,
+    func logEvent(_ event: LoggableEvent,
                   parameters: [String: Any]) {
         eventsLogged.append(event)
     }

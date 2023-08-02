@@ -16,7 +16,7 @@ To use GAnalytics in a project using Swift Package Manager:
 
 ```swift
 .target(name: "MyTarget", dependencies: [
-  .product(name: "GAnalytics", package: "dcmaw-ganalytics"),
+  .product(name: "GAnalytics", package: "di-mobile-ios-logging"),
   "AnotherModule"
 ]),
 ```
@@ -29,53 +29,11 @@ The `GAnalytics` module contains a concrete class implementation of the `Analyti
 
 > Within this directory exists the following Type for enabling events to be logged to a third-party service for app analytics, in this case, Google's Firebase.
 
-`GAnalytics` is usable for logging events to the `Analytics` module.
-
 ## Example Implementation
-
-#### Implementing concrete Types conforming to the above protocols:
-
-Having access to values for screen and event names loggable through a third-party analytics service, conforming to `LoggingScreen` and `LoggingEvent` is appropriate. 
-However, these protocols exist in the `Logging` module. In order to conform to this protocol, ensure installation steps 2 and 3 are completed for that module. 
-
-`Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
-
-```swift
-enum MyAppScreens: String, LoggingScreen {
-    case home
-    case settings
-}
-```
-
-```swift
-enum MyAppEvents: String, LoggingEvent {
-    case buttonTapped
-    case linkAccessed
-}
-```
 
 #### Using the concrete Type above conforming to the `AnalyticsService`:
 
-Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package in this repository, initialising the `GAnalytics` class is appropriate. Typically, initialising the `GAnalytics` class by deault when initialising a main coordinator. Alternatively, initialising the `GAnalytics` class within the `AppDelegate`'s `application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool` method is appropriate.
-
-```swift
-final class MainCoordinator: NavigationCoordinator {
-    let root: UINavigationController
-    let analyticsService: AnalyticsService
-    
-    init(root: UINavigationController,
-         analyticsService: AnalyticsService = GAnalytics()) {
-         self.root = root
-         self.analyticsService = analyticsService
-    }
-    
-    func start() {
-        ...
-    }
-}
-```
-
-OR
+ Initialising the `GAnalytics` class within the `AppDelegate`'s `application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool` method is appropriate.
 
 ```swift
 func application(_ application: UIApplication,
@@ -85,25 +43,3 @@ func application(_ application: UIApplication,
 }
 ```
 
-This instance of `GAnalytics` can then be injected into other Type instances through your main coodordinator. A common use case is creating a view controller (a custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller.
-
-```swift
-final class MyViewController: UIViewController {
-    let analyticsService: AnalyticsService
-
-    init(analyticsService: AnalyticsService) {
-        self.analyticsService = analyticsService
-        super.init()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        analyticsService.trackScreen(MyAppScreens.home)
-    }
-    
-    @IBAction private func didTapButton() {
-        analyticsService.logEvent(MyAppEvents.buttonTapped)
-    }
-}
-```

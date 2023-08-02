@@ -16,7 +16,7 @@ To use HTTPLogging in a project using Swift Package Manager:
 
 ```swift
 .target(name: "MyTarget", dependencies: [
-  .product(name: "HTTPLogging", package: "dcmaw-httplogging"),
+  .product(name: "HTTPLogging", package: "di-mobile-ios-logging"),
   "AnotherModule"
 ]),
 ```
@@ -32,48 +32,3 @@ The `HTTPLogging` module contains Types that can be used to build HTTP logging i
 `Logger` is usable for logging HTTP events through a HTTP network client.
 
 `LogRequest` is usable as a model for passing logging events in JSON format.
-
-## Example Implementation
-
-#### Implementing concrete Types conforming to the above protocols:
-
-Having access to values for event names loggable through a HTTP client, conforming to `LoggingEvent` is appropriate. However, this protocol exists in the `Logging` module. 
-In order to conform to this protocol, ensure installation steps 2 and 3 are completed for that module.
-
-`Enums` are suitable for making concrete Types conforming to these protocols as they group related values.
-
-```swift
-enum MyAppEvents: String, LoggingEvent {
-    case buttonTapped
-    case linkAccessed
-}
-```
-
-For larger apps, events can be name-spaced into different enumerations, as required.
-
-#### Example of logging events with the above Types:
-
-Within a UIKit application, initialising a custom class which subclasses `UIViewController` with a `Logger` property is appropriate.
-
-Implementation:
-```swift
-final class MyViewController: UIViewController {
-    let logger: Logger
-
-    init(logger: Logger) {
-        super.init()
-        self.logger = logger
-    }
-    
-    @IBAction private func didTapButton() {
-        logger.logEvent(MyAppEvents.buttonTapped)
-    }
-}
-```
-
-Initialisation:
-```swift
-let logger = Logger(sessionId: 22222222-2222-2222-0222-222222222222,
-                    url: URL(string: "https://www.logging.co.uk/endpoint"))
-let vc = MyViewController(logger: logger)
-```

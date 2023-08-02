@@ -35,7 +35,7 @@ public class GAnalytics: AnalyticsService {
     }
     
     /// Tracks screens adding screen tracking parameters in Firebase package.
-    public func trackScreen(_ screen: LoggingScreen,
+    public func trackScreen(_ screen: LoggableScreen,
                             parameters params: [String: Any] = [:]) {
         var parameters = mergeAdditionalParameters(params)
         
@@ -47,7 +47,7 @@ public class GAnalytics: AnalyticsService {
     }
     
     /// Logs events accepting the event name and parameters in Firebase package.
-    public func logEvent(_ event: LoggingEvent, parameters params: [String: Any]) {
+    public func logEvent(_ event: LoggableEvent, parameters params: [String: Any]) {
         let parameters = mergeAdditionalParameters(params)
         Analytics.logEvent(event.name, parameters: parameters)
     }

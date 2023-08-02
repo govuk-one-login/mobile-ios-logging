@@ -8,6 +8,6 @@ final class LoggingScreenTests: XCTestCase {
     }
 }
 
-enum MockAnalyticsScreen: String, LoggingScreen {
+enum MockAnalyticsScreen: String, LoggableScreen {
     case drivingLicenceFrontInstructions
 }
