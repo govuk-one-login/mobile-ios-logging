@@ -33,9 +33,9 @@ The `Logging` module contains protocols that can be used for conforming Types to
 
 `LoggingScreen` is usable for logging screens to the `AnalyticsService`.
 
-`LoggingService` is usable for conforming Types to pass `LoggingEvent`s through a HTTP client.
+`LoggingService` is usable for conforming Types to pass `LoggableEvent`s through a HTTP client.
 
-`AnalyticsService` is usable for conforming Types to pass `LoggingEvent`s and `LoggingScreen`s to a cloud analytics package.
+`AnalyticsService` is usable for conforming Types to pass `LoggableEvent`s and `LoggableScreen`s to a cloud analytics package.
 
 `AnalyticsStatusProtocol` is usable for checking and setting device preferences on analytics permissions, having conformance on `UserDefaults` within the same file.
 
