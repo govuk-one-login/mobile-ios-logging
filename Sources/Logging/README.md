@@ -27,21 +27,21 @@ To use Logging in a project using Swift Package Manager:
 
 The `Logging` module contains protocols that can be used for conforming Types to build analytics and logging into an app.
 
-> Within this directory exist the following protocols and Types for enabling screens and events being logged to a third-party service for app analytics and HTTP logging.
-
-`LoggingEvent` is usable for logging events to the `AnalyticsService`.
+> Within this directory exist the following protocols for conforming Types to enable screens and events to be logged to a third-party service for app analytics and HTTP logging.
 
 `LoggingScreen` is usable for logging screens to the `AnalyticsService`.
 
-`LoggingService` is usable for conforming Types to pass `LoggableEvent`s through a HTTP client.
+`LoggingEvent` is usable for logging events to the `AnalyticsService` and `LoggingService`.
 
 `AnalyticsService` is usable for conforming Types to pass `LoggableEvent`s and `LoggableScreen`s to a cloud analytics package.
+
+`LoggingService` is usable for conforming Types to pass `LoggableEvent`s through a HTTP client.
 
 `AnalyticsStatusProtocol` is usable for checking and setting device preferences on analytics permissions, having conformance on `UserDefaults` within the same file.
 
 ## Example Implementation
 
-#### Implementing concrete Types conforming to the above protocols and implementing a navigation pattern to use them:
+#### Implementing concrete Types conforming to the above protocols and an a navigation pattern to use them:
 
 Having access to values for screen and event names loggable through a third-party analytics service, conforming to `LoggableScreen` and `LoggableEvent` is appropriate. 
 
@@ -89,7 +89,7 @@ When the UI calls `didTapButton()` a JSON would be posted in the format:
 
 #### Using the `AnalyticsService` or `LoggingService` within a UIKit application which conforms to the the Coordinator pattern.
 
-Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package.
+> Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package.
 
 ```swift
 final class MyCoordinator: NavigationCoordinator {
@@ -108,7 +108,7 @@ final class MyCoordinator: NavigationCoordinator {
 }
 ```
 
-This instance of AnalyticsService can then be injected into other Type instances through your coordinator. A common use case is creating a view controller (a custom Type subclassing `UIViewController`). Implementing the required analytics calls within your view controller.
+This instance of AnalyticsService can then be injected into other Type instances through your coordinator. A common use case is creating a custom class which subclasses `UIViewController`. Implementing the required analytics calls within your view controller.
 
 ```swift
 final class MyViewController: UIViewController {
