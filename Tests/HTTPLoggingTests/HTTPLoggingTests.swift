@@ -10,7 +10,7 @@ enum MockEvent: String, LoggableEvent {
 
 final class HTTPLoggingTests: XCTestCase {
     private var sessionID: String!
-    private var sut: Logger!
+    private var sut: HTTPLogger!
     private var mockRequest: String!
     private var client: NetworkClient!
     private var configuration: URLSessionConfiguration!
@@ -113,7 +113,7 @@ extension HTTPLoggingTests {
 }
 
 
-private struct LogRequest: Codable {
+private struct HTTPLogRequest: Codable {
     let sessionID: String
     let eventName: String
     

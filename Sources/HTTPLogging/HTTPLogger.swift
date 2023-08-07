@@ -2,10 +2,10 @@ import Logging
 import Foundation
 import Networking
 
-/// Logger
+/// HTTPLogger
 ///
 /// A struct for sending HTTP requests to log user/journey specific insights for app metrics and performance.
-public struct Logger: LoggingService {
+public struct HTTPLogger: LoggingService {
     /// `NetworkClient` from the Networking package dependency to handle HTTP networking
     let networkClient: NetworkClient
     /// `URL` address for sending HTTP requests
@@ -18,8 +18,8 @@ public struct Logger: LoggingService {
     /// Sends HTTP POST request to designated URL, handling errors received back from `NetworkClient`'s `makeRequest` method
     public func logEvent(_ event: LoggableEvent,
                          parameters: [String: Any]) {
-        let logRequest = LogRequest(authSessionID: sessionID, event: event)
-        guard let jsonData = try? JSONEncoder().encode(logRequest) else {
+        let httpLogRequest = HTTPLogRequest(authSessionID: sessionID, event: event)
+        guard let jsonData = try? JSONEncoder().encode(httpLogRequest) else {
             assertionFailure("Failed to decode object")
             return
         }

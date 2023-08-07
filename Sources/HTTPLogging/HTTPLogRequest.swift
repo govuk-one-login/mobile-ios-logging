@@ -1,10 +1,10 @@
 import Logging
 import Foundation
 
-/// LogRequest
+/// HTTPLogRequest
 ///
 /// A struct to model HTTP event logging data
-struct LogRequest: Encodable {
+struct HTTPLogRequest: Encodable {
     /// sessionID for user/journey identication
     let sessionID: String
     /// event name taken from `LoggingEvent` protocol extension property, `name`

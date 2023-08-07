@@ -67,20 +67,20 @@ enum MyAppEvents: String, LoggableEvent {
 
 ```swift
 final class MyViewController: UIViewController {
-    let logger: LoggingService
+    let httpLogger: LoggingService
 
-    init(logger: LoggingService) {
+    init(httpLogger: LoggingService) {
         super.init()
-        self.logger = logger
+        self.httpLogger = httpLogger
     }
     
     @IBAction private func didTapButton() {
-        logger.logEvent(MyAppEvents.buttonTapped)
+        httpLogger.logEvent(MyAppEvents.buttonTapped)
     }
 }
 ```
 
-When the UI calls `didTapButton()` and the `logger` property is a [Logger](../HTTPLogging/Logger.swift), a JSON would be posted in the format:
+When the UI calls `didTapButton()` and the `httpLogger` property is a [HTTPLogger](../HTTPLogging/HTTPLogger.swift), a JSON would be posted in the format:
 
 ```
 {
