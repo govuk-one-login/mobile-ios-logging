@@ -63,6 +63,8 @@ enum MyAppEvents: String, LoggableEvent {
 
 #### Using the `AnalyticsService` or `LoggingService` within a UIKit application, injecting when initialising a custom class which subclasses `UIViewController`.
 
+> This example pertains to using a Type which conforms to `LoggingService`.
+
 ```swift
 final class MyViewController: UIViewController {
     let logger: LoggingService
@@ -78,7 +80,7 @@ final class MyViewController: UIViewController {
 }
 ```
 
-When the UI calls `didTapButton()` a JSON would be posted in the format:
+When the UI calls `didTapButton()` and the `logger` property is a [Logger](../HTTPLogging/Logger), a JSON would be posted in the format:
 
 ```
 {
@@ -89,7 +91,8 @@ When the UI calls `didTapButton()` a JSON would be posted in the format:
 
 #### Using the `AnalyticsService` or `LoggingService` within a UIKit application which conforms to the the Coordinator pattern.
 
-> Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package.
+> Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package. This example pertains to using a Type which conforms to `AnalyticsService`.
+
 
 ```swift
 final class MyCoordinator: NavigationCoordinator {
@@ -129,5 +132,7 @@ final class MyViewController: UIViewController {
     }
 }
 ```
+
+When the system calls `viewDidAppear()` or the UI calls `didTapButton()` and the `analyticsService` property is a [GAnalytics](../GAnalytics/GAnalytics), screens would be tracked and events would be logged to Firebase.
 
 Example implementations for the protocols in this module can be seen in the files of the [HTTPLogging](../HTTPLogging) and [GAnalytics](../GAnalytics) directories in this package.
