@@ -1,16 +1,16 @@
-import Analytics
-@testable import Logging
+import Logging
+@testable import HTTPLogging
 import MockNetworking
 @testable import Networking
 import XCTest
 
-enum MockEvent: String, LoggingEvent {
+enum MockEvent: String, LoggableEvent {
     case testEvent
 }
 
-final class LoggingTests: XCTestCase {
+final class HTTPLoggingTests: XCTestCase {
     private var sessionID: String!
-    private var sut: Logger!
+    private var sut: HTTPLogger!
     private var mockRequest: String!
     private var client: NetworkClient!
     private var configuration: URLSessionConfiguration!
@@ -47,7 +47,7 @@ final class LoggingTests: XCTestCase {
     }
 }
 
-extension LoggingTests {
+extension HTTPLoggingTests {
     func test_successfulTXMAEventLog() throws {
         // GIVEN network client returns 200
         MockURLProtocol.handler = {
@@ -113,11 +113,11 @@ extension LoggingTests {
 }
 
 
-private struct LogRequest: Codable {
+private struct HTTPLogRequest: Codable {
     let sessionID: String
     let eventName: String
     
-    init(authSessionID: String, event: LoggingEvent) {
+    init(authSessionID: String, event: LoggableEvent) {
         self.sessionID = authSessionID
         self.eventName = event.name
     }

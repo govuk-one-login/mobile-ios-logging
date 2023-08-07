@@ -1,13 +1,13 @@
-@testable import Analytics
+@testable import Logging
 import XCTest
 
-final class AnalyticsScreenTests: XCTestCase {
+final class LoggingScreenTests: XCTestCase {
     func testNameConformance() {
         XCTAssertEqual(MockAnalyticsScreen.drivingLicenceFrontInstructions.name,
                        "drivingLicenceFrontInstructions")
     }
 }
 
-enum MockAnalyticsScreen: String, AnalyticsScreen {
+enum MockAnalyticsScreen: String, LoggableScreen {
     case drivingLicenceFrontInstructions
 }

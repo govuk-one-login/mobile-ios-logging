@@ -1,11 +1,11 @@
-/// LoggingEvent
+/// LoggingScreen
 ///
-/// A protocol for Types to hold a value for event logging.
-public protocol LoggingEvent {
+/// A protocol for Types to hold a value for screen tracking.
+public protocol LoggableScreen {
     var name: String { get }
 }
 
-extension LoggingEvent where Self: RawRepresentable,
+extension LoggableScreen where Self: RawRepresentable,
                                 Self.RawValue == String {
     
     /// Protocol method returning the string value from a Type's `name` property which conforms to this protocol.

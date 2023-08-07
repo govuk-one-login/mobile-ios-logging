@@ -1,13 +1,13 @@
-@testable import Analytics
+@testable import Logging
 import XCTest
 
-final class AnalyticsEventTests: XCTestCase {
+final class LoggingEventTests: XCTestCase {
     func testNameConformance() {
         XCTAssertEqual(MockAnalyticsEvent.completedIDCheck.name,
                        "completedIDCheck")
     }
 }
 
-enum MockAnalyticsEvent: String, LoggingEvent {
+enum MockAnalyticsEvent: String, LoggableEvent {
     case completedIDCheck
 }
