@@ -80,7 +80,7 @@ final class MyViewController: UIViewController {
 }
 ```
 
-When the UI calls `didTapButton()` and the `logger` property is a [Logger](../HTTPLogging/Logger), a JSON would be posted in the format:
+When the UI calls `didTapButton()` and the `logger` property is a [Logger](../HTTPLogging/Logger.swift), a JSON would be posted in the format:
 
 ```
 {
@@ -133,6 +133,6 @@ final class MyViewController: UIViewController {
 }
 ```
 
-When the system calls `viewDidAppear()` or the UI calls `didTapButton()` and the `analyticsService` property is a [GAnalytics](../GAnalytics/GAnalytics), screens would be tracked and events would be logged to Firebase.
+When the system calls `viewDidAppear()` or the UI calls `didTapButton()` and the `analyticsService` property is a [GAnalytics](../GAnalytics/GAnalytics.swift), screens would be tracked and events would be logged to Firebase.
 
 Example implementations for the protocols in this module can be seen in the files of the [HTTPLogging](../HTTPLogging) and [GAnalytics](../GAnalytics) directories in this package.
