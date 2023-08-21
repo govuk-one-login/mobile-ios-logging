@@ -30,8 +30,6 @@ jobs:
           
           brew install sonar-scanner
           
-          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          
           sonar-scanner \
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.coverageReportPaths="Coverage.xml"
