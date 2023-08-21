@@ -1,5 +1,5 @@
-import Logging
 @testable import HTTPLogging
+import Logging
 import MockNetworking
 @testable import Networking
 import XCTest
