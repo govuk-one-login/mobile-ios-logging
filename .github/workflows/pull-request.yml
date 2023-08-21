@@ -27,13 +27,13 @@ jobs:
           
       - name: Build and Test
         run: |
-          xcodebuild -scheme Logging test -destination "platform=iOS Simulator,name=iPhone 14,OS=latest" \
+          xcodebuild -scheme Logging-Package test -destination "platform=iOS Simulator,name=iPhone 14,OS=latest" \
             -enableCodeCoverage YES -resultBundlePath result.xcresult
           bash xccov-to-sonarqube-generic.sh result.xcresult/ >Coverage.xml
           
-      - name: "Run SonarCloud Scan"
-        if: ${{ success() }}
-        uses: SonarSource/sonarcloud-github-action@master
+          brew install sonar-scanner
+          sonar-scanner -Dsonar.token=$SONAR_TOKEN -Dsonar.coverageReportPaths="Coverage.xml"
+          
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
