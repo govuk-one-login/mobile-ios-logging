@@ -21,10 +21,10 @@
     {
       "identity" : "di-mobile-ios-networking",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/alphagov/di-mobile-ios-networking",
+      "location" : "https://github.com/alphagov/di-mobile-ios-networking.git",
       "state" : {
-        "revision" : "9cc300c9e4e966aaa4df232b388b574262ee4537",
-        "version" : "1.0.0"
+        "branch" : "main",
+        "revision" : "e766a87733bd12029149b1be72586f64fc034ca8"
       }
     },
     {
