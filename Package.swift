@@ -18,7 +18,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/alphagov/di-mobile-ios-networking.git",
-            .upToNextMajor(from: "1.0.0")
+            branch: "main"
         )
     ],
     targets: [
