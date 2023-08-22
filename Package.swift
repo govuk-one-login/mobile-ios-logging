@@ -37,10 +37,17 @@ let package = Package(
                     .define("DEBUG", .when(configuration: .debug))
                 ]),
         .testTarget(name: "HTTPLoggingTests",
-                    dependencies: ["HTTPLogging", .product(name: "MockNetworking", package: "di-mobile-ios-networking")]),
+                    dependencies: [
+                        "HTTPLogging",
+                        .product(name: "MockNetworking", package: "di-mobile-ios-networking")
+                    ]),
         
         .target(name: "GAnalytics",
-                dependencies: ["Logging", .product(name: "FirebaseAnalyticsWithoutAdIdSupport", package: "firebase-ios-sdk"), .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk")],
+                dependencies: [
+                    "Logging",
+                    .product(name: "FirebaseAnalyticsWithoutAdIdSupport", package: "firebase-ios-sdk"),
+                    .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk")
+                ],
                 exclude: ["README.md"],
                 swiftSettings: [
                     .define("DEBUG", .when(configuration: .debug))

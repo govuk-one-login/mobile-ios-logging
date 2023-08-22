@@ -1,5 +1,5 @@
-import Logging
 import Foundation
+import Logging
 import Networking
 
 /// HTTPLogger
