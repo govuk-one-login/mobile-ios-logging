@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Run Quality Report
-    runs-on: mobile-ios
+    runs-on: macos-13
     
     steps:
       - name: Add path globally
