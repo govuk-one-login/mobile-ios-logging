@@ -9,7 +9,7 @@ To use this Logging package in a project using Swift Package Manager:
 1. Add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/alphagov/di-mobile-ios-logging", from: "1.0.0"),
+.package(url: "https://github.com/govuk-one-login/mobile-ios-logging", from: "1.0.0"),
 ```
 
 2. Add any of `Logging`, `Analytics` and/or `GAnalytics` as a dependencies for your target:
