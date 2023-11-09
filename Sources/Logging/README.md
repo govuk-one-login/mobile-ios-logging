@@ -9,7 +9,7 @@ To use Logging in a project using Swift Package Manager:
 1. Add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/alphagov/di-mobile-ios-logging", from: "1.0.0"),
+.package(url: "https://github.com/govuk-one-login/mobile-ios-logging", from: "1.0.0"),
 ```
 
 2. Add `Logging` as a dependency for your target:
@@ -91,7 +91,7 @@ When the UI calls `didTapButton()` and the `httpLogger` property is a [HTTPLogge
 
 #### Using the `AnalyticsService` or `LoggingService` within a UIKit application which conforms to the the Coordinator pattern.
 
-> Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/alphagov/di-mobile-ios-coordination) package. This example pertains to using a Type which conforms to `AnalyticsService`.
+> Using the Coordinator pattern as detailed in the README.md file of the [Coordination](https://github.com/govuk-one-login/mobile-ios-coordination) package. This example pertains to using a Type which conforms to `AnalyticsService`.
 
 
 ```swift

@@ -9,7 +9,7 @@ To use HTTPLogging in a project using Swift Package Manager:
 1. Add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/alphagov/di-mobile-ios-logging", from: "1.0.0"),
+.package(url: "https://github.com/govuk-one-login/mobile-ios-logging", from: "1.0.0"),
 ```
 
 2. Add `HTTPLogging` as a dependency for your target:
