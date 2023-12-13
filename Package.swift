@@ -17,7 +17,7 @@ let package = Package(
             .upToNextMajor(from: "10.15.0")
         ),
         .package(
-            url: "https://github.com/alphagov/di-mobile-ios-networking.git",
+            url: "https://github.com/govuk-one-login/mobile-ios-networking.git",
             branch: "main"
         )
     ],
@@ -31,7 +31,7 @@ let package = Package(
                     dependencies: ["Logging"]),
         
         .target(name: "HTTPLogging",
-                dependencies: ["Logging", .product(name: "Networking", package: "di-mobile-ios-networking")],
+                dependencies: ["Logging", .product(name: "Networking", package: "mobile-ios-networking")],
                 exclude: ["README.md"],
                 swiftSettings: [
                     .define("DEBUG", .when(configuration: .debug))
@@ -39,7 +39,7 @@ let package = Package(
         .testTarget(name: "HTTPLoggingTests",
                     dependencies: [
                         "HTTPLogging",
-                        .product(name: "MockNetworking", package: "di-mobile-ios-networking")
+                        .product(name: "MockNetworking", package: "mobile-ios-networking")
                     ]),
         
         .target(name: "GAnalytics",
