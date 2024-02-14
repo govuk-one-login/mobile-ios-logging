@@ -39,8 +39,8 @@ public class GAnalytics: AnalyticsService {
                             parameters params: [String: Any] = [:]) {
         var parameters = mergeAdditionalParameters(params)
         
-        parameters[AnalyticsParameterScreenName] = screen.name
-        parameters[AnalyticsParameterScreenClass] = screen.name
+        parameters[AnalyticsParameterScreenName] = screen.title
+        parameters[AnalyticsParameterScreenClass] = screen.type
         
         Analytics.logEvent(AnalyticsEventScreenView,
                            parameters: parameters)
