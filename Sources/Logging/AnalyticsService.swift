@@ -22,6 +22,9 @@ extension AnalyticsService {
         trackScreen(screen, parameters: [:])
     }
     
+    public func trackScreen(_ screen: LoggableScreen, parameters: [String: Any]) {
+        trackScreen(screen, parameters: parameters)
+    }
     /// Protocol method for crash logging, calling the conforming type's method for passing errors as `NSError`s.
     public func logCrash(_ crash: Error) {
         logCrash(crash as NSError)
