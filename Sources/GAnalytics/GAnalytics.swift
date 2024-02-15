@@ -41,6 +41,7 @@ public class GAnalytics: AnalyticsService {
         
         parameters[AnalyticsParameterScreenName] = screen.title
         parameters[AnalyticsParameterScreenClass] = screen.type
+        parameters["screen_id"] = screen.screenID
         
         Analytics.logEvent(AnalyticsEventScreenView,
                            parameters: parameters)
