@@ -39,7 +39,14 @@ public class GAnalytics: AnalyticsService {
                             parameters params: [String: Any] = [:]) {
         var parameters = mergeAdditionalParameters(params)
         
-//        parameters[AnalyticsParameterScreenName] = screen.name
+        parameters[AnalyticsParameterScreenClass] = screen.name
+        
+        if let screen = screen as? LoggableScreenV2 {
+            parameters[AnalyticsParameterScreenName] = screen.class
+            // create constant
+            parameters["screen_id"] = screen.id
+
+        }
         
         Analytics.logEvent(AnalyticsEventScreenView,
                            parameters: parameters)
