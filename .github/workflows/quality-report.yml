@@ -9,6 +9,8 @@ jobs:
   build:
     name: Run Quality Report
     runs-on: macos-13
+    permissions:
+      contents: write
     
     steps:
       - name: Add path globally
@@ -35,4 +37,11 @@ jobs:
             -Dsonar.coverageReportPaths="Coverage.xml"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Increment Version
+        id: versioning
+        uses: Oliver-Binns/Versioning@1.0.0
+        with:
+          ACTION_TYPE: Release
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
