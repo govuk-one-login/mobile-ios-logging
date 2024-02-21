@@ -28,6 +28,12 @@ jobs:
       - name: Run Linter
         run: |
           swiftlint --strict
+          
+      - name: Validate Pull Request Name
+        id: versioning
+        uses: Oliver-Binns/Versioning@1.0.0
+        with:
+          ACTION_TYPE: 'Validate'
             
       - name: Build and Test
         run: |
