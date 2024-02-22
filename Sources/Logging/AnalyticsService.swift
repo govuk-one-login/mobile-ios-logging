@@ -6,8 +6,14 @@ import Foundation
 public protocol AnalyticsService: LoggingService {
     var additionalParameters: [String: Any] { get set }
     
+    @available(*, deprecated, renamed: "trackScreen", message: "Please use LoggableScreenV2")
     func trackScreen(_ screen: LoggableScreen)
+    
+    @available(*, deprecated, renamed: "trackScreen", message: "Please use LoggableScreenV2")
     func trackScreen(_ screen: LoggableScreen, parameters: [String: Any])
+    
+    func trackScreen(_ screen: LoggableScreenV2)
+    func trackScreen(_ screen: LoggableScreenV2, parameters: [String: Any])
     
     func logCrash(_ crash: NSError)
     func logCrash(_ crash: Error)
@@ -19,6 +25,10 @@ public protocol AnalyticsService: LoggingService {
 extension AnalyticsService {
     /// Protocol method for screen tracking, calling the conforming type's method for adding screen tracking parameters.
     public func trackScreen(_ screen: LoggableScreen) {
+        trackScreen(screen, parameters: [:])
+    }
+    
+    public func trackScreen(_ screen: LoggableScreenV2) {
         trackScreen(screen, parameters: [:])
     }
     

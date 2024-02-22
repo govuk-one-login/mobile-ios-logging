@@ -1,7 +1,7 @@
 @testable import Logging
 import XCTest
 
-class MockLoggingService: AnalyticsService {
+class MockLoggingService: AnalyticsService {    
     var additionalParameters: [String: Any] = [:]
     
     var screensVisited: [String] = []
@@ -14,6 +14,13 @@ class MockLoggingService: AnalyticsService {
     
     func trackScreen(_ screen: LoggableScreen,
                      parameters: [String: Any]) {
+        screensVisited.append(screen.name)
+        screenParamsLogged = parameters
+    }
+    
+    func trackScreen(_ screen: LoggableScreenV2,
+                     parameters: [String : Any]) {
+        
         screensVisited.append(screen.name)
         screenParamsLogged = parameters
     }
