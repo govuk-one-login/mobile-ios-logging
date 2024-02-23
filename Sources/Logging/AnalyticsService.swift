@@ -11,7 +11,9 @@ public protocol AnalyticsService: LoggingService {
     
     @available(*, deprecated, renamed: "trackScreen", message: "Please use LoggableScreenV2")
     func trackScreen(_ screen: LoggableScreen, parameters: [String: Any])
-        
+    
+    func trackScreen(_ screen: LoggableScreenV2, parameters: [String: Any])
+    
     func logCrash(_ crash: NSError)
     func logCrash(_ crash: Error)
     
