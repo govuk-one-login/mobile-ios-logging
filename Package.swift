@@ -51,6 +51,8 @@ let package = Package(
                 exclude: ["README.md"],
                 swiftSettings: [
                     .define("DEBUG", .when(configuration: .debug))
-                ])
+                ]),
+        .testTarget(name: "GAnalyticsTests",
+                    dependencies: ["GAnalytics"])
     ]
 )

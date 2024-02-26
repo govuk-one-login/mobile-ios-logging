@@ -1,36 +1,6 @@
 @testable import Logging
 import XCTest
 
-class MockLoggingService: AnalyticsService {    
-    var additionalParameters: [String: Any] = [:]
-    
-    var screensVisited: [String] = []
-    var screenParamsLogged: [String: Any] = [:]
-    var eventsLogged: [LoggableEvent] = []
-    
-    func logCrash(_ crash: NSError) { }
-    func grantAnalyticsPermission() { }
-    func denyAnalyticsPermission() { }
-    
-    func trackScreen(_ screen: LoggableScreen,
-                     parameters: [String: Any]) {
-        screensVisited.append(screen.name)
-        screenParamsLogged = parameters
-    }
-    
-    func trackScreen(_ screen: LoggableScreenV2,
-                     parameters: [String : Any]) {
-        
-        screensVisited.append(screen.name)
-        screenParamsLogged = parameters
-    }
-    
-    func logEvent(_ event: LoggableEvent,
-                  parameters: [String: Any]) {
-        eventsLogged.append(event)
-    }
-}
-
 final class LoggingServiceTests: XCTestCase {
     func testAnalyticsService() {
         let service = MockLoggingService()
@@ -45,5 +15,38 @@ final class LoggingServiceTests: XCTestCase {
         
         service.trackScreen(MockAnalyticsScreen.drivingLicenceFrontInstructions)
         XCTAssertEqual(service.screensVisited.count, 2)
+    }
+    
+    enum TestScreen: String, LoggableScreen {
+        case welcome = "WELCOME_SCREEN"
+    }
+    
+    func testTrackScreen() {
+        let service = MockLoggingService()
+        service.trackScreen(TestScreen.welcome, parameters: [:])
+        
+        XCTAssertEqual(
+            service.screensVisited,
+            [
+                MockScreen(name: "WELCOME_SCREEN", class: "WELCOME_SCREEN")
+            ]
+        )
+    }
+    
+    func testTrackScreenV2() {
+        struct TestScreenV2: LoggableScreenV2 {
+            let name: String = "Welcome to GOV.UK One Login"
+            let type: ScreenType = TestScreen.welcome
+        }
+        
+        let service = MockLoggingService()
+        service.trackScreen(TestScreenV2(), parameters: [:])
+        
+        XCTAssertEqual(
+            service.screensVisited,
+            [
+                MockScreen(name: "Welcome to GOV.UK One Login", class: "WELCOME_SCREEN")
+            ]
+        )
     }
 }
