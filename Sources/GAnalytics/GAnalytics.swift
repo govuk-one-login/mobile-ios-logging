@@ -8,43 +8,53 @@ import Logging
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.
 public class GAnalytics {
-    /// Additional parameters for the application
-    public var additionalParameters = [String: Any]()
+    private let app: AnalyticsApp.Type
     private let analytics: AnalyticsLogger.Type
     private let crashLogger: CrashLogger
+    private let preferenceStore: AnalyticsPreferenceStore
     
-    /// Initialises the Firebase instance when launching the app.
-    public func configure() {
-        FirebaseApp.configure()
-        bundleDataObserver()
-        fetchSettingBundleData()
-    }
+    /// Additional parameters for the application
+    public var additionalParameters = [String: Any]()
     
-    /// Creates Notification Center Observer for user's analytics permissions for the app.
-    private func bundleDataObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(fetchSettingBundleData), name: UserDefaults.didChangeNotification, object: nil)
-    }
-    
-    /// Fetches permissions for analytics from User Defaults.
-    /// Checks if analytics permissions have been set, if they are, sets permissions saved in User Defaults.
-    @objc private func fetchSettingBundleData() {
-        guard let hasAcceptedAnalytics = UserDefaults.standard.hasAcceptedAnalytics else { return }
-        if hasAcceptedAnalytics {
-            grantAnalyticsPermission()
-        } else {
-            denyAnalyticsPermission()
-        }
-    }
-    
-    init(analytics: AnalyticsLogger.Type,
-         crashLogger: CrashLogger) {
+    init(app: AnalyticsApp.Type,
+         analytics: AnalyticsLogger.Type,
+         crashLogger: CrashLogger,
+         preferenceStore: AnalyticsPreferenceStore) {
+        self.app = app
         self.analytics = analytics
         self.crashLogger = crashLogger
+        self.preferenceStore = preferenceStore
     }
     
     public convenience init() {
-        self.init(analytics: Analytics.self,
-                  crashLogger: Crashlytics.crashlytics())
+        self.init(app: FirebaseApp.self,
+                  analytics: Analytics.self,
+                  crashLogger: Crashlytics.crashlytics(),
+                  preferenceStore: UserDefaultsPreferenceStore())
+    }
+    
+    /// Initialises the Firebase instance when launching the app.
+    public func configure() {
+        app.configure()
+        subscribeToPreferenceStore()
+        updateAnalyticsPreference(preferenceStore.hasAcceptedAnalytics)
+    }
+    
+    private func subscribeToPreferenceStore() {
+        Task {
+            for await value in preferenceStore.stream() {
+                updateAnalyticsPreference(value)
+            }
+        }
+    }
+    
+    private func updateAnalyticsPreference(_ preference: Bool?) {
+        switch preference {
+        case true:
+            grantAnalyticsPermission()
+        default:
+            denyAnalyticsPermission()
+        }
     }
     
     /// Merging `parameters` dictionary parameter with `additionalParameters` property

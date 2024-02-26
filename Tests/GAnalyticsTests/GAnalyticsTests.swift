@@ -4,27 +4,47 @@ import XCTest
 
 final class GAnalyticsTests: XCTestCase {
     private var sut: GAnalytics!
+    
+    private var app: MockApp.Type!
     private var analyticsLogger: MockAnalyticsLogger.Type!
     private var crashLogger: MockCrashLogger!
+    private var preferenceStore: AnalyticsPreferenceStore!
     
     override func setUp() {
         super.setUp()
         
+        app = MockApp.self
         analyticsLogger = MockAnalyticsLogger.self
         crashLogger = MockCrashLogger()
+        preferenceStore = MockPreferenceStore()
         
-        sut = GAnalytics(analytics: analyticsLogger,
-                         crashLogger: crashLogger)
+        sut = GAnalytics(app: app,
+                         analytics: analyticsLogger,
+                         crashLogger: crashLogger, 
+                         preferenceStore: preferenceStore)
     }
     
     override func tearDown() {
         sut = nil
         analyticsLogger.reset()
         analyticsLogger = nil
+        crashLogger = nil
+        preferenceStore = nil
         super.tearDown()
     }
 }
 
+// MARK: - Setup Tests
+extension GAnalyticsTests {
+    func testConfiguration() {
+        sut.configure()
+        
+        XCTAssertTrue(app.calledConfigure)
+        NotificationCenter.default.post(Notification(name: UserDefaults.didChangeNotification))
+    }
+}
+
+// MARK: - Logging Tests
 extension GAnalyticsTests {
     enum TestScreen: String, LoggableScreen {
         case welcome = "WELCOME_SCREEN"
@@ -40,6 +60,25 @@ extension GAnalyticsTests {
                 "screen_class": "WELCOME_SCREEN",
                 "screen_name": "WELCOME_SCREEN",
                 "additional_parameter": "testing"
+            ])]
+        )
+    }
+    
+    func testTrackScreenAdditionalParameters() {
+        sut.additionalParameters = [
+            "journey": "id_verification"
+        ]
+        
+        sut.trackScreen(TestScreen.welcome,
+                        parameters: ["additional_parameter": "testing"])
+        
+        XCTAssertEqual(
+            analyticsLogger.events,
+            [.init(name: "screen_view", parameters: [
+                "screen_class": "WELCOME_SCREEN",
+                "screen_name": "WELCOME_SCREEN",
+                "additional_parameter": "testing",
+                "journey": "id_verification"
             ])]
         )
     }
