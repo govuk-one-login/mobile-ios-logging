@@ -58,4 +58,17 @@ extension GAnalyticsTests {
             ])]
         )
     }
+    
+    func testTrackEvent() {
+        enum MyAppEvents: String, LoggableEvent {
+            case buttonPress
+        }
+        
+        sut.logEvent(MyAppEvents.buttonPress)
+        
+        XCTAssertEqual(
+            logger.events,
+            [.init(name: "buttonPress", parameters: [:])]
+        )
+    }
 }
