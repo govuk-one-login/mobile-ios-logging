@@ -15,6 +15,7 @@ final class GAnalyticsTests: XCTestCase {
     
     override func tearDown() {
         sut = nil
+        logger.reset()
         logger = nil
         super.tearDown()
     }

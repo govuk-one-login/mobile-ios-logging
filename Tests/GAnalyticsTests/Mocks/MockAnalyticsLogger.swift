@@ -14,4 +14,8 @@ final class MockAnalyticsLogger: AnalyticsLogger {
         }
         events.append(Event(name: name, parameters: parameters))
     }
+    
+    static func reset() {
+        events = []
+    }
 }
