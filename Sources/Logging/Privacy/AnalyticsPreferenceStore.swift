@@ -59,4 +59,3 @@ public final class UserDefaultsPreferenceStore: AnalyticsPreferenceStore {
         case hasAcceptedAnalytics
     }
 }
-

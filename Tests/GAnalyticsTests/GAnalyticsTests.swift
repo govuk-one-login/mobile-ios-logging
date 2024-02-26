@@ -20,7 +20,7 @@ final class GAnalyticsTests: XCTestCase {
         
         sut = GAnalytics(app: app,
                          analytics: analyticsLogger,
-                         crashLogger: crashLogger, 
+                         crashLogger: crashLogger,
                          preferenceStore: preferenceStore)
     }
     
