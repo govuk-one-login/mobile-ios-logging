@@ -10,7 +10,7 @@ import Logging
 public class GAnalytics {
     /// Additional parameters for the application
     public var additionalParameters = [String: Any]()
-    private let analytics: AnalyticsLogger.Type
+    let analytics: AnalyticsLogger.Type
     
     /// Initialises the Firebase instance when launching the app.
     public func configure() {
@@ -21,10 +21,7 @@ public class GAnalytics {
     
     /// Creates Notification Center Observer for user's analytics permissions for the app.
     private func bundleDataObserver() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(fetchSettingBundleData),
-                                               name: UserDefaults.didChangeNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchSettingBundleData), name: UserDefaults.didChangeNotification, object: nil)
     }
     
     /// Fetches permissions for analytics from User Defaults.
