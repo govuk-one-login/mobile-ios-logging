@@ -8,7 +8,7 @@ final class MockAnalyticsLogger: AnalyticsLogger {
     
     private(set) static var events: [Event] = []
     
-    static func logEvent(_ name: String, parameters: [String : Any]?) {
+    static func logEvent(_ name: String, parameters: [String: Any]?) {
         guard let parameters = parameters as? [String: String] else {
             preconditionFailure("Expected parameters dictionary to contain String values only.")
         }

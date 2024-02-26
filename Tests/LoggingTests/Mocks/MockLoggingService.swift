@@ -24,7 +24,7 @@ final class MockLoggingService: AnalyticsService {
     }
     
     func trackScreen(_ screen: LoggableScreenV2,
-                     parameters: [String : Any]) {
+                     parameters: [String: Any]) {
         screensVisited.append(
             MockScreen(name: screen.name, class: screen.type.name)
         )

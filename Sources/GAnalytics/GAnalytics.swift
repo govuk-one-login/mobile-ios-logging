@@ -68,7 +68,7 @@ extension GAnalytics: AnalyticsService {
     }
     
     public func trackScreen(_ screen: LoggableScreenV2,
-                            parameters params: [String : Any]) {
+                            parameters params: [String: Any]) {
         var parameters = mergeAdditionalParameters(params)
         
         parameters[AnalyticsParameterScreenClass] = screen.type.name
@@ -102,4 +102,3 @@ extension GAnalytics: AnalyticsService {
         Analytics.resetAnalyticsData()
     }
 }
-

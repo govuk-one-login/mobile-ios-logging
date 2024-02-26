@@ -26,15 +26,15 @@ extension GAnalyticsTests {
     }
     
     func testTrackScreen() {
-        sut.trackScreen(TestScreen.welcome, 
-                        parameters: ["additional_parameter" : "testing"])
+        sut.trackScreen(TestScreen.welcome,
+                        parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
-            logger.events, 
+            logger.events,
             [.init(name: "screen_view", parameters: [
-                "screen_class" : "WELCOME_SCREEN",
-                "screen_name" : "WELCOME_SCREEN",
-                "additional_parameter" : "testing"
+                "screen_class": "WELCOME_SCREEN",
+                "screen_name": "WELCOME_SCREEN",
+                "additional_parameter": "testing"
             ])]
         )
     }
@@ -46,14 +46,14 @@ extension GAnalyticsTests {
         }
         
         sut.trackScreen(TestScreenV2(),
-                        parameters: ["additional_parameter" : "testing"])
+                        parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
             logger.events,
             [.init(name: "screen_view", parameters: [
-                "screen_class" : "WELCOME_SCREEN",
-                "screen_name" : "Welcome to GOV.UK One Login",
-                "additional_parameter" : "testing"
+                "screen_class": "WELCOME_SCREEN",
+                "screen_name": "Welcome to GOV.UK One Login",
+                "additional_parameter": "testing"
             ])]
         )
     }
