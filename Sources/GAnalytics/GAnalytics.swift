@@ -10,7 +10,8 @@ import Logging
 public class GAnalytics {
     /// Additional parameters for the application
     public var additionalParameters = [String: Any]()
-    let analytics: AnalyticsLogger.Type
+    private let analytics: AnalyticsLogger.Type
+    private let crashLogger: CrashLogger
     
     /// Initialises the Firebase instance when launching the app.
     public func configure() {
@@ -35,12 +36,15 @@ public class GAnalytics {
         }
     }
     
-    init(analytics: AnalyticsLogger.Type) {
+    init(analytics: AnalyticsLogger.Type,
+         crashLogger: CrashLogger) {
         self.analytics = analytics
+        self.crashLogger = crashLogger
     }
     
     public convenience init() {
-        self.init(analytics: Analytics.self)
+        self.init(analytics: Analytics.self,
+                  crashLogger: Crashlytics.crashlytics())
     }
     
     /// Merging `parameters` dictionary parameter with `additionalParameters` property
@@ -81,19 +85,20 @@ extension GAnalytics: AnalyticsService {
     
     /// Logs crashes accepting an error in Firebase package.
     public func logCrash(_ error: NSError) {
-        Crashlytics.crashlytics().record(error: error)
+        crashLogger.record(error: error)
     }
     
     /// Granting analytics and crashlytics permissions in Firebase package.
     public func grantAnalyticsPermission() {
-        Analytics.setAnalyticsCollectionEnabled(true)
-        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        analytics.setAnalyticsCollectionEnabled(true)
+        crashLogger.setCrashlyticsCollectionEnabled(true)
     }
     
     /// Denying analytics and crashlytics permissions in Firebase package.
     public func denyAnalyticsPermission() {
-        Analytics.setAnalyticsCollectionEnabled(false)
-        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
-        Analytics.resetAnalyticsData()
+        analytics.setAnalyticsCollectionEnabled(false)
+        analytics.resetAnalyticsData()
+        
+        crashLogger.setCrashlyticsCollectionEnabled(false)
     }
 }

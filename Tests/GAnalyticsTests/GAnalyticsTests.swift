@@ -4,19 +4,23 @@ import XCTest
 
 final class GAnalyticsTests: XCTestCase {
     private var sut: GAnalytics!
-    private var logger: MockAnalyticsLogger.Type!
+    private var analyticsLogger: MockAnalyticsLogger.Type!
+    private var crashLogger: MockCrashLogger!
     
     override func setUp() {
         super.setUp()
         
-        logger = MockAnalyticsLogger.self
-        sut = GAnalytics(analytics: logger)
+        analyticsLogger = MockAnalyticsLogger.self
+        crashLogger = MockCrashLogger()
+        
+        sut = GAnalytics(analytics: analyticsLogger,
+                         crashLogger: crashLogger)
     }
     
     override func tearDown() {
         sut = nil
-        logger.reset()
-        logger = nil
+        analyticsLogger.reset()
+        analyticsLogger = nil
         super.tearDown()
     }
 }
@@ -31,7 +35,7 @@ extension GAnalyticsTests {
                         parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
-            logger.events,
+            analyticsLogger.events,
             [.init(name: "screen_view", parameters: [
                 "screen_class": "WELCOME_SCREEN",
                 "screen_name": "WELCOME_SCREEN",
@@ -50,7 +54,7 @@ extension GAnalyticsTests {
                         parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
-            logger.events,
+            analyticsLogger.events,
             [.init(name: "screen_view", parameters: [
                 "screen_class": "WELCOME_SCREEN",
                 "screen_name": "Welcome to GOV.UK One Login",
@@ -67,8 +71,38 @@ extension GAnalyticsTests {
         sut.logEvent(MyAppEvents.buttonPress)
         
         XCTAssertEqual(
-            logger.events,
+            analyticsLogger.events,
             [.init(name: "buttonPress", parameters: [:])]
         )
+    }
+    
+    func testLogCrash() {
+        enum MyAppError: Error, Equatable {
+            case unknownFailure
+        }
+        
+        sut.logCrash(MyAppError.unknownFailure)
+        
+        XCTAssertEqual(crashLogger.errors.count, 1)
+        XCTAssertEqual(
+            crashLogger.errors.compactMap { $0 as? MyAppError },
+            [MyAppError.unknownFailure]
+        )
+    }
+    
+    func testGrantAnalyticsPermission() {
+        sut.grantAnalyticsPermission()
+        
+        XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, true)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
+    }
+    
+    func testDenyAnalyticsPermission() {
+        sut.denyAnalyticsPermission()
+        
+        XCTAssertTrue(analyticsLogger.didResetAnalyticsData)
+        
+        XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
     }
 }
