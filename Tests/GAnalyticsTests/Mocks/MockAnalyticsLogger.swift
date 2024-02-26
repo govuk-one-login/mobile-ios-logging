@@ -8,7 +8,7 @@ final class MockAnalyticsLogger: AnalyticsLogger {
     
     private(set) static var events: [Event] = []
     private(set) static var didResetAnalyticsData: Bool = false
-    private(set) static var isAnalyticsCollectionEnabled: Bool? = nil
+    private(set) static var isAnalyticsCollectionEnabled: Bool?
     
     static func logEvent(_ name: String, parameters: [String: Any]?) {
         guard let parameters = parameters as? [String: String] else {
