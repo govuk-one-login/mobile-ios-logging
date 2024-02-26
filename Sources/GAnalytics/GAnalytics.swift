@@ -40,8 +40,6 @@ public class GAnalytics {
     }
     
     public convenience init() {
-        // this is empty because there are no properties to initialise but
-        // it is required to initialise this outside of the package
         self.init(analytics: Analytics.self)
     }
     
