@@ -18,7 +18,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/govuk-one-login/mobile-ios-networking.git",
-            branch: "main"
+            .upToNextMajor(from: "1.0.0")
         )
     ],
     targets: [
