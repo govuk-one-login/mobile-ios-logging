@@ -7,9 +7,10 @@ import Logging
 ///
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.
-public class GAnalytics: AnalyticsService {
+public class GAnalytics {
     /// Additional parameters for the application
     public var additionalParameters = [String: Any]()
+    let analytics: AnalyticsLogger.Type
     
     /// Initialises the Firebase instance when launching the app.
     public func configure() {
@@ -34,6 +35,21 @@ public class GAnalytics: AnalyticsService {
         }
     }
     
+    init(analytics: AnalyticsLogger.Type) {
+        self.analytics = analytics
+    }
+    
+    public convenience init() {
+        self.init(analytics: Analytics.self)
+    }
+    
+    /// Merging `parameters` dictionary parameter with `additionalParameters` property
+    private func mergeAdditionalParameters(_ parameters: [String: Any]) -> [String: Any] {
+        additionalParameters.merging(parameters) { $1 }
+    }
+}
+
+extension GAnalytics: AnalyticsService {
     /// Tracks screens adding screen tracking parameters in Firebase package.
     public func trackScreen(_ screen: LoggableScreen,
                             parameters params: [String: Any] = [:]) {
@@ -42,14 +58,25 @@ public class GAnalytics: AnalyticsService {
         parameters[AnalyticsParameterScreenName] = screen.name
         parameters[AnalyticsParameterScreenClass] = screen.name
         
-        Analytics.logEvent(AnalyticsEventScreenView,
+        analytics.logEvent(AnalyticsEventScreenView,
+                           parameters: parameters)
+    }
+    
+    public func trackScreen(_ screen: LoggableScreenV2,
+                            parameters params: [String: Any]) {
+        var parameters = mergeAdditionalParameters(params)
+        
+        parameters[AnalyticsParameterScreenClass] = screen.type.name
+        parameters[AnalyticsParameterScreenName] = screen.name
+        
+        analytics.logEvent(AnalyticsEventScreenView,
                            parameters: parameters)
     }
     
     /// Logs events accepting the event name and parameters in Firebase package.
     public func logEvent(_ event: LoggableEvent, parameters params: [String: Any]) {
         let parameters = mergeAdditionalParameters(params)
-        Analytics.logEvent(event.name, parameters: parameters)
+        analytics.logEvent(event.name, parameters: parameters)
     }
     
     /// Logs crashes accepting an error in Firebase package.
@@ -68,15 +95,5 @@ public class GAnalytics: AnalyticsService {
         Analytics.setAnalyticsCollectionEnabled(false)
         Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
         Analytics.resetAnalyticsData()
-    }
-    
-    public init() {
-        // this is empty because there are no properties to initialise but
-        // it is required to initialise this outside of the package
-    }
-    
-    /// Merging `parameters` dictionary parameter with `additionalParameters` property
-    private func mergeAdditionalParameters(_ parameters: [String: Any]) -> [String: Any] {
-        additionalParameters.merging(parameters) { $1 }
     }
 }

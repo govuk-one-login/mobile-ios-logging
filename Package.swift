@@ -18,7 +18,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/govuk-one-login/mobile-ios-networking.git",
-            branch: "main"
+            .upToNextMajor(from: "2.0.0")
         )
     ],
     targets: [
@@ -51,6 +51,8 @@ let package = Package(
                 exclude: ["README.md"],
                 swiftSettings: [
                     .define("DEBUG", .when(configuration: .debug))
-                ])
+                ]),
+        .testTarget(name: "GAnalyticsTests",
+                    dependencies: ["GAnalytics"])
     ]
 )
