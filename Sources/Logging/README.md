@@ -121,7 +121,7 @@ extension MyViewController: LoggableScreenV2 {
 It is important to request a user’s permission before tracking them with analytics.
 Use the `AnalyticsPreferenceStore` for this purpose.
 
-```
+```swift
 let preferenceStore: AnalyticsPreferenceStore
 ```
 
