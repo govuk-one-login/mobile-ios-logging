@@ -3,6 +3,7 @@ import Foundation
 /// AnalyticsStatusProtocol
 ///
 /// A protocol for Types to check if analytics permissions have been enabled
+@available(*, deprecated, renamed: "AnalyticsPreferenceStore")
 public protocol AnalyticsStatusProtocol {
     var hasAcceptedAnalytics: Bool? { get set }
 }

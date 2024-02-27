@@ -118,4 +118,32 @@ extension MyViewController: LoggableScreenV2 {
 
 ### Requesting user permission for analytics
 
-`AnalyticsStatusProtocol` is usable for checking and setting device preferences on analytics permissions, having conformance on `UserDefaults` within the same file.
+It is important to request a user’s permission before tracking them with analytics.
+Use the `AnalyticsPreferenceStore` for this purpose.
+
+```swift
+let preferenceStore: AnalyticsPreferenceStore
+```
+
+The store lets you track whether a user has previously accepted analytics.
+
+```swift
+func userProvidedConsentForAnalytics() {
+    preferenceStore.hasAcceptedAnalytics = true
+}
+```
+
+You can also subscribe to changes in the user’s choice.
+
+```swift
+for await isConsentProvided in preferenceStore.stream() {
+    // react to changes in the user’s consent to analytics
+}
+```
+
+A default implementation using `UserDefaults` is provided as part of this package.
+
+```swift
+let preferenceStore: AnalyticsPreferenceStore = UserDefaultsPreferenceStore()
+```
+
