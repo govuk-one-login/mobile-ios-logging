@@ -12,17 +12,18 @@ To use this Logging package in a project using Swift Package Manager:
 .package(url: "https://github.com/govuk-one-login/mobile-ios-logging", from: "1.0.0"),
 ```
 
-2. Add any of `Logging`, `Analytics` and/or `GAnalytics` as a dependencies for your target:
+2. Add any of `Logging`, `GAnalytics`, `HTTPLogging` and/or `GDSAnalytics` as a dependencies for your target:
 
 ```swift
 .target(name: "MyTarget", dependencies: [
   .product(name: "Logging", package: "di-mobile-ios-logging"),
   .product(name: "GAnalytics", package: "di-mobile-ios-logging"),
-  .product(name: "HTTPLogging", package: "di-mobile-ios-logging")
+  .product(name: "HTTPLogging", package: "di-mobile-ios-logging"),
+  .prodcut(name: "GDSAnalytics", package: "di-mobile-ios-logging")
 ]),
 ```
 
-3. Add `import Logging`, `import Analytics` and/or `import GAnalytics` into your source code where necessary.
+3. Add `import Logging`, `import GAnalytics`, `import HTTPLogging` and/or `import GDSAnalytics` into your source code where necessary.
 
 ## Package description
 
@@ -33,3 +34,5 @@ For individual descriptions of the modules in this package, head to the README f
 [GAnalytics](./Sources/GAnalytics/README.md)
 
 [HTTPLogging](./Sources/HTTPLogging/README.md)
+
+[GDSAnalytics](./Sources/GDSAnalytics/README.md)
