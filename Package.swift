@@ -9,7 +9,8 @@ let package = Package(
     products: [
         .library(name: "Logging", targets: ["Logging"]),
         .library(name: "HTTPLogging", targets: ["HTTPLogging"]),
-        .library(name: "GAnalytics", targets: ["GAnalytics"])
+        .library(name: "GAnalytics", targets: ["GAnalytics"]),
+        .library(name: "GDSAnalytics", targets: ["GDSAnalytics"])
     ],
     dependencies: [
         .package(
@@ -53,6 +54,11 @@ let package = Package(
                     .define("DEBUG", .when(configuration: .debug))
                 ]),
         .testTarget(name: "GAnalyticsTests",
-                    dependencies: ["GAnalytics"])
+                    dependencies: ["GAnalytics"]),
+        
+        .target(name: "GDSAnalytics",
+                exclude: ["README.md"]),
+        .testTarget(name: "GDSAnalyticsTests",
+                    dependencies: ["GDSAnalytics"])
     ]
 )
