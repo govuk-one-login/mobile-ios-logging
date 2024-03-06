@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Logging",
+    defaultLocalization: "en",
     platforms: [.iOS(.v13)],
     products: [
         .library(name: "Logging", targets: ["Logging"]),
