@@ -45,7 +45,7 @@ jobs:
           xcodebuild -scheme Logging-Package test \
             -destination "platform=iOS Simulator,name=iPhone 15,OS=latest" \
             -enableCodeCoverage YES \
-            -resultBundlePath result.xcresult
+            -resultBundlePath result.xcresult | xcbeautify
             
       - name: Run SonarCloud Scanning
         run: |
