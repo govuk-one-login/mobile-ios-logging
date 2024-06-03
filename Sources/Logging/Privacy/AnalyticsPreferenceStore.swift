@@ -27,9 +27,13 @@ public final class UserDefaultsPreferenceStore: AnalyticsPreferenceStore {
             return value(for: .hasAcceptedAnalytics)
         }
         set {
-            guard let newValue else { return }
-            defaults.set(true, forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue)
-            defaults.set(newValue, forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
+            if let newValue {
+                defaults.set(true, forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue)
+                defaults.set(newValue, forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
+            } else {
+                defaults.set(false, forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue)
+                defaults.set(false, forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
+            }
         }
     }
     
