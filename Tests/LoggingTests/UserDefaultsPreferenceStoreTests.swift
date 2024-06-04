@@ -40,8 +40,8 @@ extension UserDefaultsPreferenceStoreTests {
     func testClearAnalyticsPreference() {
         sut.hasAcceptedAnalytics = nil
         
-        XCTAssertNil(defaults.object(forKey: "hasAskedForAnalyticsPermissions"))
-        XCTAssertNil(defaults.object(forKey: "hasAcceptedAnalytics"))
+        XCTAssertFalse(defaults.bool(forKey: "hasAskedForAnalyticsPermissions"))
+        XCTAssertFalse(defaults.bool(forKey: "hasAcceptedAnalytics"))
     }
     
     func testAcceptAnalytics() {
