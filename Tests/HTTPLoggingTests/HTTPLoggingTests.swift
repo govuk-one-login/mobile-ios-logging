@@ -69,13 +69,15 @@ extension HTTPLoggingTests {
         XCTAssertEqual(request.url?.scheme, "https")
         XCTAssertEqual(request.url?.host, "example.com")
         XCTAssertEqual(request.url?.path, "/dev")
-        
-        let httpBody = try XCTUnwrap(request.bodySteamAsJSON() as? [String: Any])
-        
-        let ID = try XCTUnwrap(httpBody["sessionId"] as? String)
+
+        let httpData = try XCTUnwrap(request.httpBodyData())
+        let decoder = JSONDecoder()
+        let httpBody = try decoder.decode([String: String].self, from: httpData)
+
+        let ID = try XCTUnwrap(httpBody["sessionId"])
         XCTAssertEqual(sessionID, ID)
         
-        let eventName = try XCTUnwrap(httpBody["eventName"] as? String)
+        let eventName = try XCTUnwrap(httpBody["eventName"])
         XCTAssertEqual(MockEvent.testEvent.rawValue, eventName)
     }
     
@@ -101,13 +103,15 @@ extension HTTPLoggingTests {
         XCTAssertEqual(request.url?.scheme, "https")
         XCTAssertEqual(request.url?.host, "example.com")
         XCTAssertEqual(request.url?.path, "/dev")
-        
-        let httpBody = try XCTUnwrap(request.bodySteamAsJSON() as? [String: Any])
-        
-        let ID = try XCTUnwrap(httpBody["sessionId"] as? String)
+
+        let httpData = try XCTUnwrap(request.httpBodyData())
+        let decoder = JSONDecoder()
+        let httpBody = try decoder.decode([String: String].self, from: httpData)
+
+        let ID = try XCTUnwrap(httpBody["sessionId"])
         XCTAssertEqual(sessionID, ID)
         
-        let eventName = try XCTUnwrap(httpBody["eventName"] as? String)
+        let eventName = try XCTUnwrap(httpBody["eventName"])
         XCTAssertEqual(MockEvent.testEvent.rawValue, eventName)
     }
 }
