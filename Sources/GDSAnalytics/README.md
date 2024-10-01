@@ -45,7 +45,7 @@ let screenView = ScreenView(screen: MyAppScreens.home,
 >            variableKeys: ["GOV.UK One Login"])
 > ```
 >
->You can pass in a localised string directly into this parameter to ensure that localised parameter values are used.
+> You can pass in a localised string directly into this parameter to ensure that localised parameter values are used.
 
 Example: 
 
