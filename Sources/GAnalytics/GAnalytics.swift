@@ -64,6 +64,18 @@ public struct GAnalytics {
 }
 
 extension GAnalytics: AnalyticsService {
+    public func addingAdditionalParameters(
+        _ additionalParameters: [String: Any]
+    ) -> AnalyticsService {
+        var newCopy = self
+        newCopy.additionalParameters = self.additionalParameters
+            .merging(additionalParameters) { lhs, _ in
+                lhs
+            }
+        return newCopy
+        
+    }
+    
     /// Tracks screens adding screen tracking parameters in Firebase package.
     public func trackScreen(_ screen: LoggableScreen,
                             parameters params: [String: Any] = [:]) {
