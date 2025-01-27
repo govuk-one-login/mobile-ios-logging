@@ -1,6 +1,6 @@
 #  GAnalytics
 
-A concrete class implementation of the `AnalyticsService` protocol if the chosen analytics platform is Google's Firebase.
+A concrete implementation of the `AnalyticsService` protocol if the chosen analytics platform is Google's Firebase.
 
 ## Installation
 

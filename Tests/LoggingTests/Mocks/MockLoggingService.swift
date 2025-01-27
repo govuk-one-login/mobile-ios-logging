@@ -17,6 +17,12 @@ final class MockLoggingService: AnalyticsService {
     func grantAnalyticsPermission() { }
     func denyAnalyticsPermission() { }
     
+    func addingAdditionalParameters(
+        _ additionalParameters: [String: Any]
+    ) -> AnalyticsService {
+        self
+    }
+    
     func trackScreen(_ screen: LoggableScreen,
                      parameters: [String: Any]) {
         screensVisited.append(MockScreen(name: screen.name, class: screen.name))

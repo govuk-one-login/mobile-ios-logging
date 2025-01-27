@@ -34,6 +34,39 @@ final class GAnalyticsTests: XCTestCase {
     }
 }
 
+// MARK: - Adding Additional Parameters tests
+extension GAnalyticsTests {
+    func testAddingAdditionalParameters() {
+        let initialType = sut.addingAdditionalParameters([
+            "taxonomy_level1": "one login mobile application"
+        ])
+        
+        let idCheckManager = initialType.addingAdditionalParameters([
+            "taxonomy_level2": "document checking application"
+        ])
+        
+        XCTAssertEqual(sut.additionalParameters.count, 0)
+        XCTAssertEqual(initialType.additionalParameters.count, 1)
+        XCTAssertEqual(idCheckManager.additionalParameters.count, 2)
+    }
+    
+    func testOverwritingAdditionalParametersIsNotPossible() {
+        let initialType = sut.addingAdditionalParameters([
+            "taxonomy_level1": "one login mobile application"
+        ])
+        
+        let idCheckManager = initialType.addingAdditionalParameters([
+            "taxonomy_level1": "document checking application"
+        ])
+        
+        XCTAssertEqual(idCheckManager.additionalParameters.count, 1)
+        XCTAssertEqual(
+            idCheckManager.additionalParameters["taxonomy_level1"] as? String,
+            "one login mobile application"
+        )
+    }
+}
+
 // MARK: - User consent tests
 extension GAnalyticsTests {
     func testConfiguration() {
