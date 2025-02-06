@@ -66,7 +66,7 @@ public struct GAnalytics {
 extension GAnalytics: AnalyticsService {
     public func addingAdditionalParameters(
         _ additionalParameters: [String: Any]
-    ) -> AnalyticsService {
+    ) -> Self {
         var newCopy = self
         newCopy.additionalParameters = self.additionalParameters
             .merging(additionalParameters) { lhs, _ in

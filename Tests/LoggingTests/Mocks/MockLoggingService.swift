@@ -19,7 +19,7 @@ final class MockLoggingService: AnalyticsService {
     
     func addingAdditionalParameters(
         _ additionalParameters: [String: Any]
-    ) -> AnalyticsService {
+    ) -> Self {
         self
     }
     
