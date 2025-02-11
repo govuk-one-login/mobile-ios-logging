@@ -5,7 +5,7 @@ import Foundation
 /// A protocol for Types to log analytics to a third-party analytics service.
 public protocol AnalyticsService: LoggingService {
     var additionalParameters: [String: Any] { get set }
-    func addingAdditionalParameters(_ additionalParameters: [String: Any]) -> AnalyticsService
+    func addingAdditionalParameters(_ additionalParameters: [String: Any]) -> Self
     
     @available(*, deprecated, renamed: "trackScreen", message: "Please use LoggableScreenV2")
     func trackScreen(_ screen: LoggableScreen)

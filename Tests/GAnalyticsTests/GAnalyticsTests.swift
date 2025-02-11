@@ -158,6 +158,8 @@ extension GAnalyticsTests {
 extension GAnalyticsTests {
     enum TestScreen: String, LoggableScreen {
         case welcome = "WELCOME_SCREEN"
+        
+        var name: String { rawValue }
     }
     
     func testTrackScreen() {

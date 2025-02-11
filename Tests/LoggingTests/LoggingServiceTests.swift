@@ -7,18 +7,20 @@ final class LoggingServiceTests: XCTestCase {
         service.logEvent(MockAnalyticsEvent.completedIDCheck, parameters: [:])
         XCTAssertEqual(service.eventsLogged.count, 1)
         
-        service.trackScreen(MockAnalyticsScreen.drivingLicenceFrontInstructions)
+        service.trackScreen(TestScreen.welcome)
         XCTAssertEqual(service.screensVisited.count, 1)
         
         service.logEvent(MockAnalyticsEvent.completedIDCheck)
         XCTAssertEqual(service.eventsLogged.count, 2)
         
-        service.trackScreen(MockAnalyticsScreen.drivingLicenceFrontInstructions)
+        service.trackScreen(TestScreen.welcome)
         XCTAssertEqual(service.screensVisited.count, 2)
     }
     
     enum TestScreen: String, LoggableScreen {
         case welcome = "WELCOME_SCREEN"
+        
+        var name: String { rawValue }
     }
     
     func testTrackScreen() {
