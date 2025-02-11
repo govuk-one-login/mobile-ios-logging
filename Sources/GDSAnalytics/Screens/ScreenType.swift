@@ -1,8 +1,14 @@
 @available(*, deprecated, renamed: "ScreenType")
 public typealias NamedScreen = ScreenType
 
-public protocol ScreenType {
+public protocol ScreenType: CustomStringConvertible {
     var name: String { get }
+}
+
+extension ScreenType {
+    public var description: String {
+        name
+    }
 }
 
 extension ScreenType where Self: RawRepresentable,

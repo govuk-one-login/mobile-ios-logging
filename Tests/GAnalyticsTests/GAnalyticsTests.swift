@@ -156,10 +156,11 @@ extension GAnalyticsTests {
 
 // MARK: - Logging Tests
 extension GAnalyticsTests {
-    enum TestScreen: String, LoggableScreen {
+    enum TestScreen: String, LoggableScreen, CustomStringConvertible {
         case welcome = "WELCOME_SCREEN"
         
         var name: String { rawValue }
+        var description: String { rawValue }
     }
     
     func testTrackScreen() {
@@ -198,7 +199,7 @@ extension GAnalyticsTests {
     func testTrackScreenV2() {
         struct TestScreenV2: LoggableScreenV2 {
             let name: String = "Welcome to GOV.UK One Login"
-            let type: ScreenType = TestScreen.welcome
+            let type: TestScreen = .welcome
         }
         
         sut.trackScreen(TestScreenV2(),

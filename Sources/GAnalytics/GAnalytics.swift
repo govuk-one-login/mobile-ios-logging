@@ -88,11 +88,11 @@ extension GAnalytics: AnalyticsService {
                            parameters: parameters)
     }
     
-    public func trackScreen(_ screen: LoggableScreenV2,
+    public func trackScreen(_ screen: any LoggableScreenV2,
                             parameters params: [String: Any]) {
         var parameters = mergeAdditionalParameters(params)
         
-        parameters[AnalyticsParameterScreenClass] = screen.type.name
+        parameters[AnalyticsParameterScreenClass] = screen.type.description
         parameters[AnalyticsParameterScreenName] = screen.name
         
         analytics.logEvent(AnalyticsEventScreenView,
