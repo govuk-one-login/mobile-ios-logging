@@ -30,7 +30,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
                 hash: String? = nil,
                 bundle: Bundle = .main) {
         self.screen = screen
-        self.title = titleKey.englishString(bundle: bundle)
+        self.title = titleKey.englishString(bundle: bundle).formattedAsParameter
         self.id = id
         self.reason = reason
         self.endpoint = endpoint
@@ -46,7 +46,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
        
         self.id = id
         self.screen = screen
-        title = titleKey.englishString(bundle: bundle)
+        title = titleKey.englishString(bundle: bundle).formattedAsParameter
         reason = error.reason
         endpoint = error.endpoint
         statusCode = error.statusCode
