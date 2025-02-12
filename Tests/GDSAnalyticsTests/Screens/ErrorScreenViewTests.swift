@@ -7,7 +7,7 @@ final class ErrorScreenViewTests: XCTestCase {
                                    titleKey: "Something went wrong")
         
         XCTAssertEqual(view.screen, MockScreen.error)
-        XCTAssertEqual(view.title, "Something went wrong")
+        XCTAssertEqual(view.title, "something went wrong")
     }
     
     func testEmptyParametersAreRemoved() {
@@ -36,6 +36,8 @@ final class ErrorScreenViewTests: XCTestCase {
                                    screen: MockScreen.error,
                                    titleKey: "Something went wrong",
                                    error: MockError())
+        
+        XCTAssertEqual(view.title, "something went wrong")
         XCTAssertEqual(view.parameters, [
             "title": "something went wrong",
             "screen_id": uuid,
