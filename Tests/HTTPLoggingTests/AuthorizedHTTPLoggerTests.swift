@@ -129,7 +129,7 @@ extension AuthorizedHTTPLoggerTests {
             }), object: nil)
         ], timeout: 3)
         
-         
+        // THEN a 401 error is received in response
         XCTAssertEqual(error?.errorCode, 401)
     }
 }
