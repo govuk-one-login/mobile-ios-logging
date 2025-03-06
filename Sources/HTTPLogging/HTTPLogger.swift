@@ -20,7 +20,7 @@ public struct HTTPLogger: LoggingService {
                          parameters: [String: Any]) {
         let httpLogRequest = HTTPLogRequest(authSessionID: sessionID, event: event)
         guard let jsonData = try? JSONEncoder().encode(httpLogRequest) else {
-            assertionFailure("Failed to decode object")
+            assertionFailure("Failed to encode object")
             return
         }
         

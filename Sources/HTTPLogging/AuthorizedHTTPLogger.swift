@@ -34,7 +34,7 @@ public struct AuthorizedHTTPLogger {
     ///     - event: the encodable object to be logged in the request body as JSON
     public func logEvent(requestBody: any Encodable) {
         guard let jsonData = try? JSONEncoder().encode(requestBody) else {
-            assertionFailure("Failed to decode object")
+            assertionFailure("Failed to encode object")
             return
         }
 
