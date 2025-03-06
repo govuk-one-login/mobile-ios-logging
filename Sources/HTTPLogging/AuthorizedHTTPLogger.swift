@@ -17,7 +17,7 @@ public struct AuthorizedHTTPLogger {
     let handleError: ((Error) -> Void)?
 
     /// Initialiser for class with default methods for `networkClient` and `handleError` parameters
-    init(
+    public init(
         url: URL,
         networkClient: NetworkClient,
         scope: String,
