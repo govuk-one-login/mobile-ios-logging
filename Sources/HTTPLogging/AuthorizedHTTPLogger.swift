@@ -6,10 +6,10 @@ import Networking
 /// A struct for sending HTTP requests to endpoints secured with scoped access tokens.
 /// This logger can be used to log user/journey specific insights for app metrics and performance.
 public struct AuthorizedHTTPLogger {
-    /// `NetworkClient` from the Networking package dependency to handle HTTP networking
-    let networkClient: NetworkClient
     /// `URL` address for sending HTTP requests
     let loggingURL: URL
+    /// `NetworkClient` from the Networking package dependency to handle HTTP networking
+    let networkClient: NetworkClient
     /// Scope for service access token
     let scope: String
     /// callback to handle possible errors resulting from `NetworkClient`'s `makeRequest` method
