@@ -74,7 +74,7 @@ extension AuthorizedHTTPLoggerTests {
 
         // WHEN an event is logged
         let requestBody = MockAuthorizedRequestBody()
-        let task = try sut.logEvent(requestBody: requestBody)
+        let task = sut.logEvent(requestBody: requestBody)
         
         wait(for: [
             XCTNSPredicateExpectation(
@@ -87,9 +87,9 @@ extension AuthorizedHTTPLoggerTests {
             )
         ], timeout: 3)
         
-        task.cancel()
+        task?.cancel()
         
-        XCTAssertEqual(task.isCancelled, true)
+        XCTAssertEqual(task?.isCancelled, true)
         
         // THEN the request succeeds
         let request = try XCTUnwrap(MockURLProtocol.requests.first)
@@ -160,7 +160,7 @@ extension AuthorizedHTTPLoggerTests {
         
         // WHEN a TXMA event is logged
         let requestBody = MockAuthorizedRequestBody()
-        try sut.logEvent(requestBody: requestBody)
+        sut.logEvent(requestBody: requestBody)
         wait(for: [
             XCTNSPredicateExpectation(predicate: .init(block: { _, _ in
                 MockURLProtocol.requests.count == 1

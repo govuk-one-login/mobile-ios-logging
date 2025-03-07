@@ -32,10 +32,10 @@ public struct AuthorizedHTTPLogger {
     /// - Parameters:
     ///     - event: the encodable object to be logged in the request body as JSON
     @discardableResult
-    public func logEvent(requestBody: any Encodable) throws -> Task<Void, Never> {
+    public func logEvent(requestBody: any Encodable) -> Task<Void, Never>? {
         guard let jsonData = try? JSONEncoder().encode(requestBody) else {
             assertionFailure("Failed to encode object")
-            throw HTTPLoggerError.couldNotSerializeData
+            return nil
         }
 
         return Task {
