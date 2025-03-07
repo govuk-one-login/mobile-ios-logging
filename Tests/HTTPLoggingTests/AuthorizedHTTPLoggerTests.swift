@@ -71,10 +71,10 @@ extension AuthorizedHTTPLoggerTests {
         MockURLProtocol.handler = {
             (Data(), HTTPURLResponse(statusCode: 200))
         }
-        
+
         // WHEN an event is logged
         let requestBody = MockAuthorizedRequestBody()
-        sut.logEvent(requestBody: requestBody)
+        let task = try sut.logEvent(requestBody: requestBody)
         
         wait(for: [
             XCTNSPredicateExpectation(
@@ -87,6 +87,10 @@ extension AuthorizedHTTPLoggerTests {
             )
         ], timeout: 3)
         
+        task.cancel()
+        
+        XCTAssertEqual(task.isCancelled, true)
+        
         // THEN the request succeeds
         let request = try XCTUnwrap(MockURLProtocol.requests.first)
         XCTAssertEqual(request.httpMethod, "POST")
@@ -98,6 +102,40 @@ extension AuthorizedHTTPLoggerTests {
         let decoder = JSONDecoder()
         let httpBody = try decoder.decode(MockAuthorizedRequestBody.self, from: httpData)
 
+        XCTAssertEqual(httpBody.name, "mock request name")
+        XCTAssertEqual(httpBody.timestamp, 123456789012)
+        XCTAssertEqual(httpBody.subType.specialInfo, "special info")
+    }
+    
+    func test_successfulTXMAEventLogAsync() async throws {
+        // GIVEN network client returns 200
+        MockURLProtocol.handler = {
+            (Data(), HTTPURLResponse(statusCode: 200))
+        }
+        
+        // WHEN an event is logged
+        let requestBody = MockAuthorizedRequestBody()
+        await sut.logEvent(requestBody: requestBody)
+        
+        let exp = expectation(description: "awaiting request count")
+        
+        if MockURLProtocol.requests.count == 1 {
+            exp.fulfill()
+        }
+        
+        await fulfillment(of: [exp], timeout: 3)
+
+        // THEN the request succeeds
+        let request = try XCTUnwrap(MockURLProtocol.requests.first)
+        XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.url?.scheme, "https")
+        XCTAssertEqual(request.url?.host, "example.com")
+        XCTAssertEqual(request.url?.path, "/dev")
+        
+        let httpData = try XCTUnwrap(request.httpBodyData())
+        let decoder = JSONDecoder()
+        let httpBody = try decoder.decode(MockAuthorizedRequestBody.self, from: httpData)
+        
         XCTAssertEqual(httpBody.name, "mock request name")
         XCTAssertEqual(httpBody.timestamp, 123456789012)
         XCTAssertEqual(httpBody.subType.specialInfo, "special info")
@@ -122,7 +160,7 @@ extension AuthorizedHTTPLoggerTests {
         
         // WHEN a TXMA event is logged
         let requestBody = MockAuthorizedRequestBody()
-        sut.logEvent(requestBody: requestBody)
+        try sut.logEvent(requestBody: requestBody)
         wait(for: [
             XCTNSPredicateExpectation(predicate: .init(block: { _, _ in
                 MockURLProtocol.requests.count == 1

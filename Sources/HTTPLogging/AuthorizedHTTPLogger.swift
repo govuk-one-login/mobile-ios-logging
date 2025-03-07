@@ -33,20 +33,16 @@ public struct AuthorizedHTTPLogger {
     /// Sends HTTP POST request to designated URL, handling errors received back from `NetworkClient`'s `makeAuthorizedRequest` method
     /// - Parameters:
     ///     - event: the encodable object to be logged in the request body as JSON
-    public mutating func logEvent(requestBody: any Encodable) {
+    @discardableResult
+    public func logEvent(requestBody: any Encodable) throws -> Task<Void, Never> {
         guard let jsonData = try? JSONEncoder().encode(requestBody) else {
             assertionFailure("Failed to encode object")
-            return
+            throw AuthorizedHTTPLoggerError.couldNotSerializeData
         }
 
-        task = Task { [self] in
+        return Task { [self] in
             await createAndMakeRequest(data: jsonData)
         }
-    }
-    
-    /// Method to cancel task created by non-async `logEvent` method
-    public mutating func cancelTask() {
-        task?.cancel()
     }
     
     public func logEvent(requestBody: any Encodable) async {
@@ -73,4 +69,8 @@ public struct AuthorizedHTTPLogger {
             handleError?(error)
         }
     }
+}
+
+enum AuthorizedHTTPLoggerError: Error {
+    case couldNotSerializeData
 }
