@@ -14,8 +14,6 @@ public struct AuthorizedHTTPLogger {
     let scope: String
     /// callback to handle possible errors resulting from `NetworkClient`'s `makeRequest` method
     let handleError: ((Error) -> Void)?
-    /// Task stored to enable cancellation with the `cancelTask` method
-    var task: Task<Void, Never>?
 
     /// Initialiser for class with default methods for `networkClient` and `handleError` parameters
     public init(
@@ -37,10 +35,10 @@ public struct AuthorizedHTTPLogger {
     public func logEvent(requestBody: any Encodable) throws -> Task<Void, Never> {
         guard let jsonData = try? JSONEncoder().encode(requestBody) else {
             assertionFailure("Failed to encode object")
-            throw AuthorizedHTTPLoggerError.couldNotSerializeData
+            throw HTTPLoggerError.couldNotSerializeData
         }
 
-        return Task { [self] in
+        return Task {
             await createAndMakeRequest(data: jsonData)
         }
     }
@@ -69,8 +67,4 @@ public struct AuthorizedHTTPLogger {
             handleError?(error)
         }
     }
-}
-
-enum AuthorizedHTTPLoggerError: Error {
-    case couldNotSerializeData
 }
