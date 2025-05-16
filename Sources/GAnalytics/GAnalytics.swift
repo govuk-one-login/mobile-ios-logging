@@ -73,7 +73,6 @@ extension GAnalytics: AnalyticsService {
                 lhs
             }
         return newCopy
-        
     }
     
     /// Tracks screens adding screen tracking parameters in Firebase package.
@@ -81,7 +80,6 @@ extension GAnalytics: AnalyticsService {
                             parameters params: [String: Any] = [:]) {
         var parameters = mergeAdditionalParameters(params)
         
-        parameters[AnalyticsParameterScreenName] = screen.name
         parameters[AnalyticsParameterScreenClass] = screen.name
         
         analytics.logEvent(AnalyticsEventScreenView,
@@ -93,7 +91,6 @@ extension GAnalytics: AnalyticsService {
         var parameters = mergeAdditionalParameters(params)
         
         parameters[AnalyticsParameterScreenClass] = screen.type.description
-        parameters[AnalyticsParameterScreenName] = screen.name
         
         analytics.logEvent(AnalyticsEventScreenView,
                            parameters: parameters)
