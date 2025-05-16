@@ -44,7 +44,6 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
                 titleKey: String,
                 error: LoggableError,
                 bundle: Bundle = .main) {
-       
         self.id = id
         self.screen = screen
         title = titleKey.englishString(bundle: bundle).formattedAsParameter
