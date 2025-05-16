@@ -1,3 +1,4 @@
+import FirebaseAnalytics
 import Foundation
 
 public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableError {
@@ -11,7 +12,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
     
     public var parameters: [String: String] {
         [
-            ScreenParameter.title.rawValue: title,
+            AnalyticsParameterScreenName: title,
             ScreenParameter.id.rawValue: id,
             ScreenParameter.reason.rawValue: reason,
             ScreenParameter.endpoint.rawValue: endpoint,
