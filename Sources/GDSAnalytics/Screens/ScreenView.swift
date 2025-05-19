@@ -1,4 +1,3 @@
-import FirebaseAnalytics
 import Foundation
 
 public protocol ScreenViewProtocol {
@@ -16,8 +15,7 @@ public struct ScreenView<Screen: ScreenType>: ScreenViewProtocol {
     
     public var parameters: [String: String] {
         [
-            ScreenParameter.id.rawValue: id,
-            AnalyticsParameterScreenName: title
+            ScreenParameter.id.rawValue: id
         ].compactMapValues(\.?.formattedAsParameter)
     }
     

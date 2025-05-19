@@ -80,6 +80,7 @@ extension GAnalytics: AnalyticsService {
                             parameters params: [String: Any] = [:]) {
         var parameters = mergeAdditionalParameters(params)
         
+        parameters[AnalyticsParameterScreenName] = screen.name
         parameters[AnalyticsParameterScreenClass] = screen.name
         
         analytics.logEvent(AnalyticsEventScreenView,
@@ -90,6 +91,7 @@ extension GAnalytics: AnalyticsService {
                             parameters params: [String: Any]) {
         var parameters = mergeAdditionalParameters(params)
         
+        parameters[AnalyticsParameterScreenName] = screen.name
         parameters[AnalyticsParameterScreenClass] = screen.type.description
         
         analytics.logEvent(AnalyticsEventScreenView,
