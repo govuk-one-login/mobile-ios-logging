@@ -15,8 +15,7 @@ public struct ScreenView<Screen: ScreenType>: ScreenViewProtocol {
     
     public var parameters: [String: String] {
         [
-            ScreenParameter.id.rawValue: id,
-            ScreenParameter.title.rawValue: title
+            ScreenParameter.id.rawValue: id
         ].compactMapValues(\.?.formattedAsParameter)
     }
     

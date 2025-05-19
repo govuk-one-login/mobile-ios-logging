@@ -18,7 +18,6 @@ final class ErrorScreenViewTests: XCTestCase {
                                    titleKey: "Something went wrong")
         
         XCTAssertEqual(view.parameters, [
-            "title": "something went wrong",
             "screen_id": uuid
         ])
     }
@@ -39,7 +38,6 @@ final class ErrorScreenViewTests: XCTestCase {
         
         XCTAssertEqual(view.title, "something went wrong")
         XCTAssertEqual(view.parameters, [
-            "title": "something went wrong",
             "screen_id": uuid,
             "hash": "83766358f64858b51afb745bbdde91bb",
             "reason": "server",
@@ -60,7 +58,6 @@ final class ErrorScreenViewTests: XCTestCase {
         )
         
         XCTAssertEqual(view.parameters, [
-            "title": "something went wrong",
             "screen_id": uuid,
             "reason": "network",
             "endpoint": "appinfo",

@@ -18,7 +18,6 @@ final class ScreenViewTests: XCTestCase {
                               titleKey: "welcome to this app")
         
         XCTAssertEqual(view.parameters, [
-            "title": "welcome to this app",
             "screen_id": uuid
         ])
     }
@@ -30,6 +29,6 @@ final class ScreenViewTests: XCTestCase {
 
         XCTAssertEqual(view.title, "welcome to this app with a really really really really really really really really really really lon")
         
-        XCTAssertEqual(view.parameters, [ "title": "welcome to this app with a really really really really really really really really really really lon"])
+        XCTAssertEqual(view.parameters, [:])
     }
 }

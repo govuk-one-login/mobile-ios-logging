@@ -170,8 +170,8 @@ extension GAnalyticsTests {
         XCTAssertEqual(
             analyticsLogger.events,
             [.init(name: "screen_view", parameters: [
-                "screen_class": "WELCOME_SCREEN",
                 "screen_name": "WELCOME_SCREEN",
+                "screen_class": "WELCOME_SCREEN",
                 "additional_parameter": "testing"
             ])]
         )
@@ -188,8 +188,8 @@ extension GAnalyticsTests {
         XCTAssertEqual(
             analyticsLogger.events,
             [.init(name: "screen_view", parameters: [
-                "screen_class": "WELCOME_SCREEN",
                 "screen_name": "WELCOME_SCREEN",
+                "screen_class": "WELCOME_SCREEN",
                 "additional_parameter": "testing",
                 "journey": "id_verification"
             ])]
@@ -208,8 +208,8 @@ extension GAnalyticsTests {
         XCTAssertEqual(
             analyticsLogger.events,
             [.init(name: "screen_view", parameters: [
-                "screen_class": "WELCOME_SCREEN",
                 "screen_name": "Welcome to GOV.UK One Login",
+                "screen_class": "WELCOME_SCREEN",
                 "additional_parameter": "testing"
             ])]
         )
