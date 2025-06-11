@@ -45,7 +45,8 @@ jobs:
           set -o pipefail && xcodebuild -scheme Logging-Package test \
             -destination "platform=iOS Simulator,name=iPhone SE (3rd generation),OS=18.2" \
             -enableCodeCoverage YES \
-            -resultBundlePath result.xcresult | xcbeautify
+            -resultBundlePath result.xcresult \
+             OTHER_SWIFT_FLAGS="-enable-experimental-feature AccessLevelOnImport" | xcbeautify
             
       - name: Run SonarCloud Scanning
         run: |
