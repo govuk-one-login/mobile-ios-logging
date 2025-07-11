@@ -63,7 +63,7 @@ public struct GAnalyticsV2 {
     }
 }
 
-extension GAnalyticsV2: AnalyticsService {
+extension GAnalyticsV2: AnalyticsServiceV2 {
     public func addingAdditionalParameters(
         _ additionalParameters: [String: Any]
     ) -> Self {
@@ -110,13 +110,13 @@ extension GAnalyticsV2: AnalyticsService {
     }
     
     /// Granting analytics and crashlytics permissions in Firebase package.
-    public func grantAnalyticsPermission() {
+    func grantAnalyticsPermission() {
         analyticsLogger.setAnalyticsCollectionEnabled(true)
         crashLogger.setCrashlyticsCollectionEnabled(true)
     }
     
     /// Denying analytics and crashlytics permissions in Firebase package.
-    public func denyAnalyticsPermission() {
+    func denyAnalyticsPermission() {
         analyticsLogger.setAnalyticsCollectionEnabled(false)
         analyticsLogger.resetAnalyticsData()
         
