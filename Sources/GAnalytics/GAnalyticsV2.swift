@@ -8,50 +8,47 @@ import Logging
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.
 public struct GAnalyticsV2 {
-    let analyticsLogger: AnalyticsLogger.Type
-    let crashLogger: CrashLogger
-    public let preferenceStore: AnalyticsPreferenceStore
+    static var analyticsApp: AnalyticsApp.Type = FirebaseApp.self
+    private let analyticsPreferenceStore: AnalyticsPreferenceStore
+    private let analyticsLogger: AnalyticsLogger.Type
+    private let crashLogger: CrashLogger
     
     /// Additional parameters for the application
     public var additionalParameters = [String: Any]()
     
-    /// Initialises the Firebase instance when launching the app.
-    public static func configure() {
-        configure(app: FirebaseApp.self)
-    }
-    
-    static func configure(app: AnalyticsApp.Type) {
-        app.configure()
-    }
-    
-    init(analyticsLogger: AnalyticsLogger.Type,
-         crashLogger: CrashLogger,
-         preferenceStore: AnalyticsPreferenceStore) {
+    init(analyticsPreferenceStore: AnalyticsPreferenceStore,
+         analyticsLogger: AnalyticsLogger.Type,
+         crashLogger: CrashLogger) {
+        self.analyticsPreferenceStore = analyticsPreferenceStore
         self.analyticsLogger = analyticsLogger
         self.crashLogger = crashLogger
-        self.preferenceStore = preferenceStore
     }
     
     public init() {
-        self.init(analyticsLogger: Analytics.self,
-                  crashLogger: Crashlytics.crashlytics(),
-                  preferenceStore: UserDefaultsPreferenceStore())
+        self.init(analyticsPreferenceStore: UserDefaultsPreferenceStore(),
+                  analyticsLogger: Analytics.self,
+                  crashLogger: Crashlytics.crashlytics())
     }
     
-    public func start() {
-        updateAnalyticsPreference(preferenceStore.hasAcceptedAnalytics)
+    /// Initialises the Firebase instance when launching the app.
+    public static func configure() {
+        analyticsApp.configure()
+    }
+    
+    public func configure() {
         subscribeToPreferenceStore()
+        updateAnalyticsPreference(analyticsPreferenceStore.hasAcceptedAnalytics)
     }
     
-    func subscribeToPreferenceStore() {
+    private func subscribeToPreferenceStore() {
         Task {
-            for await value in preferenceStore.stream() {
+            for await value in analyticsPreferenceStore.stream() {
                 updateAnalyticsPreference(value)
             }
         }
     }
     
-    func updateAnalyticsPreference(_ preference: Bool?) {
+    private func updateAnalyticsPreference(_ preference: Bool?) {
         switch preference {
         case true:
             grantAnalyticsPermission()
@@ -66,7 +63,7 @@ public struct GAnalyticsV2 {
     }
 }
 
-extension GAnalyticsV2: AnalyticsServiceV2 {
+extension GAnalyticsV2: AnalyticsService {
     public func addingAdditionalParameters(
         _ additionalParameters: [String: Any]
     ) -> Self {
@@ -113,13 +110,13 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
     }
     
     /// Granting analytics and crashlytics permissions in Firebase package.
-    func grantAnalyticsPermission() {
+    public func grantAnalyticsPermission() {
         analyticsLogger.setAnalyticsCollectionEnabled(true)
         crashLogger.setCrashlyticsCollectionEnabled(true)
     }
     
     /// Denying analytics and crashlytics permissions in Firebase package.
-    func denyAnalyticsPermission() {
+    public func denyAnalyticsPermission() {
         analyticsLogger.setAnalyticsCollectionEnabled(false)
         analyticsLogger.resetAnalyticsData()
         
