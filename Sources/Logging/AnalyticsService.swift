@@ -35,8 +35,6 @@ extension AnalyticsService {
 }
 
 public protocol AnalyticsServiceV2: LoggingService {
-    var analyticsPreferenceStore: AnalyticsPreferenceStore { get }
-    
     var additionalParameters: [String: Any] { get set }
     func addingAdditionalParameters(_ additionalParameters: [String: Any]) -> Self
     
