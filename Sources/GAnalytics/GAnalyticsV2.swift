@@ -35,7 +35,8 @@ public struct GAnalyticsV2 {
         analyticsApp.configure()
     }
     
-    public func configure() {
+    /// Activates subscription to preference store events and updates based on existing preference.
+    public func activate() {
         subscribeToPreferenceStore()
         updateAnalyticsPreference(analyticsPreferenceStore.hasAcceptedAnalytics)
     }

@@ -83,7 +83,7 @@ extension GAnalyticsTestsV2 {
     func testNoTrackingWhenNoConsent() {
         preferenceStore.hasAcceptedAnalytics = nil
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
         XCTAssertEqual(crashLogger.isCollectionEnabled, false)
@@ -92,7 +92,7 @@ extension GAnalyticsTestsV2 {
     func testNoTrackingWhenConsentDenied() {
         preferenceStore.hasAcceptedAnalytics = false
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
         XCTAssertEqual(crashLogger.isCollectionEnabled, false)
@@ -101,14 +101,14 @@ extension GAnalyticsTestsV2 {
     func testTrackingEnabledWhenUserConsented() {
         preferenceStore.hasAcceptedAnalytics = true
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, true)
         XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     func testSubscribesToPreferenceStore() {
-        sut.configure()
+        sut.activate()
         
         waitForSubscription()
     }
@@ -116,7 +116,7 @@ extension GAnalyticsTestsV2 {
     func testStartsTrackingAnalyticsWhenConsentGiven() async throws {
         preferenceStore.hasAcceptedAnalytics = false
         
-        sut.configure()
+        sut.activate()
         waitForSubscription()
         
         // alert the AnalyticsService that consent is given:
@@ -132,7 +132,7 @@ extension GAnalyticsTestsV2 {
     func testStopsTrackingAnalyticsWhenConsentWithdrawn() async throws {
         preferenceStore.hasAcceptedAnalytics = true
         
-        sut.configure()
+        sut.activate()
         waitForSubscription()
         
         // alert the AnalyticsService that consent is withdrawn
