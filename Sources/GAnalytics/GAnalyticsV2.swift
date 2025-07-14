@@ -9,7 +9,7 @@ import Logging
 /// To provide user-specific insights for logging app metrics and performance.
 public struct GAnalyticsV2 {
     static var analyticsApp: AnalyticsApp.Type = FirebaseApp.self
-    private let analyticsPreferenceStore: AnalyticsPreferenceStore
+    public let analyticsPreferenceStore: AnalyticsPreferenceStore
     private let analyticsLogger: AnalyticsLogger.Type
     private let crashLogger: CrashLogger
     
