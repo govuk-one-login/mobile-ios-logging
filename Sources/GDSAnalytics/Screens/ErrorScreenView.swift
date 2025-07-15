@@ -15,7 +15,8 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
             ScreenParameter.reason.rawValue: reason,
             ScreenParameter.endpoint.rawValue: endpoint,
             ScreenParameter.hash.rawValue: hash,
-            ScreenParameter.status.rawValue: statusCode
+            ScreenParameter.status.rawValue: statusCode,
+            ScreenParameter.isError.rawValue: "true"
         ]
         .compactMapValues(\.?.formattedAsParameter)
     }
