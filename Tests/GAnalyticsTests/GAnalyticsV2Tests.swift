@@ -123,7 +123,7 @@ extension GAnalyticsTestsV2 {
         let continuation = try XCTUnwrap(preferenceStore.subscribers.first)
         continuation.yield(true)
         
-        try await Task.sleep(nanoseconds: 100_000)
+        try await Task.sleep(seconds: 1)
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, true)
         XCTAssertEqual(crashLogger.isCollectionEnabled, true)
@@ -139,7 +139,7 @@ extension GAnalyticsTestsV2 {
         let continuation = try XCTUnwrap(preferenceStore.subscribers.first)
         continuation.yield(false)
         
-        try await Task.sleep(nanoseconds: 100_000)
+        try await Task.sleep(seconds: 1)
         
         XCTAssertTrue(analyticsLogger.didResetAnalyticsData)
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)

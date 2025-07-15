@@ -1,10 +1,11 @@
 import Foundation
 
-/// AnalyticsService
+/// AnalyticsServiceV2
 ///
 /// A protocol for Types to log analytics to a third-party analytics service.
-@available(*, deprecated, renamed: "AnalyticsServiceV2", message: "Please consider moving to AnalyticsServiceV2, this protocol will be replaced shortly")
-public protocol AnalyticsService: LoggingService {
+public protocol AnalyticsServiceV2: LoggingService {
+    var analyticsPreferenceStore: AnalyticsPreferenceStore { get }
+    
     var additionalParameters: [String: Any] { get set }
     func addingAdditionalParameters(_ additionalParameters: [String: Any]) -> Self
     
@@ -18,12 +19,9 @@ public protocol AnalyticsService: LoggingService {
     
     func logCrash(_ crash: NSError)
     func logCrash(_ crash: Error)
-    
-    func grantAnalyticsPermission()
-    func denyAnalyticsPermission()
 }
 
-extension AnalyticsService {
+extension AnalyticsServiceV2 {
     /// Protocol method for screen tracking, calling the conforming type's method for adding screen tracking parameters.
     public func trackScreen(_ screen: LoggableScreen) {
         trackScreen(screen, parameters: [:])
@@ -34,5 +32,3 @@ extension AnalyticsService {
         logCrash(crash as NSError)
     }
 }
-
-

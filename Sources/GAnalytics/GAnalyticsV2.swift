@@ -3,7 +3,7 @@ import FirebaseAnalytics
 import FirebaseCrashlytics
 import Logging
 
-/// GAnalytics
+/// GAnalyticsV2
 ///
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.

@@ -7,6 +7,7 @@ import Logging
 ///
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.
+@available(*, deprecated, renamed: "GAnalyticsV2", message: "Please consider moving to GAnalyticsV2, this type will be replaced shortly")
 public struct GAnalytics {
     private let app: AnalyticsApp.Type
     private let analytics: AnalyticsLogger.Type
