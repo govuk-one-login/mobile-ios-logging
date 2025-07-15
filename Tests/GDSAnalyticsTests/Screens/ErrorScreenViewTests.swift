@@ -66,7 +66,7 @@ final class ErrorScreenViewTests: XCTestCase {
             reason: "network",
             endpoint: "appInfo",
             statusCode: "401",
-            hash: "83766358f64858b51afb745bbdde91bb",
+            hash: "83766358f64858b51afb745bbdde91bb"
         )
         
         XCTAssertEqual(
