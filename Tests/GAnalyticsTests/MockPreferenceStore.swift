@@ -1,7 +1,7 @@
 import Logging
 
 final class MockPreferenceStore: AnalyticsPreferenceStore {
-    private(set) var subscribers: [AsyncStream<Bool>.Continuation] = []
+    private(set) var subscribers = [AsyncStream<Bool>.Continuation]()
     
     var hasAcceptedAnalytics: Bool?
     

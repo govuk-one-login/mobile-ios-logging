@@ -7,7 +7,7 @@ public protocol AnalyticsPreferenceStore {
 
 public final class UserDefaultsPreferenceStore: AnalyticsPreferenceStore {
     private let defaults: UserDefaults
-    private var subscribers: [AsyncStream<Bool>.Continuation] = []
+    private var subscribers = [AsyncStream<Bool>.Continuation]()
     
     init(defaults: UserDefaults) {
         self.defaults = defaults

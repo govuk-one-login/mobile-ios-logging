@@ -2,40 +2,42 @@
 import Logging
 import XCTest
 
-final class GAnalyticsTests: XCTestCase {
-    private var sut: GAnalytics!
-    
+final class GAnalyticsTestsV2: XCTestCase {
     private var app: MockApp.Type!
+    private var preferenceStore: MockPreferenceStore!
     private var analyticsLogger: MockAnalyticsLogger.Type!
     private var crashLogger: MockCrashLogger!
-    private var preferenceStore: MockPreferenceStore!
+    private var sut: GAnalyticsV2!
     
     override func setUp() {
         super.setUp()
         
         app = MockApp.self
+        preferenceStore = MockPreferenceStore()
         analyticsLogger = MockAnalyticsLogger.self
         crashLogger = MockCrashLogger()
-        preferenceStore = MockPreferenceStore()
         
-        sut = GAnalytics(app: app,
-                         analytics: analyticsLogger,
-                         crashLogger: crashLogger,
-                         preferenceStore: preferenceStore)
+        sut = GAnalyticsV2(
+            analyticsPreferenceStore: preferenceStore,
+            analyticsLogger: analyticsLogger,
+            crashLogger: crashLogger
+        )
+        GAnalyticsV2.analyticsApp = app
     }
     
     override func tearDown() {
-        sut = nil
-        analyticsLogger.reset()
-        analyticsLogger = nil
-        crashLogger = nil
+        app.reset()
         preferenceStore = nil
+        analyticsLogger.reset()
+        crashLogger = nil
+        sut = nil
+        
         super.tearDown()
     }
 }
 
 // MARK: - Adding Additional Parameters tests
-extension GAnalyticsTests {
+extension GAnalyticsTestsV2 {
     func testAddingAdditionalParameters() {
         let initialType = sut.addingAdditionalParameters([
             "taxonomy_level1": "one login mobile application"
@@ -68,21 +70,20 @@ extension GAnalyticsTests {
 }
 
 // MARK: - User consent tests
-extension GAnalyticsTests {
+extension GAnalyticsTestsV2 {
     func testConfiguration() {
-        sut.configure()
+        GAnalyticsV2.configure()
         
         XCTAssertTrue(app.calledConfigure)
-        NotificationCenter.default.post(Notification(name: UserDefaults.didChangeNotification))
     }
 }
 
 // MARK: - User Consent Tests
-extension GAnalyticsTests {
+extension GAnalyticsTestsV2 {
     func testNoTrackingWhenNoConsent() {
         preferenceStore.hasAcceptedAnalytics = nil
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
         XCTAssertEqual(crashLogger.isCollectionEnabled, false)
@@ -91,7 +92,7 @@ extension GAnalyticsTests {
     func testNoTrackingWhenConsentDenied() {
         preferenceStore.hasAcceptedAnalytics = false
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
         XCTAssertEqual(crashLogger.isCollectionEnabled, false)
@@ -100,14 +101,14 @@ extension GAnalyticsTests {
     func testTrackingEnabledWhenUserConsented() {
         preferenceStore.hasAcceptedAnalytics = true
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, true)
         XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     func testSubscribesToPreferenceStore() {
-        sut.configure()
+        sut.activate()
         
         waitForSubscription()
     }
@@ -115,7 +116,7 @@ extension GAnalyticsTests {
     func testStartsTrackingAnalyticsWhenConsentGiven() async throws {
         preferenceStore.hasAcceptedAnalytics = false
         
-        sut.configure()
+        sut.activate()
         waitForSubscription()
         
         // alert the AnalyticsService that consent is given:
@@ -131,7 +132,7 @@ extension GAnalyticsTests {
     func testStopsTrackingAnalyticsWhenConsentWithdrawn() async throws {
         preferenceStore.hasAcceptedAnalytics = true
         
-        sut.configure()
+        sut.activate()
         waitForSubscription()
         
         // alert the AnalyticsService that consent is withdrawn
@@ -155,7 +156,7 @@ extension GAnalyticsTests {
 }
 
 // MARK: - Logging Tests
-extension GAnalyticsTests {
+extension GAnalyticsTestsV2 {
     enum TestScreen: String, LoggableScreen, CustomStringConvertible {
         case welcome = "WELCOME_SCREEN"
         
