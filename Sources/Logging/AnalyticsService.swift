@@ -34,5 +34,3 @@ extension AnalyticsService {
         logCrash(crash as NSError)
     }
 }
-
-
