@@ -81,4 +81,56 @@ final class ErrorScreenViewTests: XCTestCase {
             ]
         )
     }
+    
+    func testEquatableTrue() {
+        let uuid = UUID().uuidString.lowercased()
+        
+        let view1 = ErrorScreenView(
+            id: uuid,
+            screen: MockScreen.error,
+            titleKey: "Something went wrong",
+            reason: "network",
+            endpoint: "appInfo",
+            statusCode: "401",
+            hash: "83766358f64858b51afb745bbdde91bb"
+        )
+        
+        let view2 = ErrorScreenView(
+            id: uuid,
+            screen: MockScreen.error,
+            titleKey: "Something went wrong",
+            reason: "network",
+            endpoint: "appInfo",
+            statusCode: "401",
+            hash: "83766358f64858b51afb745bbdde91bb"
+        )
+        
+        XCTAssertEqual(view1, view2)
+    }
+    
+    func testEquatableFalse() {
+        let uuid = UUID().uuidString.lowercased()
+        
+        let view1 = ErrorScreenView(
+            id: uuid,
+            screen: MockScreen.error,
+            titleKey: "Something went wrong",
+            reason: "network",
+            endpoint: "appInfo",
+            statusCode: "401",
+            hash: "83766358f64858b51afb745bbdde91bb"
+        )
+        
+        let view2 = ErrorScreenView(
+            id: uuid,
+            screen: MockScreen.error,
+            titleKey: "Went wrong",
+            reason: "network",
+            endpoint: "appInfo",
+            statusCode: "401",
+            hash: "83766358f64858b51afb745bbdde91bb"
+        )
+        
+        XCTAssertNotEqual(view1, view2)
+    }
 }

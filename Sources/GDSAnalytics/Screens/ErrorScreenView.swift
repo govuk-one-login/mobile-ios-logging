@@ -52,3 +52,15 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
         hash = error.hash
     }
 }
+
+extension ErrorScreenView: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        return (
+            type(of: lhs) == type(of: rhs) &&
+            lhs.id == rhs.id &&
+            lhs.screen.name == rhs.screen.name &&
+            lhs.title == rhs.title &&
+            lhs.parameters == rhs.parameters
+        )
+    }
+}
