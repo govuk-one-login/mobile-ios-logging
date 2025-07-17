@@ -54,6 +54,20 @@ final class ScreenViewTests: XCTestCase {
         XCTAssertEqual(view1, view2)
     }
     
+    func testEquatableArray() {
+        let view1 = ScreenView(
+            screen: MockScreen.welcome,
+            titleKey: "Welcome to this app with a really really really really really really really really really really long name"
+        )
+        
+        let view2 = ScreenView(
+            screen: MockScreen.welcome,
+            titleKey: "Welcome to this app with a really really really really really really really really really really long name"
+        )
+        
+        XCTAssertEqual([view1], [view2])
+    }
+    
     func testEquatableFalse() {
         let view1 = ScreenView(
             screen: MockScreen.welcome,
@@ -66,5 +80,19 @@ final class ScreenViewTests: XCTestCase {
         )
         
         XCTAssertNotEqual(view1, view2)
+    }
+    
+    func testEquatableArrayFalse() {
+        let view1 = ScreenView(
+            screen: MockScreen.welcome,
+            titleKey: "Welcome to this app with a really really really really really really really really really really long name"
+        )
+        
+        let view2 = ScreenView(
+            screen: MockScreen.error,
+            titleKey: "Welcome to this app with a really really really really really really really really really really long name"
+        )
+        
+        XCTAssertNotEqual([view1], [view2])
     }
 }
