@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol ScreenViewProtocol {
+public protocol ScreenViewProtocol: Equatable {
     associatedtype Screen: ScreenType
     var id: String? { get }
     var screen: Screen { get }
@@ -28,5 +28,17 @@ public struct ScreenView<Screen: ScreenType>: ScreenViewProtocol {
         self.id = id
         self.screen = screen
         self.title = titleKey.englishString(variableKeys, bundle: bundle).formattedAsParameter
+    }
+}
+
+extension ScreenView: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        return (
+            type(of: lhs) == type(of: rhs) &&
+            lhs.id == rhs.id &&
+            lhs.screen.name == rhs.screen.name &&
+            lhs.title == rhs.title &&
+            lhs.parameters == rhs.parameters
+        )
     }
 }
