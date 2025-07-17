@@ -12,14 +12,18 @@ final class ErrorScreenViewTests: XCTestCase {
     
     func testEmptyParametersAreRemoved() {
         let uuid = UUID().uuidString.lowercased()
-
+        
         let view = ErrorScreenView(id: uuid,
                                    screen: MockScreen.error,
                                    titleKey: "Something went wrong")
         
-        XCTAssertEqual(view.parameters, [
-            "screen_id": uuid
-        ])
+        XCTAssertEqual(
+            view.parameters,
+            [
+                "screen_id": uuid,
+                "is_error": "true"
+            ]
+        )
     }
     
     struct MockError: LoggableError {
@@ -31,38 +35,50 @@ final class ErrorScreenViewTests: XCTestCase {
     
     func testParametersForError() {
         let uuid = UUID().uuidString.lowercased()
-        let view = ErrorScreenView(id: uuid,
-                                   screen: MockScreen.error,
-                                   titleKey: "Something went wrong",
-                                   error: MockError())
+        let view = ErrorScreenView(
+            id: uuid,
+            screen: MockScreen.error,
+            titleKey: "Something went wrong",
+            error: MockError()
+        )
         
         XCTAssertEqual(view.title, "something went wrong")
-        XCTAssertEqual(view.parameters, [
-            "screen_id": uuid,
-            "hash": "83766358f64858b51afb745bbdde91bb",
-            "reason": "server",
-            "endpoint": "fetchbiometrictoken",
-            "status": "429"])
+        XCTAssertEqual(
+            view.parameters,
+            [
+                "screen_id": uuid,
+                "hash": "83766358f64858b51afb745bbdde91bb",
+                "reason": "server",
+                "endpoint": "fetchbiometrictoken",
+                "status": "429",
+                "is_error": "true"
+            ]
+        )
     }
     
     func testParametersForValues() {
         let uuid = UUID().uuidString.lowercased()
-
-        let view = ErrorScreenView(id: uuid,
-                                   screen: MockScreen.error,
-                                   titleKey: "Something went wrong",
-                                   reason: "network",
-                                   endpoint: "appInfo",
-                                   statusCode: "401",
-                                   hash: "83766358f64858b51afb745bbdde91bb"
+        
+        let view = ErrorScreenView(
+            id: uuid,
+            screen: MockScreen.error,
+            titleKey: "Something went wrong",
+            reason: "network",
+            endpoint: "appInfo",
+            statusCode: "401",
+            hash: "83766358f64858b51afb745bbdde91bb"
         )
         
-        XCTAssertEqual(view.parameters, [
-            "screen_id": uuid,
-            "reason": "network",
-            "endpoint": "appinfo",
-            "status": "401",
-            "hash": "83766358f64858b51afb745bbdde91bb"
-        ])
+        XCTAssertEqual(
+            view.parameters,
+            [
+                "screen_id": uuid,
+                "reason": "network",
+                "endpoint": "appinfo",
+                "status": "401",
+                "hash": "83766358f64858b51afb745bbdde91bb",
+                "is_error": "true"
+            ]
+        )
     }
 }

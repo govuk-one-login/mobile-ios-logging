@@ -4,4 +4,5 @@ public enum ScreenParameter: String {
     case status
     case hash
     case id = "screen_id"
+    case isError = "is_error"
 }
