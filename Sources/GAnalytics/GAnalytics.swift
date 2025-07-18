@@ -60,7 +60,7 @@ public struct GAnalytics {
     
     /// Merging `parameters` dictionary parameter with `additionalParameters` property
     private func mergeAdditionalParameters(_ parameters: [String: Any]) -> [String: Any] {
-        additionalParameters.merging(parameters) { lhs, rhs in
+        additionalParameters.merging(parameters) { lhs, _ in
             lhs
         }
     }
