@@ -5,4 +5,5 @@ public enum ScreenParameter: String {
     case hash
     case id = "screen_id"
     case isError = "is_error"
+    case savedDocType = "saved_doc_type"
 }

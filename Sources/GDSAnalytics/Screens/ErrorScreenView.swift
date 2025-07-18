@@ -8,6 +8,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
     public let endpoint: String?
     public let statusCode: String?
     public let hash: String?
+    public let savedDocType: String
     
     public var parameters: [String: String] {
         [
@@ -16,19 +17,23 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
             ScreenParameter.endpoint.rawValue: endpoint,
             ScreenParameter.hash.rawValue: hash,
             ScreenParameter.status.rawValue: statusCode,
+            ScreenParameter.savedDocType.rawValue: savedDocType,
             ScreenParameter.isError.rawValue: "true"
         ]
         .compactMapValues(\.?.formattedAsParameter)
     }
     
-    public init(id: String? = nil,
-                screen: Screen,
-                titleKey: String,
-                reason: String? = nil,
-                endpoint: String? = nil,
-                statusCode: String? = nil,
-                hash: String? = nil,
-                bundle: Bundle = .main) {
+    public init(
+        id: String? = nil,
+        screen: Screen,
+        titleKey: String,
+        reason: String? = nil,
+        endpoint: String? = nil,
+        statusCode: String? = nil,
+        hash: String? = nil,
+        bundle: Bundle = .main,
+        savedDocType: String = "undefined"
+    ) {
         self.screen = screen
         self.title = titleKey.englishString(bundle: bundle).formattedAsParameter
         self.id = id
@@ -36,15 +41,20 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
         self.endpoint = endpoint
         self.statusCode = statusCode
         self.hash = hash
+        self.savedDocType = savedDocType
     }
     
-    public init(id: String? = nil,
-                screen: Screen,
-                titleKey: String,
-                error: LoggableError,
-                bundle: Bundle = .main) {
+    public init(
+        id: String? = nil,
+        screen: Screen,
+        titleKey: String,
+        error: LoggableError,
+        bundle: Bundle = .main,
+        savedDocType: String = "undefined"
+    ) {
         self.id = id
         self.screen = screen
+        self.savedDocType = savedDocType
         title = titleKey.englishString(bundle: bundle).formattedAsParameter
         reason = error.reason
         endpoint = error.endpoint

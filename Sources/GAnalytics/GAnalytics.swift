@@ -60,7 +60,9 @@ public struct GAnalytics {
     
     /// Merging `parameters` dictionary parameter with `additionalParameters` property
     private func mergeAdditionalParameters(_ parameters: [String: Any]) -> [String: Any] {
-        additionalParameters.merging(parameters) { $1 }
+        additionalParameters.merging(parameters) { lhs, _ in
+            lhs
+        }
     }
 }
 
@@ -69,10 +71,7 @@ extension GAnalytics: AnalyticsService {
         _ additionalParameters: [String: Any]
     ) -> Self {
         var newCopy = self
-        newCopy.additionalParameters = self.additionalParameters
-            .merging(additionalParameters) { lhs, _ in
-                lhs
-            }
+        newCopy.additionalParameters = self.mergeAdditionalParameters(additionalParameters)
         return newCopy
     }
     

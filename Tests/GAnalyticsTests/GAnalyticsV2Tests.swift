@@ -197,6 +197,35 @@ extension GAnalyticsTestsV2 {
         )
     }
     
+    func testTrackScreenAdditionalParametersPrecedence() {
+        sut.additionalParameters = [
+            "journey": "id_verification"
+        ]
+        
+        sut.trackScreen(
+            TestScreen.welcome,
+            parameters: [
+                "additional_parameter": "testing",
+                "journey": "something_else"
+            ]
+        )
+        
+        XCTAssertEqual(
+            analyticsLogger.events,
+            [
+                .init(
+                    name: "screen_view",
+                    parameters: [
+                        "screen_name": "WELCOME_SCREEN",
+                        "screen_class": "WELCOME_SCREEN",
+                        "additional_parameter": "testing",
+                        "journey": "id_verification"
+                    ]
+                )
+            ]
+        )
+    }
+    
     func testTrackScreenV2() {
         struct TestScreenV2: LoggableScreenV2 {
             let name: String = "Welcome to GOV.UK One Login"
