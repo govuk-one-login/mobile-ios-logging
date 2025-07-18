@@ -5,6 +5,7 @@ public protocol ScreenViewProtocol: Equatable {
     var id: String? { get }
     var screen: Screen { get }
     var title: String { get }
+    var savedDocType: String { get }
     var parameters: [String: String] { get }
 }
 
@@ -12,22 +13,28 @@ public struct ScreenView<Screen: ScreenType>: ScreenViewProtocol {
     public let id: String?
     public let screen: Screen
     public let title: String
+    public let savedDocType: String
     
     public var parameters: [String: String] {
         [
             ScreenParameter.id.rawValue: id,
+            ScreenParameter.savedDocType.rawValue: savedDocType,
             ScreenParameter.isError.rawValue: "false"
         ].compactMapValues(\.?.formattedAsParameter)
     }
     
-    public init(id: String? = nil,
-                screen: Screen,
-                titleKey: String,
-                variableKeys: [String] = [],
-                bundle: Bundle = .main) {
+    public init(
+        id: String? = nil,
+        screen: Screen,
+        titleKey: String,
+        variableKeys: [String] = [],
+        savedDocType: String = "undefined",
+        bundle: Bundle = .main
+    ) {
         self.id = id
         self.screen = screen
         self.title = titleKey.englishString(variableKeys, bundle: bundle).formattedAsParameter
+        self.savedDocType = savedDocType
     }
 }
 
