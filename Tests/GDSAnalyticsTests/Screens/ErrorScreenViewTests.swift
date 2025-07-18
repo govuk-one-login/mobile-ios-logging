@@ -21,7 +21,8 @@ final class ErrorScreenViewTests: XCTestCase {
             view.parameters,
             [
                 "screen_id": uuid,
-                "is_error": "true"
+                "is_error": "true",
+                "saved_doc_type": "undefined"
             ]
         )
     }
@@ -51,7 +52,8 @@ final class ErrorScreenViewTests: XCTestCase {
                 "reason": "server",
                 "endpoint": "fetchbiometrictoken",
                 "status": "429",
-                "is_error": "true"
+                "is_error": "true",
+                "saved_doc_type": "undefined"
             ]
         )
     }
@@ -77,7 +79,8 @@ final class ErrorScreenViewTests: XCTestCase {
                 "endpoint": "appinfo",
                 "status": "401",
                 "hash": "83766358f64858b51afb745bbdde91bb",
-                "is_error": "true"
+                "is_error": "true",
+                "saved_doc_type": "undefined"
             ]
         )
     }

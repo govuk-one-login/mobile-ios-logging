@@ -20,7 +20,8 @@ final class ScreenViewTests: XCTestCase {
         XCTAssertEqual(
             view.parameters, [
                 "screen_id": uuid,
-                "is_error": "false"
+                "is_error": "false",
+                "saved_doc_type": "undefined"
             ]
         )
     }
@@ -36,7 +37,10 @@ final class ScreenViewTests: XCTestCase {
         
         XCTAssertEqual(
             view.parameters,
-            ["is_error": "false"]
+            [
+                "is_error": "false",
+                "saved_doc_type": "undefined"
+            ]
         )
     }
     
