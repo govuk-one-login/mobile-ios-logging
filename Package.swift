@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Logging",
     defaultLocalization: "en",
-    platforms: [.iOS(.v13)],
+    platforms: [.iOS(.v15)],
     products: [
         .library(name: "Logging", targets: ["Logging"]),
         .library(name: "HTTPLogging", targets: ["HTTPLogging"]),
@@ -16,11 +16,11 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/firebase/firebase-ios-sdk.git",
-            .upToNextMajor(from: "11.1.0")
+            revision: "4e62da1e5e6baf61674d3f5ae23d6d60c19f9c4a" // 12.0.0
         ),
         .package(
             url: "https://github.com/govuk-one-login/mobile-ios-networking.git",
-            .upToNextMajor(from: "3.0.0")
+            from: "3.0.0"
         )
     ],
     targets: [
@@ -47,7 +47,7 @@ let package = Package(
         .target(name: "GAnalytics",
                 dependencies: [
                     "Logging",
-                    .product(name: "FirebaseAnalyticsWithoutAdIdSupport", package: "firebase-ios-sdk"),
+                    .product(name: "FirebaseAnalyticsCore", package: "firebase-ios-sdk"),
                     .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk")
                 ],
                 exclude: ["README.md"],
