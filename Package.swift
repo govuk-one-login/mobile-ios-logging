@@ -47,7 +47,7 @@ let package = Package(
         .target(name: "GAnalytics",
                 dependencies: [
                     "Logging",
-                    .product(name: "FirebaseAnalyticsCore", package: "firebase-ios-sdk"),
+                    .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
                     .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk")
                 ],
                 exclude: ["README.md"],
