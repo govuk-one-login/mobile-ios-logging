@@ -18,12 +18,12 @@ To use Logging in a project using Swift Package Manager:
 
 ```swift
 .target(name: "MyTarget", dependencies: [
-    .product(name: "Logging", package: "mobile-ios-logging"),
+    .product(name: "GDSLogging", package: "mobile-ios-logging"),
     "AnotherModule"
 ]),
 ```
 
-3. Add `import Logging` in your source code.
+3. Add `import GDSLogging` in your source code.
 
 ## Package description
 

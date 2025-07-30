@@ -16,14 +16,14 @@ To use this Logging package in a project using Swift Package Manager:
 
 ```swift
 .target(name: "MyTarget", dependencies: [
-  .product(name: "Logging", package: "di-mobile-ios-logging"),
+  .product(name: "GDSLogging", package: "di-mobile-ios-logging"),
   .product(name: "GAnalytics", package: "di-mobile-ios-logging"),
   .product(name: "HTTPLogging", package: "di-mobile-ios-logging"),
   .prodcut(name: "GDSAnalytics", package: "di-mobile-ios-logging")
 ]),
 ```
 
-3. Add `import Logging`, `import GAnalytics`, `import HTTPLogging` and/or `import GDSAnalytics` into your source code where necessary.
+3. Add `import GDSLogging`, `import GAnalytics`, `import HTTPLogging` and/or `import GDSAnalytics` into your source code where necessary.
 
 ## Package description
 
