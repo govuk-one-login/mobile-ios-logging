@@ -11,4 +11,10 @@ final class MockCrashLogger: CrashLogger {
     func setCrashlyticsCollectionEnabled(_ value: Bool) {
         isCollectionEnabled = value
     }
+    
+    func setCustomKeysAndValues(_ keysAndValues: [AnyHashable : Any]) {
+    }
+    
+    func setCustomValue(_ value: Any?, forKey: String) {
+    }
 }

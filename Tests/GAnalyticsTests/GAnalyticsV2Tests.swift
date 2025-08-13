@@ -272,6 +272,14 @@ extension GAnalyticsTestsV2 {
         )
     }
     
+    func testLogCrashCustomNSError() {
+        let error = MockCustomNSError(kind: "testError1")
+        
+        sut.logCrash(error)
+        
+        XCTAssertEqual(crashLogger.errors.count, 1)
+    }
+    
     func testGrantAnalyticsPermission() {
         sut.grantAnalyticsPermission()
         
