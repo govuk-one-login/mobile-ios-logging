@@ -3,7 +3,7 @@ import Foundation
 struct MockCustomNSError: CustomNSError {
     let kind: String
     
-    var errorUserInfo: [String : Any] {
+    var errorUserInfo: [String: Any] {
         [
             "kind": kind,
             "testString": "stringValue",

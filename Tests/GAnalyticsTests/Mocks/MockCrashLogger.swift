@@ -4,6 +4,8 @@ final class MockCrashLogger: CrashLogger {
     private(set) var errors: [Error] = []
     private(set) var isCollectionEnabled: Bool?
     
+    var paramsToLog: [AnyHashable: Any] = [:]
+    
     func record(error: Error) {
         errors.append(error)
     }
@@ -12,9 +14,7 @@ final class MockCrashLogger: CrashLogger {
         isCollectionEnabled = value
     }
     
-    func setCustomKeysAndValues(_ keysAndValues: [AnyHashable : Any]) {
-    }
-    
-    func setCustomValue(_ value: Any?, forKey: String) {
+    func setCustomKeysAndValues(_ keysAndValues: [AnyHashable: Any]) {
+        paramsToLog = keysAndValues
     }
 }

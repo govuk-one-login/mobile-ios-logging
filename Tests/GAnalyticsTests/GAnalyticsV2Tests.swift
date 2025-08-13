@@ -275,9 +275,15 @@ extension GAnalyticsTestsV2 {
     func testLogCrashCustomNSError() {
         let error = MockCustomNSError(kind: "testError1")
         
+        sut.additionalParameters = ["additionalParameter": "param"]
         sut.logCrash(error)
         
         XCTAssertEqual(crashLogger.errors.count, 1)
+        XCTAssertEqual(crashLogger.paramsToLog["kind"] as? String, "testError1")
+        XCTAssertEqual(crashLogger.paramsToLog["testString"] as? String, "stringValue")
+        XCTAssertEqual(crashLogger.paramsToLog["testInt"] as? Int, 123)
+        
+        XCTAssertEqual(crashLogger.paramsToLog["additionalParameter"] as? String, "param")
     }
     
     func testGrantAnalyticsPermission() {

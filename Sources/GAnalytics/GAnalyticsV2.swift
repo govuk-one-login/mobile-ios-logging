@@ -112,7 +112,7 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
     public func logCrash(_ crash: Error) {
         let errorUserInfo = (crash as? CustomNSError)?.errorUserInfo ?? [:]
         
-        let paramsToLog = additionalParameters.merging(errorUserInfo) { lhs, rhs in
+        let paramsToLog = additionalParameters.merging(errorUserInfo) { _, rhs in
             rhs
         }
         
