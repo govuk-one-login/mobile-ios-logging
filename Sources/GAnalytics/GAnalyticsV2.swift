@@ -118,6 +118,7 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
         
         crashLogger.setCustomKeysAndValues(paramsToLog)
         crashLogger.record(error: crash)
+        crashLogger.setCustomKeysAndValues([:])
     }
     
     /// Granting analytics and crashlytics permissions in Firebase package.
