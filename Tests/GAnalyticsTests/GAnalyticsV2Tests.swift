@@ -279,13 +279,11 @@ extension GAnalyticsTestsV2 {
         sut.logCrash(error)
         
         XCTAssertEqual(crashLogger.errors.count, 1)
-        XCTAssertEqual(crashLogger.loggedParams["kind"] as? String, "testError1")
-        XCTAssertEqual(crashLogger.loggedParams["testString"] as? String, "stringValue")
-        XCTAssertEqual(crashLogger.loggedParams["testInt"] as? Int, 123)
+        XCTAssertEqual(crashLogger.loggedParams?["kind"] as? String, "testError1")
+        XCTAssertEqual(crashLogger.loggedParams?["testString"] as? String, "stringValue")
+        XCTAssertEqual(crashLogger.loggedParams?["testInt"] as? Int, 123)
         
-        XCTAssertEqual(crashLogger.loggedParams["additionalParameter"] as? String, "param")
-        
-        XCTAssertTrue(crashLogger.paramsToLog.isEmpty)
+        XCTAssertEqual(crashLogger.loggedParams?["additionalParameter"] as? String, "param")
     }
     
     func testLogCrashCustomNSErrorOverwritingParam() {
@@ -295,13 +293,11 @@ extension GAnalyticsTestsV2 {
         sut.logCrash(error)
         
         XCTAssertEqual(crashLogger.errors.count, 1)
-        XCTAssertEqual(crashLogger.loggedParams["kind"] as? String, "testError1")
-        XCTAssertEqual(crashLogger.loggedParams["testString"] as? String, "stringValue")
-        XCTAssertEqual(crashLogger.loggedParams["testInt"] as? Int, 123)
+        XCTAssertEqual(crashLogger.loggedParams?["kind"] as? String, "testError1")
+        XCTAssertEqual(crashLogger.loggedParams?["testString"] as? String, "stringValue")
+        XCTAssertEqual(crashLogger.loggedParams?["testInt"] as? Int, 123)
         
-        XCTAssertNotEqual(crashLogger.loggedParams["testString"] as? String, "wrongStringValue")
-        
-        XCTAssertTrue(crashLogger.paramsToLog.isEmpty)
+        XCTAssertNotEqual(crashLogger.loggedParams?["testString"] as? String, "wrongStringValue")
     }
     
     func testGrantAnalyticsPermission() {
