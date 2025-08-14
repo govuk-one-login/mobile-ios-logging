@@ -115,13 +115,8 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
         let paramsToLog = additionalParameters.merging(errorUserInfo) { _, rhs in
             rhs
         }
-        
-        print(paramsToLog)
-        
-//        crashLogger.setCustomKeysAndValues([:])
-//        crashLogger.setCustomKeysAndValues(paramsToLog)
+
         crashLogger.record(error: crash, userInfo: paramsToLog)
-//        crashLogger.setCustomKeysAndValues([:])
     }
     
     /// Granting analytics and crashlytics permissions in Firebase package.
