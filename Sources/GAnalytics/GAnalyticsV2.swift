@@ -116,6 +116,7 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
             rhs
         }
         
+        crashLogger.setCustomKeysAndValues([:])
         crashLogger.setCustomKeysAndValues(paramsToLog)
         crashLogger.record(error: crash)
         crashLogger.setCustomKeysAndValues([:])
