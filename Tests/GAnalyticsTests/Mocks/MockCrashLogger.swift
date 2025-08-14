@@ -6,7 +6,7 @@ final class MockCrashLogger: CrashLogger {
 
     var loggedParams: [AnyHashable: Any]? = [:]
     
-    func record(error: Error, userInfo: [String : Any]?) {
+    func record(error: Error, userInfo: [String: Any]?) {
         errors.append(error)
         loggedParams = userInfo
     }
