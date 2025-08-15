@@ -106,7 +106,7 @@ extension GAnalytics: AnalyticsService {
     
     /// Logs crashes accepting an error in Firebase package.
     public func logCrash(_ error: NSError) {
-        crashLogger.record(error: error)
+        crashLogger.record(error: error, userInfo: nil)
     }
     
     /// Granting analytics and crashlytics permissions in Firebase package.

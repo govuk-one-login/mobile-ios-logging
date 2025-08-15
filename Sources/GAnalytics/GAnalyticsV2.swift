@@ -106,7 +106,17 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
     
     /// Logs crashes accepting an error in Firebase package.
     public func logCrash(_ error: NSError) {
-        crashLogger.record(error: error)
+        crashLogger.record(error: error, userInfo: nil)
+    }
+    
+    public func logCrash(_ crash: Error) {
+        let errorUserInfo = (crash as? CustomNSError)?.errorUserInfo ?? [:]
+        
+        let paramsToLog = additionalParameters.merging(errorUserInfo) { lhs, _ in
+            lhs
+        }
+
+        crashLogger.record(error: crash, userInfo: paramsToLog)
     }
     
     /// Granting analytics and crashlytics permissions in Firebase package.
