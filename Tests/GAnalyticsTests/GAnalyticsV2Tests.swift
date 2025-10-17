@@ -86,7 +86,7 @@ extension GAnalyticsTestsV2 {
         sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     func testNoTrackingWhenConsentDenied() {
@@ -95,7 +95,7 @@ extension GAnalyticsTestsV2 {
         sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     func testTrackingEnabledWhenUserConsented() {
@@ -143,7 +143,7 @@ extension GAnalyticsTestsV2 {
         
         XCTAssertTrue(analyticsLogger.didResetAnalyticsData)
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     private func waitForSubscription() {
@@ -313,6 +313,6 @@ extension GAnalyticsTestsV2 {
         XCTAssertTrue(analyticsLogger.didResetAnalyticsData)
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
 }
