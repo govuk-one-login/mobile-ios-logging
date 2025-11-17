@@ -16,7 +16,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/firebase/firebase-ios-sdk.git",
-            exact: "12.5.0"
+            exact: "12.6.0"
         ),
         .package(
             url: "https://github.com/govuk-one-login/mobile-ios-networking.git",
