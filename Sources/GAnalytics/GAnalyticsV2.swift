@@ -22,6 +22,8 @@ public struct GAnalyticsV2 {
         self.analyticsPreferenceStore = analyticsPreferenceStore
         self.analyticsLogger = analyticsLogger
         self.crashLogger = crashLogger
+        
+        crashLogger.setCrashlyticsCollectionEnabled(true)
     }
     
     public init(analyticsPreferenceStore: AnalyticsPreferenceStore) {
@@ -122,14 +124,11 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
     /// Granting analytics and crashlytics permissions in Firebase package.
     func grantAnalyticsPermission() {
         analyticsLogger.setAnalyticsCollectionEnabled(true)
-        crashLogger.setCrashlyticsCollectionEnabled(true)
     }
     
     /// Denying analytics and crashlytics permissions in Firebase package.
     func denyAnalyticsPermission() {
         analyticsLogger.setAnalyticsCollectionEnabled(false)
         analyticsLogger.resetAnalyticsData()
-        
-        crashLogger.setCrashlyticsCollectionEnabled(false)
     }
 }
