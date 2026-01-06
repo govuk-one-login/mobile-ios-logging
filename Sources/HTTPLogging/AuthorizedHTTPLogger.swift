@@ -1,5 +1,4 @@
 import Foundation
-import Networking
 
 /// AuthorizedHTTPLogger
 ///
@@ -9,16 +8,16 @@ public struct AuthorizedHTTPLogger {
     /// `URL` address for sending HTTP requests
     let loggingURL: URL
     /// `NetworkClient` from the Networking package dependency to handle HTTP networking
-    let networkClient: NetworkClient
+    let networkClient: HTTPLoggingNetworkClient
     /// Scope for service access token
     let scope: String
-    /// callback to handle possible errors resulting from `NetworkClient`'s `makeRequest` method
+    /// callback to handle possible errors resulting from `HTTPLoggingNetworkClient`'s `makeRequest` method
     let handleError: ((Error) -> Void)?
 
     /// Initialiser for class with default methods for `networkClient` and `handleError` parameters
     public init(
         url: URL,
-        networkClient: NetworkClient,
+        networkClient: HTTPLoggingNetworkClient,
         scope: String,
         handleError: ((Error) -> Void)? = nil
     ) {
