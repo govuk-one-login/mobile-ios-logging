@@ -1,13 +1,12 @@
 import Foundation
 import Logging
-import Networking
 
 /// HTTPLogger
 ///
 /// A struct for sending HTTP requests to log user/journey specific insights for app metrics and performance.
 public struct HTTPLogger: LoggingService {
     /// `NetworkClient` from the Networking package dependency to handle HTTP networking
-    let networkClient: NetworkClient
+    let networkClient: HTTPLoggingNetworkClient
     /// `URL` address for sending HTTP requests
     let loggingURL: URL
     /// sessionID for user/journey identication
@@ -40,7 +39,7 @@ public struct HTTPLogger: LoggingService {
     /// Initialiser for class with default methods for `networkClient` and `handleError` parameters
     public init(sessionID: String,
                 url: URL,
-                networkClient: NetworkClient = NetworkClient(),
+                networkClient: HTTPLoggingNetworkClient,
                 handleError: ((Error) -> Void)? = nil) {
         loggingURL = url
         self.sessionID = sessionID
