@@ -48,7 +48,8 @@ let package = Package(
                 dependencies: [
                     "Logging",
                     .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
-                    .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk")
+                    .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk"),
+                    .product(name: "FirebasePerformance", package: "firebase-ios-sdk")
                 ],
                 exclude: ["README.md"],
                 swiftSettings: [
