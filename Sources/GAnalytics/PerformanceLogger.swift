@@ -1,43 +1,60 @@
 import FirebasePerformance
+import Logging
 
-protocol PerformanceLogger {
-    var isEnabled: Bool { get }
-    
-    func enable()
-    func disable()
-    
-    func startTrace(name: String) -> PerformanceTrace
-    func startHTTPMetric(url: URL, method: RequestType) -> PerformanceMetric
-}
+//protocol PerformanceLogger {
+//    var isEnabled: Bool { get }
+//    
+//    func enable()
+//    func disable()
+//    
+//    func startTrace(name: String) -> PerformanceTrace
+//    func startHTTPMetric(url: URL, method: RequestType) -> PerformanceMetric
+//}
+//
+//protocol PerformanceTrace {
+//    func start()
+//    func stop()
+//    func incrementMetric(_ name: String, by: Int64)
+//    func setValue(_ value: Int64, forMetric metricName: String)
+//    func setValue(_ value: String, forAttribute attribute: String)
+//    func setValuesForKeys(for keyedValues: [String: any Sendable])
+//}
+//
+//protocol PerformanceMetric {
+//    var responseCode: Int { get set }
+//    
+//    func start()
+//    func stop()
+//    func setValue(value: String, forAttribute: String)
+//}
 
-protocol PerformanceTrace {
-    func start()
-    func stop()
-    func incrementMetric(_ name: String, by: Int64)
-    func setValue(_ value: Int64, forMetric metricName: String)
-    func setValue(_ value: String, forAttribute attribute: String)
-    func setValuesForKeys(for keyedValues: [String: any Sendable])
-}
+//enum RequestType: String {
+//    case get
+//    case put
+//    case post
+//    case delete
+//    case head
+//    case patch
+//    case options
+//    case trace
+//    case connect
+//    
+//    var firebaseRequestType: HTTPMethod {
+//        switch self {
+//        case .get: .get
+//        case .put: .put
+//        case .post: .put
+//        case .delete: .delete
+//        case .head: .head
+//        case .patch: .patch
+//        case .options: .options
+//        case .trace: .trace
+//        case .connect: .connect
+//        }
+//    }
+//}
 
-protocol PerformanceMetric {
-    var responseCode: Int { get set }
-    
-    func start()
-    func stop()
-    func setValue(value: String, forAttribute: String)
-}
-
-enum RequestType: String {
-    case get
-    case put
-    case post
-    case delete
-    case head
-    case patch
-    case options
-    case trace
-    case connect
-    
+extension RequestType {
     var firebaseRequestType: HTTPMethod {
         switch self {
         case .get: .get
@@ -52,6 +69,7 @@ enum RequestType: String {
         }
     }
 }
+
 
 final class PerformanceMonitor: PerformanceLogger {
     var isEnabled: Bool {

@@ -1,51 +1,60 @@
 import Firebase
 import FirebaseAnalytics
 import FirebaseCrashlytics
+import FirebasePerformance
 import Logging
 
-/// GAnalytics
+/// GAnalyticsV3
 ///
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.
-// TODO: Fix this
-// public typealias GAnalytics = GAnalyticsV3
-@available(*, deprecated, renamed: "GAnalyticsV2", message: "Please consider moving to GAnalyticsV2, this type will be replaced shortly")
-public struct GAnalytics {
-    private let app: AnalyticsApp.Type
-    private let analytics: AnalyticsLogger.Type
+@available(*, deprecated, renamed: "GAnalytics", message: "This will be renamed - please use typealias GAnalytics instead")
+public struct GAnalyticsV3 {
+    static var analyticsApp: AnalyticsApp.Type = FirebaseApp.self
+    public let analyticsPreferenceStore: AnalyticsPreferenceStore
+    private let analyticsLogger: AnalyticsLogger.Type
+    public let performanceLogger: PerformanceLogger
     private let crashLogger: CrashLogger
-    private let preferenceStore: AnalyticsPreferenceStore
     
     /// Additional parameters for the application
     public var additionalParameters = [String: Any]()
     
-    init(app: AnalyticsApp.Type,
-         analytics: AnalyticsLogger.Type,
-         crashLogger: CrashLogger,
-         preferenceStore: AnalyticsPreferenceStore) {
-        self.app = app
-        self.analytics = analytics
+    init(
+        analyticsPreferenceStore: AnalyticsPreferenceStore,
+        analyticsLogger: AnalyticsLogger.Type,
+        performanceLogger: PerformanceLogger = PerformanceMonitor(),
+        crashLogger: CrashLogger
+    ) {
+        self.analyticsPreferenceStore = analyticsPreferenceStore
+        self.analyticsLogger = analyticsLogger
+        self.performanceLogger = performanceLogger
         self.crashLogger = crashLogger
-        self.preferenceStore = preferenceStore
+        
+        crashLogger.setCrashlyticsCollectionEnabled(true)
     }
     
-    public init() {
-        self.init(app: FirebaseApp.self,
-                  analytics: Analytics.self,
-                  crashLogger: Crashlytics.crashlytics(),
-                  preferenceStore: UserDefaultsPreferenceStore())
+    public init(analyticsPreferenceStore: AnalyticsPreferenceStore) {
+        self.init(
+            analyticsPreferenceStore: analyticsPreferenceStore,
+            analyticsLogger: Analytics.self,
+            crashLogger: Crashlytics.crashlytics()
+        )
     }
     
     /// Initialises the Firebase instance when launching the app.
-    public func configure() {
-        app.configure()
+    public static func configure() {
+        analyticsApp.configure()
+    }
+    
+    /// Activates subscription to preference store events and updates based on existing preference.
+    public func activate() {
         subscribeToPreferenceStore()
-        updateAnalyticsPreference(preferenceStore.hasAcceptedAnalytics)
+        updateAnalyticsPreference(analyticsPreferenceStore.hasAcceptedAnalytics)
     }
     
     private func subscribeToPreferenceStore() {
         Task {
-            for await value in preferenceStore.stream() {
+            for await value in analyticsPreferenceStore.stream() {
                 updateAnalyticsPreference(value)
             }
         }
@@ -68,7 +77,7 @@ public struct GAnalytics {
     }
 }
 
-extension GAnalytics: AnalyticsService {
+extension GAnalyticsV3: AnalyticsServiceV3 {
     public func addingAdditionalParameters(
         _ additionalParameters: [String: Any]
     ) -> Self {
@@ -85,8 +94,8 @@ extension GAnalytics: AnalyticsService {
         parameters[AnalyticsParameterScreenName] = screen.name
         parameters[AnalyticsParameterScreenClass] = screen.name
         
-        analytics.logEvent(AnalyticsEventScreenView,
-                           parameters: parameters)
+        analyticsLogger.logEvent(AnalyticsEventScreenView,
+                                 parameters: parameters)
     }
     
     public func trackScreen(_ screen: any LoggableScreenV2,
@@ -96,14 +105,14 @@ extension GAnalytics: AnalyticsService {
         parameters[AnalyticsParameterScreenName] = screen.name
         parameters[AnalyticsParameterScreenClass] = screen.type.description
         
-        analytics.logEvent(AnalyticsEventScreenView,
-                           parameters: parameters)
+        analyticsLogger.logEvent(AnalyticsEventScreenView,
+                                 parameters: parameters)
     }
     
     /// Logs events accepting the event name and parameters in Firebase package.
     public func logEvent(_ event: LoggableEvent, parameters params: [String: Any]) {
         let parameters = mergeAdditionalParameters(params)
-        analytics.logEvent(event.name, parameters: parameters)
+        analyticsLogger.logEvent(event.name, parameters: parameters)
     }
     
     /// Logs crashes accepting an error in Firebase package.
@@ -111,17 +120,26 @@ extension GAnalytics: AnalyticsService {
         crashLogger.record(error: error, userInfo: nil)
     }
     
+    public func logCrash(_ crash: Error) {
+        let errorUserInfo = (crash as? CustomNSError)?.errorUserInfo ?? [:]
+        
+        let paramsToLog = additionalParameters.merging(errorUserInfo) { lhs, _ in
+            lhs
+        }
+
+        crashLogger.record(error: crash, userInfo: paramsToLog)
+    }
+    
     /// Granting analytics and crashlytics permissions in Firebase package.
-    public func grantAnalyticsPermission() {
-        analytics.setAnalyticsCollectionEnabled(true)
-        crashLogger.setCrashlyticsCollectionEnabled(true)
+    func grantAnalyticsPermission() {
+        analyticsLogger.setAnalyticsCollectionEnabled(true)
+        performanceLogger.enable()
     }
     
     /// Denying analytics and crashlytics permissions in Firebase package.
-    public func denyAnalyticsPermission() {
-        analytics.setAnalyticsCollectionEnabled(false)
-        analytics.resetAnalyticsData()
-        
-        crashLogger.setCrashlyticsCollectionEnabled(false)
+    func denyAnalyticsPermission() {
+        analyticsLogger.setAnalyticsCollectionEnabled(false)
+        analyticsLogger.resetAnalyticsData()
+        performanceLogger.disable()
     }
 }

@@ -3,6 +3,7 @@ import Foundation
 /// AnalyticsServiceV2
 ///
 /// A protocol for Types to log analytics to a third-party analytics service.
+@available(*, deprecated, renamed: "AnalyticsService", message: "This has been deprecated for V3 which is typealiased to AnalyticsService")
 public protocol AnalyticsServiceV2: LoggingService {
     var analyticsPreferenceStore: AnalyticsPreferenceStore { get }
     
