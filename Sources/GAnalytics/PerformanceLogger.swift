@@ -71,8 +71,8 @@ extension RequestType {
 }
 
 
-final class PerformanceMonitor: PerformanceLogger {
-    var isEnabled: Bool {
+public final class PerformanceMonitor: PerformanceLogger {
+    public var isEnabled: Bool {
         Performance.sharedInstance().isDataCollectionEnabled
         && Performance.sharedInstance().isInstrumentationEnabled
     }
@@ -81,63 +81,63 @@ final class PerformanceMonitor: PerformanceLogger {
         self.disable()
     }
     
-    func enable() {
+    public func enable() {
         Performance.sharedInstance().isDataCollectionEnabled = true
         Performance.sharedInstance().isInstrumentationEnabled = true
     }
     
-    func disable() {
+    public func disable() {
         Performance.sharedInstance().isDataCollectionEnabled = false
         Performance.sharedInstance().isInstrumentationEnabled = false
     }
     
-    func startTrace(name: String) -> any PerformanceTrace {
+    public func startTrace(name: String) -> any PerformanceTrace {
         let trace = Performance.startTrace(name: name)
         return GDSTrace(trace)
     }
     
-    func startHTTPMetric(url: URL, method: RequestType) -> any PerformanceMetric {
+    public func startHTTPMetric(url: URL, method: RequestType) -> any PerformanceMetric {
         let metric = HTTPMetric(url: url, httpMethod: method.firebaseRequestType)
         return GDSHTTPMetric(metric)
     }
 }
 
-final class GDSTrace: PerformanceTrace {
+public final class GDSTrace: PerformanceTrace {
     private let trace: Trace?
     
     init(_ trace: Trace?) {
         self.trace = trace
     }
     
-    func start() {
+    public func start() {
         trace?.start()
     }
     
-    func stop() {
+    public func stop() {
         trace?.stop()
     }
     
-    func incrementMetric(_ name: String, by amount: Int64) {
+    public func incrementMetric(_ name: String, by amount: Int64) {
         trace?.incrementMetric(name, by: amount)
     }
     
-    func setValue(_ value: Int64, forMetric metricName: String) {
+    public func setValue(_ value: Int64, forMetric metricName: String) {
         trace?.setValue(value, forMetric: metricName)
     }
     
-    func setValue(_ value: String, forAttribute metricName: String) {
+    public func setValue(_ value: String, forAttribute metricName: String) {
         trace?.setValue(value, forAttribute: metricName)
     }
     
-    func setValuesForKeys(for keyedValues: [String: any Sendable]) {
+    public func setValuesForKeys(for keyedValues: [String: any Sendable]) {
         trace?.setValuesForKeys(keyedValues)
     }
 }
 
-final class GDSHTTPMetric: PerformanceMetric {
+public final class GDSHTTPMetric: PerformanceMetric {
     private let metric: HTTPMetric?
     
-    var responseCode: Int = 0 {
+    public var responseCode: Int = 0 {
         didSet {
             metric?.responseCode = responseCode
         }
@@ -147,15 +147,15 @@ final class GDSHTTPMetric: PerformanceMetric {
         self.metric = metric
     }
     
-    func start() {
+    public func start() {
         metric?.start()
     }
     
-    func stop() {
+    public func stop() {
         metric?.stop()
     }
     
-    func setValue(value: String, forAttribute: String) {
+    public func setValue(value: String, forAttribute: String) {
         metric?.setValue(value, forAttribute: forAttribute)
     }
 }
