@@ -125,8 +125,8 @@ public final class GDSTrace: PerformanceTrace {
         trace?.setValue(value, forMetric: metricName)
     }
     
-    public func setValue(_ value: String, forAttribute metricName: String) {
-        trace?.setValue(value, forAttribute: metricName)
+    public func setValue(_ value: String, forAttribute attribute: String) {
+        trace?.setValue(value, forAttribute: attribute)
     }
     
     public func setValuesForKeys(for keyedValues: [String: any Sendable]) {
