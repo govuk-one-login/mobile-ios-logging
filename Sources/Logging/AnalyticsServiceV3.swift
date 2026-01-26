@@ -37,7 +37,7 @@ public protocol PerformanceLogger {
     func disable()
     
     func startTrace(name: String) -> PerformanceTrace
-    func startHTTPMetric(url: URL, method: RequestType) -> PerformanceMetric
+    func startHTTPMetric(url: URL, method: String) -> PerformanceMetric
 }
 
 public protocol PerformanceTrace {
@@ -57,14 +57,26 @@ public protocol PerformanceMetric {
     func setValue(value: String, forAttribute: String)
 }
 
-public enum RequestType: String {
-    case get
-    case put
-    case post
-    case delete
-    case head
-    case patch
-    case options
-    case trace
-    case connect
-}
+//public enum RequestType: String, RequestProtocol {
+//    case get
+//    case put
+//    case post
+//    case delete
+//    case head
+//    case patch
+//    case options
+//    case trace
+//    case connect
+//}
+
+//public protocol RequestType: RawRepresentable, Equatable {
+//    static var get: Self { get }
+//    static var put: Self { get }
+//    static var post: Self { get }
+//    static var delete: Self { get }
+//    static var head: Self { get }
+//    static var patch: Self { get }
+//    static var options: Self { get }
+//    static var trace: Self { get }
+//    static var connect: Self { get }
+//}

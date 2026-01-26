@@ -54,18 +54,52 @@ import Logging
 //    }
 //}
 
-extension RequestType {
-    var firebaseRequestType: HTTPMethod {
-        switch self {
-        case .get: .get
-        case .put: .put
-        case .post: .put
-        case .delete: .delete
-        case .head: .head
-        case .patch: .patch
-        case .options: .options
-        case .trace: .trace
-        case .connect: .connect
+//extension RequestProtocol {
+//    var firebaseRequestType: HTTPMethod {
+//        switch self {
+//        case .get: .get
+//        case .put: .put
+//        case .post: .put
+//        case .delete: .delete
+//        case .head: .head
+//        case .patch: .patch
+//        case .options: .options
+//        case .trace: .trace
+//        case .connect: .connect
+//        default:
+//                .get
+//        }
+//    }
+//    
+//    public static func requestTypeFrom(_ string: String) -> RequestType {
+//        return switch string {
+//        case "get": RequestType.get
+//        case "put": RequestType.put
+//        case "post": RequestType.put
+//        case "delete": RequestType.delete
+//        case "head": RequestType.head
+//        case "patch": RequestType.patch
+//        case "options": RequestType.options
+//        case "trace": RequestType.trace
+//        case "connect": RequestType.connect
+//        default: .get
+//        }
+//    }
+//}
+
+extension HTTPMethod {
+    static func httpMethodFrom(string: String) -> Self {
+        return switch string {
+        case "get": Self.get
+        case "put": Self.put
+        case "post": Self.put
+        case "delete": Self.delete
+        case "head": Self.head
+        case "patch": Self.patch
+        case "options": Self.options
+        case "trace": Self.trace
+        case "connect": Self.connect
+        default: Self.get
         }
     }
 }
@@ -96,8 +130,8 @@ public final class PerformanceMonitor: PerformanceLogger {
         return GDSTrace(trace)
     }
     
-    public func startHTTPMetric(url: URL, method: RequestType) -> any PerformanceMetric {
-        let metric = HTTPMetric(url: url, httpMethod: method.firebaseRequestType)
+    public func startHTTPMetric(url: URL, method: String) -> any PerformanceMetric {
+        let metric = HTTPMetric(url: url, httpMethod: HTTPMethod.httpMethodFrom(string: method))
         return GDSHTTPMetric(metric)
     }
 }
