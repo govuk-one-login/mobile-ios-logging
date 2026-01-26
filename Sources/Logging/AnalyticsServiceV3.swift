@@ -31,13 +31,15 @@ extension AnalyticsServiceV3 {
 
 
 public protocol PerformanceLogger {
+    associatedtype Trace: PerformanceTrace
+    associatedtype Metric: PerformanceMetric
+    
     var isEnabled: Bool { get }
     
     func enable()
     func disable()
-    
-    func startTrace(name: String) -> PerformanceTrace
-    func startHTTPMetric(url: URL, method: String) -> PerformanceMetric
+    func startTrace(name: String) -> Trace
+    func startHTTPMetric(url: URL, method: String) -> Metric
 }
 
 public protocol PerformanceTrace {

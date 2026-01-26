@@ -104,8 +104,10 @@ extension HTTPMethod {
     }
 }
 
-
 public final class PerformanceMonitor: PerformanceLogger {
+    public typealias Trace = GDSTrace
+    public typealias Metric = GDSHTTPMetric
+    
     public var isEnabled: Bool {
         Performance.sharedInstance().isDataCollectionEnabled
         && Performance.sharedInstance().isInstrumentationEnabled
@@ -125,12 +127,12 @@ public final class PerformanceMonitor: PerformanceLogger {
         Performance.sharedInstance().isInstrumentationEnabled = false
     }
     
-    public func startTrace(name: String) -> any PerformanceTrace {
+    public func startTrace(name: String) -> GDSTrace {
         let trace = Performance.startTrace(name: name)
         return GDSTrace(trace)
     }
     
-    public func startHTTPMetric(url: URL, method: String) -> any PerformanceMetric {
+    public func startHTTPMetric(url: URL, method: String) -> GDSHTTPMetric {
         let metric = HTTPMetric(url: url, httpMethod: HTTPMethod.httpMethodFrom(string: method))
         return GDSHTTPMetric(metric)
     }

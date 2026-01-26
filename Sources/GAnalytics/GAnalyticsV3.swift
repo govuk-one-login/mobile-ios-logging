@@ -13,7 +13,7 @@ public struct GAnalyticsV3 {
     static var analyticsApp: AnalyticsApp.Type = FirebaseApp.self
     public let analyticsPreferenceStore: AnalyticsPreferenceStore
     private let analyticsLogger: AnalyticsLogger.Type
-    public let performanceLogger: PerformanceLogger
+    public let performanceLogger: any PerformanceLogger
     private let crashLogger: CrashLogger
     
     /// Additional parameters for the application
@@ -22,7 +22,7 @@ public struct GAnalyticsV3 {
     init(
         analyticsPreferenceStore: AnalyticsPreferenceStore,
         analyticsLogger: AnalyticsLogger.Type,
-        performanceLogger: PerformanceLogger = PerformanceMonitor(),
+        performanceLogger: any PerformanceLogger = PerformanceMonitor(),
         crashLogger: CrashLogger
     ) {
         self.analyticsPreferenceStore = analyticsPreferenceStore
