@@ -22,7 +22,7 @@ public struct GAnalyticsV3 {
     init(
         analyticsPreferenceStore: AnalyticsPreferenceStore,
         analyticsLogger: AnalyticsLogger.Type,
-        performanceLogger: any PerformanceLogger = PerformanceMonitor(),
+        performanceLogger: any PerformanceLogger = GAPerformanceLogger(),
         crashLogger: CrashLogger
     ) {
         self.analyticsPreferenceStore = analyticsPreferenceStore
