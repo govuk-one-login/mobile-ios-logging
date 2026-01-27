@@ -24,7 +24,7 @@ public final class GAPerformanceLogger: PerformanceLogger {
         && Performance.sharedInstance().isInstrumentationEnabled
     }
     
-    init() {
+    public init() {
         self.disable()
     }
     
