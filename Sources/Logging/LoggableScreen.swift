@@ -1,1 +1,1 @@
-public typealias LoggableScreen = ScreenType
+public typealias LoggableScreen = LoggableScreenV2

@@ -17,7 +17,7 @@ final class LoggingServiceTests: XCTestCase {
         XCTAssertEqual(service.screensVisited.count, 2)
     }
     
-    enum TestScreen: String, LoggableScreen, CustomStringConvertible {
+    enum TestScreen: String, LoggableScreenV2, CustomStringConvertible {
         case welcome = "WELCOME_SCREEN"
         
         var name: String { rawValue }

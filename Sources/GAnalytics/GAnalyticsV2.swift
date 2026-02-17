@@ -77,18 +77,6 @@ extension GAnalyticsV2: AnalyticsServiceV2 {
         return newCopy
     }
     
-    /// Tracks screens adding screen tracking parameters in Firebase package.
-    public func trackScreen(_ screen: LoggableScreen,
-                            parameters params: [String: Any] = [:]) {
-        var parameters = mergeAdditionalParameters(params)
-        
-        parameters[AnalyticsParameterScreenName] = screen.name
-        parameters[AnalyticsParameterScreenClass] = screen.name
-        
-        analyticsLogger.logEvent(AnalyticsEventScreenView,
-                                 parameters: parameters)
-    }
-    
     public func trackScreen(_ screen: any LoggableScreenV2,
                             parameters params: [String: Any]) {
         var parameters = mergeAdditionalParameters(params)
