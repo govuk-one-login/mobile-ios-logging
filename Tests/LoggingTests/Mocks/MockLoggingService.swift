@@ -7,12 +7,15 @@ struct MockScreen: Equatable {
 }
 
 final class MockLoggingService: AnalyticsServiceV2 {
+    var analyticsPreferenceStore: any Logging.AnalyticsPreferenceStore = UserDefaultsPreferenceStore()
+    
     var additionalParameters: [String: Any] = [:]
     
     var screensVisited: [MockScreen] = []
     var screenParamsLogged: [String: Any] = [:]
     var eventsLogged: [LoggableEvent] = []
     
+    func logCrash(_ crash: any Error) {}
     func logCrash(_ crash: NSError) { }
     func grantAnalyticsPermission() { }
     func denyAnalyticsPermission() { }
