@@ -157,39 +157,30 @@ extension GAnalyticsTestsV2 {
 
 // MARK: - Logging Tests
 extension GAnalyticsTestsV2 {
-    enum TestScreen: String, LoggableScreen, CustomStringConvertible {
+    enum TestScreen: String, ScreenType, CustomStringConvertible {
         case welcome = "WELCOME_SCREEN"
         
         var name: String { rawValue }
         var description: String { rawValue }
     }
     
-    func testTrackScreen() {
-        sut.trackScreen(TestScreen.welcome,
-                        parameters: ["additional_parameter": "testing"])
-        
-        XCTAssertEqual(
-            analyticsLogger.events,
-            [.init(name: "screen_view", parameters: [
-                "screen_name": "WELCOME_SCREEN",
-                "screen_class": "WELCOME_SCREEN",
-                "additional_parameter": "testing"
-            ])]
-        )
-    }
-    
     func testTrackScreenAdditionalParameters() {
+        struct TestScreenV2: LoggableScreenV2 {
+            let name: String = "Welcome to GOV.UK One Login"
+            let type: TestScreen = .welcome
+        }
+        
         sut.additionalParameters = [
             "journey": "id_verification"
         ]
         
-        sut.trackScreen(TestScreen.welcome,
+        sut.trackScreen(TestScreenV2(),
                         parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
             analyticsLogger.events,
             [.init(name: "screen_view", parameters: [
-                "screen_name": "WELCOME_SCREEN",
+                "screen_name": "Welcome to GOV.UK One Login",
                 "screen_class": "WELCOME_SCREEN",
                 "additional_parameter": "testing",
                 "journey": "id_verification"
@@ -198,12 +189,17 @@ extension GAnalyticsTestsV2 {
     }
     
     func testTrackScreenAdditionalParametersPrecedence() {
+        struct TestScreenV2: LoggableScreenV2 {
+            let name: String = "Welcome to GOV.UK One Login"
+            let type: TestScreen = .welcome
+        }
+        
         sut.additionalParameters = [
             "journey": "id_verification"
         ]
         
         sut.trackScreen(
-            TestScreen.welcome,
+            TestScreenV2(),
             parameters: [
                 "additional_parameter": "testing",
                 "journey": "something_else"
@@ -216,7 +212,7 @@ extension GAnalyticsTestsV2 {
                 .init(
                     name: "screen_view",
                     parameters: [
-                        "screen_name": "WELCOME_SCREEN",
+                        "screen_name": "Welcome to GOV.UK One Login",
                         "screen_class": "WELCOME_SCREEN",
                         "additional_parameter": "testing",
                         "journey": "id_verification"
