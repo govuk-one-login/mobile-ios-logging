@@ -6,7 +6,7 @@ struct MockScreen: Equatable {
     let `class`: String
 }
 
-final class MockLoggingService: AnalyticsServiceV2 {
+final class MockLoggingService: AnalyticsService {
     var analyticsPreferenceStore: any Logging.AnalyticsPreferenceStore = UserDefaultsPreferenceStore()
     
     var additionalParameters: [String: Any] = [:]
@@ -26,7 +26,7 @@ final class MockLoggingService: AnalyticsServiceV2 {
         self
     }
     
-    func trackScreen(_ screen: any LoggableScreenV2, parameters: [String: Any]) {
+    func trackScreen(_ screen: any LoggableScreen, parameters: [String: Any]) {
         screensVisited.append(
             MockScreen(name: screen.name, class: screen.type.description)
         )

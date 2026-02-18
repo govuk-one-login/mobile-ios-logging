@@ -1,4 +1,4 @@
-public protocol LoggableScreenV2 {
+public protocol LoggableScreen {
     associatedtype ScreenType: CustomStringConvertible
 
     var name: String { get }

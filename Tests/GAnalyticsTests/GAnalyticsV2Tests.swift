@@ -2,12 +2,12 @@
 import Logging
 import XCTest
 
-final class GAnalyticsTestsV2: XCTestCase {
+final class GAnalyticsTests: XCTestCase {
     private var app: MockApp.Type!
     private var preferenceStore: MockPreferenceStore!
     private var analyticsLogger: MockAnalyticsLogger.Type!
     private var crashLogger: MockCrashLogger!
-    private var sut: GAnalyticsV2!
+    private var sut: GAnalytics!
     
     override func setUp() {
         super.setUp()
@@ -17,12 +17,12 @@ final class GAnalyticsTestsV2: XCTestCase {
         analyticsLogger = MockAnalyticsLogger.self
         crashLogger = MockCrashLogger()
         
-        sut = GAnalyticsV2(
+        sut = GAnalytics(
             analyticsPreferenceStore: preferenceStore,
             analyticsLogger: analyticsLogger,
             crashLogger: crashLogger
         )
-        GAnalyticsV2.analyticsApp = app
+        GAnalytics.analyticsApp = app
     }
     
     override func tearDown() {
@@ -37,7 +37,7 @@ final class GAnalyticsTestsV2: XCTestCase {
 }
 
 // MARK: - Adding Additional Parameters tests
-extension GAnalyticsTestsV2 {
+extension GAnalyticsTests {
     func testAddingAdditionalParameters() {
         let initialType = sut.addingAdditionalParameters([
             "taxonomy_level1": "one login mobile application"
@@ -70,16 +70,16 @@ extension GAnalyticsTestsV2 {
 }
 
 // MARK: - User consent tests
-extension GAnalyticsTestsV2 {
+extension GAnalyticsTests {
     func testConfiguration() {
-        GAnalyticsV2.configure()
+        GAnalytics.configure()
         
         XCTAssertTrue(app.calledConfigure)
     }
 }
 
 // MARK: - User Consent Tests
-extension GAnalyticsTestsV2 {
+extension GAnalyticsTests {
     func testNoTrackingWhenNoConsent() {
         preferenceStore.hasAcceptedAnalytics = nil
         
@@ -156,8 +156,8 @@ extension GAnalyticsTestsV2 {
 }
 
 // MARK: - Logging Tests
-extension GAnalyticsTestsV2 {
-    enum TestScreen: String, ScreenType, CustomStringConvertible {
+extension GAnalyticsTests {
+    enum TestScreenType: String, ScreenType, CustomStringConvertible {
         case welcome = "WELCOME_SCREEN"
         
         var name: String { rawValue }
@@ -165,16 +165,16 @@ extension GAnalyticsTestsV2 {
     }
     
     func testTrackScreenAdditionalParameters() {
-        struct TestScreenV2: LoggableScreenV2 {
+        struct TestScreen: LoggableScreen {
             let name: String = "Welcome to GOV.UK One Login"
-            let type: TestScreen = .welcome
+            let type: TestScreenType = .welcome
         }
         
         sut.additionalParameters = [
             "journey": "id_verification"
         ]
         
-        sut.trackScreen(TestScreenV2(),
+        sut.trackScreen(TestScreen(),
                         parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
@@ -189,9 +189,9 @@ extension GAnalyticsTestsV2 {
     }
     
     func testTrackScreenAdditionalParametersPrecedence() {
-        struct TestScreenV2: LoggableScreenV2 {
+        struct TestScreen: LoggableScreen {
             let name: String = "Welcome to GOV.UK One Login"
-            let type: TestScreen = .welcome
+            let type: TestScreenType = .welcome
         }
         
         sut.additionalParameters = [
@@ -199,7 +199,7 @@ extension GAnalyticsTestsV2 {
         ]
         
         sut.trackScreen(
-            TestScreenV2(),
+            TestScreen(),
             parameters: [
                 "additional_parameter": "testing",
                 "journey": "something_else"
@@ -222,13 +222,13 @@ extension GAnalyticsTestsV2 {
         )
     }
     
-    func testTrackScreenV2() {
-        struct TestScreenV2: LoggableScreenV2 {
+    func testTrackScreen() {
+        struct TestScreen: LoggableScreen {
             let name: String = "Welcome to GOV.UK One Login"
-            let type: TestScreen = .welcome
+            let type: TestScreenType = .welcome
         }
         
-        sut.trackScreen(TestScreenV2(),
+        sut.trackScreen(TestScreen(),
                         parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
