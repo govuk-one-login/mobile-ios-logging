@@ -3,6 +3,9 @@ import FirebaseAnalytics
 import FirebaseCrashlytics
 import Logging
 
+@available(*, deprecated, renamed: "GAnalytics")
+public typealias GAnalyticsV2 = GAnalytics
+
 /// GAnalytics
 ///
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.

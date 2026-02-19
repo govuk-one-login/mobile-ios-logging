@@ -1,5 +1,8 @@
 import Foundation
 
+@available(*, deprecated, renamed: "AnalyticsService")
+public typealias AnalyticsServiceV2 = AnalyticsService
+
 /// AnalyticsService
 ///
 /// A protocol for Types to log analytics to a third-party analytics service.
