@@ -67,10 +67,10 @@ enum ScreenTypes: String, ScreenType {
 }
 ```
 
-Conform to the `LoggableScreenV2` protocol to track a specific screen with the `AnalyticsService`.
+Conform to the `LoggableScreen` protocol to track a specific screen with the `AnalyticsService`.
 
 ```swift
-struct ErrorScreen: LoggableScreenV2 {
+struct ErrorScreen: LoggableScreen {
     let type: ScreenType = ScreenTypes.error
     let name: String
 }
@@ -89,7 +89,7 @@ final class NetworkErrorViewController: UIViewController {
 }
 ```
 
-You can even conform your view controller directly to the `LoggableScreenV2` protocol:
+You can even conform your view controller directly to the `LoggableScreen` protocol:
 
 ```swift
 import UIKit
@@ -109,7 +109,7 @@ final class MyViewController: UIViewController {
     }
 }
 
-extension MyViewController: LoggableScreenV2 {
+extension MyViewController: LoggableScreen {
     var name: String { title! }
     var type: ScreenType { ScreenTypes.error }
 }

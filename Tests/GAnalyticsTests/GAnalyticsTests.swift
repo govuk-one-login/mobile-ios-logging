@@ -3,33 +3,35 @@ import Logging
 import XCTest
 
 final class GAnalyticsTests: XCTestCase {
-    private var sut: GAnalytics!
-    
     private var app: MockApp.Type!
+    private var preferenceStore: MockPreferenceStore!
     private var analyticsLogger: MockAnalyticsLogger.Type!
     private var crashLogger: MockCrashLogger!
-    private var preferenceStore: MockPreferenceStore!
+    private var sut: GAnalytics!
     
     override func setUp() {
         super.setUp()
         
         app = MockApp.self
+        preferenceStore = MockPreferenceStore()
         analyticsLogger = MockAnalyticsLogger.self
         crashLogger = MockCrashLogger()
-        preferenceStore = MockPreferenceStore()
         
-        sut = GAnalytics(app: app,
-                         analytics: analyticsLogger,
-                         crashLogger: crashLogger,
-                         preferenceStore: preferenceStore)
+        sut = GAnalytics(
+            analyticsPreferenceStore: preferenceStore,
+            analyticsLogger: analyticsLogger,
+            crashLogger: crashLogger
+        )
+        GAnalytics.analyticsApp = app
     }
     
     override func tearDown() {
-        sut = nil
-        analyticsLogger.reset()
-        analyticsLogger = nil
-        crashLogger = nil
+        app.reset()
         preferenceStore = nil
+        analyticsLogger.reset()
+        crashLogger = nil
+        sut = nil
+        
         super.tearDown()
     }
 }
@@ -70,10 +72,9 @@ extension GAnalyticsTests {
 // MARK: - User consent tests
 extension GAnalyticsTests {
     func testConfiguration() {
-        sut.configure()
+        GAnalytics.configure()
         
         XCTAssertTrue(app.calledConfigure)
-        NotificationCenter.default.post(Notification(name: UserDefaults.didChangeNotification))
     }
 }
 
@@ -82,32 +83,32 @@ extension GAnalyticsTests {
     func testNoTrackingWhenNoConsent() {
         preferenceStore.hasAcceptedAnalytics = nil
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     func testNoTrackingWhenConsentDenied() {
         preferenceStore.hasAcceptedAnalytics = false
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     func testTrackingEnabledWhenUserConsented() {
         preferenceStore.hasAcceptedAnalytics = true
         
-        sut.configure()
+        sut.activate()
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, true)
         XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     func testSubscribesToPreferenceStore() {
-        sut.configure()
+        sut.activate()
         
         waitForSubscription()
     }
@@ -115,7 +116,7 @@ extension GAnalyticsTests {
     func testStartsTrackingAnalyticsWhenConsentGiven() async throws {
         preferenceStore.hasAcceptedAnalytics = false
         
-        sut.configure()
+        sut.activate()
         waitForSubscription()
         
         // alert the AnalyticsService that consent is given:
@@ -131,7 +132,7 @@ extension GAnalyticsTests {
     func testStopsTrackingAnalyticsWhenConsentWithdrawn() async throws {
         preferenceStore.hasAcceptedAnalytics = true
         
-        sut.configure()
+        sut.activate()
         waitForSubscription()
         
         // alert the AnalyticsService that consent is withdrawn
@@ -142,7 +143,7 @@ extension GAnalyticsTests {
         
         XCTAssertTrue(analyticsLogger.didResetAnalyticsData)
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
     
     private func waitForSubscription() {
@@ -156,39 +157,30 @@ extension GAnalyticsTests {
 
 // MARK: - Logging Tests
 extension GAnalyticsTests {
-    enum TestScreen: String, LoggableScreen, CustomStringConvertible {
+    enum TestScreenType: String, ScreenType, CustomStringConvertible {
         case welcome = "WELCOME_SCREEN"
         
         var name: String { rawValue }
         var description: String { rawValue }
     }
     
-    func testTrackScreen() {
-        sut.trackScreen(TestScreen.welcome,
-                        parameters: ["additional_parameter": "testing"])
-        
-        XCTAssertEqual(
-            analyticsLogger.events,
-            [.init(name: "screen_view", parameters: [
-                "screen_name": "WELCOME_SCREEN",
-                "screen_class": "WELCOME_SCREEN",
-                "additional_parameter": "testing"
-            ])]
-        )
-    }
-    
     func testTrackScreenAdditionalParameters() {
+        struct TestScreen: LoggableScreen {
+            let name: String = "Welcome to GOV.UK One Login"
+            let type: TestScreenType = .welcome
+        }
+        
         sut.additionalParameters = [
             "journey": "id_verification"
         ]
         
-        sut.trackScreen(TestScreen.welcome,
+        sut.trackScreen(TestScreen(),
                         parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
             analyticsLogger.events,
             [.init(name: "screen_view", parameters: [
-                "screen_name": "WELCOME_SCREEN",
+                "screen_name": "Welcome to GOV.UK One Login",
                 "screen_class": "WELCOME_SCREEN",
                 "additional_parameter": "testing",
                 "journey": "id_verification"
@@ -197,12 +189,17 @@ extension GAnalyticsTests {
     }
     
     func testTrackScreenAdditionalParametersPrecedence() {
+        struct TestScreen: LoggableScreen {
+            let name: String = "Welcome to GOV.UK One Login"
+            let type: TestScreenType = .welcome
+        }
+        
         sut.additionalParameters = [
             "journey": "id_verification"
         ]
         
         sut.trackScreen(
-            TestScreen.welcome,
+            TestScreen(),
             parameters: [
                 "additional_parameter": "testing",
                 "journey": "something_else"
@@ -215,7 +212,7 @@ extension GAnalyticsTests {
                 .init(
                     name: "screen_view",
                     parameters: [
-                        "screen_name": "WELCOME_SCREEN",
+                        "screen_name": "Welcome to GOV.UK One Login",
                         "screen_class": "WELCOME_SCREEN",
                         "additional_parameter": "testing",
                         "journey": "id_verification"
@@ -225,13 +222,13 @@ extension GAnalyticsTests {
         )
     }
     
-    func testTrackScreenV2() {
-        struct TestScreenV2: LoggableScreenV2 {
+    func testTrackScreen() {
+        struct TestScreen: LoggableScreen {
             let name: String = "Welcome to GOV.UK One Login"
-            let type: TestScreen = .welcome
+            let type: TestScreenType = .welcome
         }
         
-        sut.trackScreen(TestScreenV2(),
+        sut.trackScreen(TestScreen(),
                         parameters: ["additional_parameter": "testing"])
         
         XCTAssertEqual(
@@ -271,6 +268,34 @@ extension GAnalyticsTests {
         )
     }
     
+    func testLogCrashCustomNSError() {
+        let error = MockCustomNSError(kind: "testError1")
+        
+        sut.additionalParameters = ["additionalParameter": "param"]
+        sut.logCrash(error)
+        
+        XCTAssertEqual(crashLogger.errors.count, 1)
+        XCTAssertEqual(crashLogger.loggedParams?["kind"] as? String, "testError1")
+        XCTAssertEqual(crashLogger.loggedParams?["testString"] as? String, "stringValue")
+        XCTAssertEqual(crashLogger.loggedParams?["testInt"] as? Int, 123)
+        
+        XCTAssertEqual(crashLogger.loggedParams?["additionalParameter"] as? String, "param")
+    }
+    
+    func testLogCrashCustomNSErrorNotOverwritingParam() {
+        let error = MockCustomNSError(kind: "testError1")
+        
+        sut.additionalParameters = ["testString": "CorrectStringValue"]
+        sut.logCrash(error)
+        
+        XCTAssertEqual(crashLogger.errors.count, 1)
+        XCTAssertEqual(crashLogger.loggedParams?["kind"] as? String, "testError1")
+        XCTAssertEqual(crashLogger.loggedParams?["testString"] as? String, "CorrectStringValue")
+        XCTAssertEqual(crashLogger.loggedParams?["testInt"] as? Int, 123)
+        
+        XCTAssertNotEqual(crashLogger.loggedParams?["testString"] as? String, "stringValue")
+    }
+    
     func testGrantAnalyticsPermission() {
         sut.grantAnalyticsPermission()
         
@@ -284,6 +309,6 @@ extension GAnalyticsTests {
         XCTAssertTrue(analyticsLogger.didResetAnalyticsData)
         
         XCTAssertEqual(analyticsLogger.isAnalyticsCollectionEnabled, false)
-        XCTAssertEqual(crashLogger.isCollectionEnabled, false)
+        XCTAssertEqual(crashLogger.isCollectionEnabled, true)
     }
 }
