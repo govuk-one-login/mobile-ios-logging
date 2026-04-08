@@ -20,7 +20,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/govuk-one-login/mobile-ios-networking.git",
-            from: "3.0.0"
+            from: "4.0.0"
         )
     ],
     targets: [
