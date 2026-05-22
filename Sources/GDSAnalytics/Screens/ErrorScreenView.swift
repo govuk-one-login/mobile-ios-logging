@@ -27,6 +27,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
         id: String? = nil,
         screen: Screen,
         titleKey: String,
+        variableKeys: [String] = [],
         reason: String? = nil,
         endpoint: String? = nil,
         statusCode: String? = nil,
@@ -35,7 +36,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
         savedDocType: String = "undefined"
     ) {
         self.screen = screen
-        self.title = titleKey.englishString(bundle: bundle).formattedAsParameter
+        self.title = titleKey.englishString(variableKeys, bundle: bundle).formattedAsParameter
         self.id = id
         self.reason = reason
         self.endpoint = endpoint
@@ -48,6 +49,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
         id: String? = nil,
         screen: Screen,
         titleKey: String,
+        variableKeys: [String] = [],
         error: LoggableError,
         bundle: Bundle = .main,
         savedDocType: String = "undefined"
@@ -55,7 +57,7 @@ public struct ErrorScreenView<Screen: ScreenType>: ScreenViewProtocol, LoggableE
         self.id = id
         self.screen = screen
         self.savedDocType = savedDocType
-        title = titleKey.englishString(bundle: bundle).formattedAsParameter
+        title = titleKey.englishString(variableKeys, bundle: bundle).formattedAsParameter
         reason = error.reason
         endpoint = error.endpoint
         statusCode = error.statusCode

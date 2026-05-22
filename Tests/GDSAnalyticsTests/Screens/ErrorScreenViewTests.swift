@@ -39,11 +39,12 @@ final class ErrorScreenViewTests: XCTestCase {
         let view = ErrorScreenView(
             id: uuid,
             screen: MockScreen.error,
-            titleKey: "Something went wrong",
+            titleKey: "Something went wrong %@",
+            variableKeys: ["please try again"],
             error: MockError()
         )
         
-        XCTAssertEqual(view.title, "something went wrong")
+        XCTAssertEqual(view.title, "something went wrong please try again")
         XCTAssertEqual(
             view.parameters,
             [
