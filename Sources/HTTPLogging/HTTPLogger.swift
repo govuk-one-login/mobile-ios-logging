@@ -29,7 +29,7 @@ public struct HTTPLogger: LoggingService {
             request.httpBody = jsonData
             
             do {
-                _ = try await networkClient.makeRequest(request)
+                _ = try await networkClient.request(request).execute()
             } catch {
                 handleError?(error)
             }

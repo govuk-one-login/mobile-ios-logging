@@ -58,10 +58,9 @@ public struct AuthorizedHTTPLogger {
         request.httpBody = data
         
         do {
-            _ = try await networkClient.makeAuthorizedRequest(
-                scope: scope,
-                request: request
-            )
+            _ = try await networkClient.request(request)
+                .withAuthentication(scope: scope)
+                .execute()
         } catch {
             handleError?(error)
         }
