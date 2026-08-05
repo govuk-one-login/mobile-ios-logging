@@ -33,7 +33,7 @@ let package = Package(
                     dependencies: ["Logging"]),
         
         .target(name: "HTTPLogging",
-                dependencies: ["Logging"],
+                dependencies: ["Logging", .product(name: "Networking", package: "mobile-ios-networking")],
                 exclude: ["README.md"],
                 swiftSettings: [
                     .define("DEBUG", .when(configuration: .debug))
