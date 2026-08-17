@@ -104,8 +104,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/govuk-one-login/mobile-ios-networking.git",
       "state" : {
-        "revision" : "dc8acafcc47c4a18dcae8ec5a53bb26526b4b691",
-        "version" : "4.4.1"
+        "revision" : "c2ad32a7c6f88c678fbb3c88e1ce2b755603b87f",
+        "version" : "4.6.0"
+      }
+    },
+    {
+      "identity" : "mobile-ios-utilities",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/govuk-one-login/mobile-ios-utilities",
+      "state" : {
+        "revision" : "53afbf17be3ebdbed1746108cec3d2833b18b6a8",
+        "version" : "2.0.0"
       }
     },
     {
@@ -124,6 +133,15 @@
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "3292bab28e6e92000161348003fdef8edc4e582d",
+        "version" : "0.65.0"
       }
     }
   ],
