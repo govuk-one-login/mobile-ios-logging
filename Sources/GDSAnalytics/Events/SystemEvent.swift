@@ -6,7 +6,6 @@ public struct SystemEvent: Event {
     public let type = EventType.systemEvent
     public let systemEventType: String
     public let reason: String?
-    public let savedDocType: String
     public let isError: Bool
     public let firebaseScreen: String
     
@@ -14,17 +13,15 @@ public struct SystemEvent: Event {
     
     public var parameters: [String: String] {
         var parameters: [String: String] = [
+            AnalyticsParameterScreenName: firebaseScreen,
             EventParameter.type.rawValue: systemEventType,
             EventParameter.text.rawValue: text,
-            EventParameter.isError.rawValue : isError ? "true" : "false",
-            EventParameter.savedDocType.rawValue: savedDocType
+            EventParameter.isError.rawValue : isError ? "true" : "false"
         ]
         
         if let reason {
             parameters[EventParameter.reason.rawValue] = reason
         }
-        
-        parameters[AnalyticsParameterScreenName] = firebaseScreen
         
         return parameters.mapValues(\.formattedAsParameter)
     }
@@ -36,7 +33,6 @@ public struct SystemEvent: Event {
         firebaseScreen: String,
         systemEventType: String,
         reason: String? = nil,
-        savedDocType: String = "undefined",
         isError: Bool = false
     ) {
         self.init(
@@ -46,7 +42,6 @@ public struct SystemEvent: Event {
             firebaseScreen: firebaseScreen,
             systemEventType: systemEventType,
             reason: reason,
-            savedDocType: savedDocType,
             isError: isError
         )
     }
@@ -58,14 +53,12 @@ public struct SystemEvent: Event {
         firebaseScreen: String,
         systemEventType: String,
         reason: String? = nil,
-        savedDocType: String = "undefined",
         isError: Bool = false
     ) {
         self.text = textKey.englishString(variableKeys, bundle: bundle)
         self.firebaseScreen = firebaseScreen
         self.systemEventType = systemEventType
         self.reason = reason
-        self.savedDocType = savedDocType
         self.isError = isError
     }
 }

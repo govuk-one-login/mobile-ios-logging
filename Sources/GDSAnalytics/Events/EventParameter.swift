@@ -7,5 +7,4 @@ public enum EventParameter: String {
     case reason
     case isError = "is_error"
     case savedDocType = "saved_doc_type"
-    case firebaseScreen = "firebase_screen"
 }
