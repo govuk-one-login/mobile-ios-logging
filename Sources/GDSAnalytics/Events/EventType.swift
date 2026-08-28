@@ -7,4 +7,5 @@ public enum EventType: String {
     case deeplink = "deeplink"
     case actionMenu = "action menu"
     case icon = "icon"
+    case systemEvent = "system event"
 }
