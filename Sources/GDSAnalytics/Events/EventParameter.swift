@@ -6,5 +6,4 @@ public enum EventParameter: String {
     case external
     case reason
     case isError = "is_error"
-    case savedDocType = "saved_doc_type"
 }
