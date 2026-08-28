@@ -1,5 +1,5 @@
-import Foundation
 import FirebaseAnalytics
+import Foundation
 
 public struct SystemEvent: Event {
     public let name = EventName.systemEvent
@@ -16,7 +16,7 @@ public struct SystemEvent: Event {
             AnalyticsParameterScreenName: firebaseScreen,
             EventParameter.type.rawValue: systemEventType,
             EventParameter.text.rawValue: text,
-            EventParameter.isError.rawValue : isError ? "true" : "false"
+            EventParameter.isError.rawValue: isError ? "true" : "false"
         ]
         
         if let reason {
