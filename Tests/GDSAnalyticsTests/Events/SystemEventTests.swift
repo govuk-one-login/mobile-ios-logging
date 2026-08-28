@@ -13,7 +13,7 @@ struct SystemEventTests {
         #expect(event.name == .systemEvent)
         #expect(event.type == .systemEvent)
         #expect(event.text == "Document Saved")
-        #expect(event.firebaseScreen == "home_screen")
+        #expect(event.screenName == "home_screen")
         #expect(event.systemEventType == "save")
         #expect(event.isError == false)
         #expect(event.reason == nil)
@@ -30,7 +30,7 @@ struct SystemEventTests {
         )
         
         #expect(event.text == "Upload Failed")
-        #expect(event.firebaseScreen == "upload_screen")
+        #expect(event.screenName == "upload_screen")
         #expect(event.systemEventType == "upload")
         #expect(event.reason == "network timeout")
         #expect(event.isError == true)

@@ -7,13 +7,13 @@ public struct SystemEvent: Event {
     public let systemEventType: String
     public let reason: String?
     public let isError: Bool
-    public let firebaseScreen: String
+    public let screenName: String
     
     public let text: String
     
     public var parameters: [String: String] {
         var parameters: [String: String] = [
-            AnalyticsParameterScreenName: firebaseScreen,
+            AnalyticsParameterScreenName: screenName,
             EventParameter.type.rawValue: systemEventType,
             EventParameter.text.rawValue: text,
             EventParameter.isError.rawValue: isError ? "true" : "false"
@@ -56,7 +56,7 @@ public struct SystemEvent: Event {
         isError: Bool = false
     ) {
         self.text = textKey.englishString(variableKeys, bundle: bundle)
-        self.firebaseScreen = firebaseScreen
+        self.screenName = firebaseScreen
         self.systemEventType = systemEventType
         self.reason = reason
         self.isError = isError
