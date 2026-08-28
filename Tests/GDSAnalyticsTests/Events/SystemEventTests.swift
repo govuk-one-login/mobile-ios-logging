@@ -6,7 +6,7 @@ struct SystemEventTests {
     func initialisation() {
         let event = SystemEvent(
             textKey: "Document Saved",
-            firebaseScreen: "home_screen",
+            screenName: "home_screen",
             systemEventType: "save"
         )
         
@@ -23,7 +23,7 @@ struct SystemEventTests {
     func initialisationWithAllParameters() {
         let event = SystemEvent(
             textKey: "Upload Failed",
-            firebaseScreen: "upload_screen",
+            screenName: "upload_screen",
             systemEventType: "upload",
             reason: "network timeout",
             isError: true
@@ -40,7 +40,7 @@ struct SystemEventTests {
     func parameters() {
         let event = SystemEvent(
             textKey: "Document Saved",
-            firebaseScreen: "home_screen",
+            screenName: "home_screen",
             systemEventType: "save"
         )
         
@@ -56,7 +56,7 @@ struct SystemEventTests {
     func parametersWithReason() {
         let event = SystemEvent(
             textKey: "Upload Failed",
-            firebaseScreen: "upload_screen",
+            screenName: "upload_screen",
             systemEventType: "upload",
             reason: "Network Timeout",
             isError: true
@@ -75,7 +75,7 @@ struct SystemEventTests {
     func parametersWithoutReasonExcludesReasonKey() {
         let event = SystemEvent(
             textKey: "Document Saved",
-            firebaseScreen: "home_screen",
+            screenName: "home_screen",
             systemEventType: "save"
         )
         
@@ -86,7 +86,7 @@ struct SystemEventTests {
     func parameterFormattingConvertsToLowercase() {
         let event = SystemEvent(
             textKey: "DOCUMENT SAVED",
-            firebaseScreen: "Home_Screen",
+            screenName: "Home_Screen",
             systemEventType: "Save",
             reason: "SOME REASON"
         )
@@ -102,7 +102,7 @@ struct SystemEventTests {
         let longString = String(repeating: "a", count: 150)
         let event = SystemEvent(
             textKey: longString,
-            firebaseScreen: "home_screen",
+            screenName: "home_screen",
             systemEventType: "save"
         )
         

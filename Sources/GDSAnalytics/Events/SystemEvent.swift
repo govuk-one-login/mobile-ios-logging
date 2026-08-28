@@ -30,7 +30,7 @@ public struct SystemEvent: Event {
         textKey: String,
         _ variableKeys: String...,
         bundle: Bundle = .main,
-        firebaseScreen: String,
+        screenName: String,
         systemEventType: String,
         reason: String? = nil,
         isError: Bool = false
@@ -39,7 +39,7 @@ public struct SystemEvent: Event {
             textKey: textKey,
             variableKeys: variableKeys,
             bundle: bundle,
-            firebaseScreen: firebaseScreen,
+            screenName: screenName,
             systemEventType: systemEventType,
             reason: reason,
             isError: isError
@@ -50,13 +50,13 @@ public struct SystemEvent: Event {
         textKey: String,
         variableKeys: [String],
         bundle: Bundle = .main,
-        firebaseScreen: String,
+        screenName: String,
         systemEventType: String,
         reason: String? = nil,
         isError: Bool = false
     ) {
         self.text = textKey.englishString(variableKeys, bundle: bundle)
-        self.screenName = firebaseScreen
+        self.screenName = screenName
         self.systemEventType = systemEventType
         self.reason = reason
         self.isError = isError
