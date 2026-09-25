@@ -1,5 +1,5 @@
 import Foundation
-import Logging
+import GDSLogging
 
 struct MockScreen: Equatable {
     let name: String
@@ -7,7 +7,7 @@ struct MockScreen: Equatable {
 }
 
 final class MockLoggingService: AnalyticsService {
-    var analyticsPreferenceStore: any Logging.AnalyticsPreferenceStore = UserDefaultsPreferenceStore()
+    var analyticsPreferenceStore: any GDSLogging.AnalyticsPreferenceStore = UserDefaultsPreferenceStore()
     
     var additionalParameters: [String: Any] = [:]
     

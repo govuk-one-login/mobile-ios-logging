@@ -1,7 +1,7 @@
 import Firebase
 import FirebaseAnalytics
 import FirebaseCrashlytics
-import Logging
+import GDSLogging
 
 @available(*, deprecated, renamed: "GAnalytics")
 public typealias GAnalyticsV2 = GAnalytics
