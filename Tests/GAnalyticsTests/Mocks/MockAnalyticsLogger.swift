@@ -1,3 +1,4 @@
+import Foundation
 @testable import GAnalytics
 
 final class MockAnalyticsLogger: AnalyticsLogger {
@@ -6,26 +7,31 @@ final class MockAnalyticsLogger: AnalyticsLogger {
         let parameters: [String: String]
     }
     
-    private(set) static var events: [Event] = []
-    private(set) static var didResetAnalyticsData: Bool = false
-    private(set) static var isAnalyticsCollectionEnabled: Bool?
+    nonisolated(unsafe) private static var _events: [Event] = []
+    static var events: [Event] { workQueue.sync { _events } }
+    nonisolated(unsafe) private static var _didResetAnalyticsData: Bool = false
+    static var didResetAnalyticsData: Bool { workQueue.sync { _didResetAnalyticsData } }
+    nonisolated(unsafe) private static var _isAnalyticsCollectionEnabled: Bool?
+    static var isAnalyticsCollectionEnabled: Bool? { workQueue.sync { _isAnalyticsCollectionEnabled } }
+    
+    private static let workQueue = DispatchQueue(label: "mock-analytics-logger-queue")
     
     static func logEvent(_ name: String, parameters: [String: Any]?) {
         guard let parameters = parameters as? [String: String] else {
             preconditionFailure("Expected parameters dictionary to contain String values only.")
         }
-        events.append(Event(name: name, parameters: parameters))
+        workQueue.sync { _events.append(.init(name: name, parameters: parameters)) }
     }
     
     static func setAnalyticsCollectionEnabled(_ value: Bool) {
-        isAnalyticsCollectionEnabled = value
+        workQueue.sync { _isAnalyticsCollectionEnabled = value }
     }
     
     static func resetAnalyticsData() {
-        didResetAnalyticsData = true
+        workQueue.sync { _didResetAnalyticsData = true }
     }
     
     static func reset() {
-        events = []
+        workQueue.sync { _events = [] }
     }
 }

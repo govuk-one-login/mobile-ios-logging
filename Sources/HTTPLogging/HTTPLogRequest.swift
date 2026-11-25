@@ -4,7 +4,7 @@ import Logging
 /// HTTPLogRequest
 ///
 /// A struct to model HTTP event logging data
-struct HTTPLogRequest: Encodable {
+struct HTTPLogRequest: Encodable, Sendable {
     /// sessionID for user/journey identication
     let sessionID: String
     /// event name taken from `LoggingEvent` protocol extension property, `name`

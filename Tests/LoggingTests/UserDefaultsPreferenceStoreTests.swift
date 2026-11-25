@@ -67,7 +67,9 @@ extension UserDefaultsPreferenceStoreTests {
         let resultExpectation = expectation(description: "Wait for result to be sent from stream")
         resultExpectation.assertForOverFulfill = false
         
-        Task {
+        Task { [sut] in
+            guard let sut else { return }
+            
             subscriptionExpectation.fulfill()
             
             for await _ in sut.stream() {

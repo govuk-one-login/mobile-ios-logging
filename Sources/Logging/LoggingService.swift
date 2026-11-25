@@ -3,7 +3,7 @@ import Foundation
 /// LogginService
 ///
 /// A protocol for Types to log events to a HTTP analytics service.
-public protocol LoggingService {
+public protocol LoggingService: Sendable {
     func logEvent(_ event: LoggableEvent, parameters: [String: Any])
 }
 

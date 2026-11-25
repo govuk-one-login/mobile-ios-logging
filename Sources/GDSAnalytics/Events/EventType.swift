@@ -1,4 +1,4 @@
-public enum EventType: String {
+public enum EventType: String, Sendable {
     case submitForm = "submit form"
     case genericLink = "generic link"
     case simpleSmartAnswer = "simple smart answer"

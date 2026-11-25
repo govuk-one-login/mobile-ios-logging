@@ -40,59 +40,50 @@ final class AuthorizedHTTPLoggerTests: XCTestCase {
     private var sut: AuthorizedHTTPLogger!
     private var client: NetworkClient!
     private var configuration: URLSessionConfiguration!
+    private var error: ServerError?
     
-    override func setUp() {
-        super.setUp()
-        configuration = URLSessionConfiguration.ephemeral
+    override func setUp() async throws  {
+        try await super.setUp()
+        
+        let testConfiguration = URLSessionConfiguration.ephemeral
+        configuration = testConfiguration
         configuration.protocolClasses = [MockURLProtocol.self]
         let mockTokenHolder = MockTokenHolder()
-        client = NetworkClient(configuration: configuration)
-        client.authorizationProvider = mockTokenHolder
+        var networkClient = await MainActor.run { NetworkClient(configuration: testConfiguration) }
+        networkClient.authorizationProvider = mockTokenHolder
         
         sut = AuthorizedHTTPLogger(
             url: URL(string: "https://example.com/dev")!,
-            networkClient: client,
+            networkClient: networkClient,
             scope: "this.is.scoped"
         )
+        client = networkClient
     }
     
-    override func tearDown() {
+    override func tearDown() async throws {
         sut = nil
         client = nil
-        MockURLProtocol.clear()
+        await MainActor.run { MockURLProtocol.clear() }
         configuration = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 }
 
 extension AuthorizedHTTPLoggerTests {
-    func test_successfulTXMAEventLog() throws {
+    func test_successfulTXMAEventLog() async throws {
         // GIVEN network client returns 200
-        MockURLProtocol.handler = {
-            (Data(), HTTPURLResponse(statusCode: 200))
+        await MainActor.run {
+            MockURLProtocol.handler = { (Data(), HTTPURLResponse(statusCode: 200)) }
         }
 
         // WHEN an event is logged
         let requestBody = MockAuthorizedRequestBody()
-        let task = sut.logEvent(requestBody: requestBody)
-        
-        wait(for: [
-            XCTNSPredicateExpectation(
-                predicate: .init(
-                    block: { _, _ in
-                        MockURLProtocol.requests.count == 1
-                    }
-                ),
-                object: nil
-            )
-        ], timeout: 3)
-        
-        task?.cancel()
-        
-        XCTAssertEqual(task?.isCancelled, true)
+        await sut.logEvent(requestBody: requestBody)
         
         // THEN the request succeeds
-        let request = try XCTUnwrap(MockURLProtocol.requests.first)
+        let requests = await MainActor.run { MockURLProtocol.requests }
+        let request = try XCTUnwrap(requests.first)
+        XCTAssertEqual(requests.count, 1)
         XCTAssertEqual(request.httpMethod, "POST")
         XCTAssertEqual(request.url?.scheme, "https")
         XCTAssertEqual(request.url?.host, "example.com")
@@ -109,24 +100,18 @@ extension AuthorizedHTTPLoggerTests {
     
     func test_successfulTXMAEventLogAsync() async throws {
         // GIVEN network client returns 200
-        MockURLProtocol.handler = {
-            (Data(), HTTPURLResponse(statusCode: 200))
+        await MainActor.run {
+            MockURLProtocol.handler = { (Data(), HTTPURLResponse(statusCode: 200)) }
         }
         
         // WHEN an event is logged
         let requestBody = MockAuthorizedRequestBody()
         await sut.logEvent(requestBody: requestBody)
-        
-        let exp = expectation(description: "awaiting request count")
-        
-        if MockURLProtocol.requests.count == 1 {
-            exp.fulfill()
-        }
-        
-        await fulfillment(of: [exp], timeout: 3)
 
         // THEN the request succeeds
-        let request = try XCTUnwrap(MockURLProtocol.requests.first)
+        let requests = await MainActor.run { MockURLProtocol.requests }
+        let request = try XCTUnwrap(requests.first)
+        XCTAssertEqual(requests.count, 1)
         XCTAssertEqual(request.httpMethod, "POST")
         XCTAssertEqual(request.url?.scheme, "https")
         XCTAssertEqual(request.url?.host, "example.com")
@@ -141,33 +126,35 @@ extension AuthorizedHTTPLoggerTests {
         XCTAssertEqual(httpBody.subType.specialInfo, "special info")
     }
     
-    func test_TXMAEventLog_throwsError() throws {
-        var error: ServerError?
+    func test_TXMAEventLog_throwsError() async throws {
+        let errorExpectation = XCTestExpectation(description: "error closure called")
         
         sut = AuthorizedHTTPLogger(
             url: URL(string: "https://example.com/dev")!,
             networkClient: client,
             scope: "this.is.scoped",
             handleError: { receivedError in
-                error = receivedError as? ServerError
+                if
+                    let serverError = receivedError as? ServerError,
+                    serverError.errorCode == 401
+                {
+                    errorExpectation.fulfill()
+                }
             }
         )
         
         // GIVEN network client returns 401 error
-        MockURLProtocol.handler = {
-            (Data(), HTTPURLResponse(statusCode: 401))
+        await MainActor.run {
+            MockURLProtocol.handler = { (Data(), HTTPURLResponse(statusCode: 401)) }
         }
         
         // WHEN a TXMA event is logged
         let requestBody = MockAuthorizedRequestBody()
-        sut.logEvent(requestBody: requestBody)
-        wait(for: [
-            XCTNSPredicateExpectation(predicate: .init(block: { _, _ in
-                MockURLProtocol.requests.count == 1
-            }), object: nil)
-        ], timeout: 3)
+        await sut.logEvent(requestBody: requestBody)
         
-        // THEN a 401 error is received in response
-        XCTAssertEqual(error?.errorCode, 401)
+        await fulfillment(of: [errorExpectation], timeout: 3)
+
+        let requests = await MainActor.run { MockURLProtocol.requests }
+        XCTAssertEqual(requests.count, 1)
     }
 }

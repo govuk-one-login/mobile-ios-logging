@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol ScreenViewProtocol: Equatable {
+public protocol ScreenViewProtocol: Equatable, Sendable {
     associatedtype Screen: ScreenType
     var id: String? { get }
     var screen: Screen { get }

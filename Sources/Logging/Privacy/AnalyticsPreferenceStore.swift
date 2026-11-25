@@ -1,38 +1,48 @@
 import Foundation
 
-public protocol AnalyticsPreferenceStore {
+public protocol AnalyticsPreferenceStore: Sendable {
     var hasAcceptedAnalytics: Bool? { get set }
     func stream() -> AsyncStream<Bool>
 }
 
 public final class UserDefaultsPreferenceStore: AnalyticsPreferenceStore {
-    private let defaults: UserDefaults
-    private var subscribers = [AsyncStream<Bool>.Continuation]()
+    nonisolated(unsafe) private let defaults: UserDefaults
+    nonisolated(unsafe) private var subscribers = [AsyncStream<Bool>.Continuation]()
+    private let workQueue = DispatchQueue(label: "user-defaults-preference-store-work-queue")
     
     init(defaults: UserDefaults) {
         self.defaults = defaults
-        
-        NotificationCenter.default
-            .addObserver(self,
-                         selector: #selector(valueDidChange),
-                         name: UserDefaults.didChangeNotification,
-                         object: nil)
     }
     
     public var hasAcceptedAnalytics: Bool? {
         get {
-            guard value(for: .hasAskedForAnalyticsPermissions) else {
-                return nil
+            workQueue.sync {
+                guard defaults.bool(forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue) else {
+                    return nil
+                }
+                return defaults.bool(forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
             }
-            return value(for: .hasAcceptedAnalytics)
         }
         set {
-            if let newValue {
-                defaults.set(true, forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue)
-                defaults.set(newValue, forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
-            } else {
-                defaults.set(false, forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue)
-                defaults.set(false, forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
+            let currentValue = self.hasAcceptedAnalytics
+            workQueue.sync {
+                if let newValue {
+                    defaults.set(true, forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue)
+                    defaults.set(newValue, forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
+                } else {
+                    defaults.set(false, forKey: DefaultsKey.hasAskedForAnalyticsPermissions.rawValue)
+                    defaults.set(false, forKey: DefaultsKey.hasAcceptedAnalytics.rawValue)
+                }
+            }
+            
+            if
+                let updatedValue = self.hasAcceptedAnalytics,
+                updatedValue != currentValue
+            {
+                let localSubscribers = workQueue.sync { subscribers }
+                localSubscribers.forEach {
+                    $0.yield(updatedValue)
+                }
             }
         }
     }
@@ -41,20 +51,11 @@ public final class UserDefaultsPreferenceStore: AnalyticsPreferenceStore {
         self.init(defaults: .standard)
     }
     
-    @objc private func valueDidChange() {
-        guard let newValue = hasAcceptedAnalytics else { return }
-        subscribers.forEach {
-            $0.yield(newValue)
-        }
-    }
-    
-    private func value(for key: DefaultsKey) -> Bool {
-        defaults.bool(forKey: key.rawValue)
-    }
-    
     public func stream() -> AsyncStream<Bool> {
-        AsyncStream { subscriber in
-            subscribers.append(subscriber)
+        workQueue.sync {
+            AsyncStream { subscriber in
+                subscribers.append(subscriber)
+            }
         }
     }
     

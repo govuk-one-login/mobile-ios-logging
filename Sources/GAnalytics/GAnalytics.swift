@@ -11,13 +11,18 @@ public typealias GAnalyticsV2 = GAnalytics
 /// An abstraction class for bringing Google Analytics (Firebase and Crashlytics) into the app from the Firebase package.
 /// To provide user-specific insights for logging app metrics and performance.
 public struct GAnalytics {
-    static var analyticsApp: AnalyticsApp.Type = FirebaseApp.self
+    nonisolated(unsafe) static var analyticsApp: AnalyticsApp.Type = FirebaseApp.self
     public let analyticsPreferenceStore: AnalyticsPreferenceStore
     private let analyticsLogger: AnalyticsLogger.Type
     private let crashLogger: CrashLogger
+    private let workQueue = DispatchQueue(label: "ganalytics-work-queue")
     
     /// Additional parameters for the application
-    public var additionalParameters = [String: Any]()
+    nonisolated(unsafe) private var _additionalParameters = [String: Any]()
+    public var additionalParameters: [String: Any] {
+        get { workQueue.sync { _additionalParameters } }
+        set { workQueue.sync { _additionalParameters = newValue } }
+    }
     
     init(analyticsPreferenceStore: AnalyticsPreferenceStore,
          analyticsLogger: AnalyticsLogger.Type,
@@ -65,8 +70,10 @@ public struct GAnalytics {
     
     /// Merging `parameters` dictionary parameter with `additionalParameters` property
     private func mergeAdditionalParameters(_ parameters: [String: Any]) -> [String: Any] {
-        additionalParameters.merging(parameters) { lhs, _ in
-            lhs
+        workQueue.sync {
+            _additionalParameters.merging(parameters) { lhs, _ in
+                lhs
+            }
         }
     }
 }
@@ -105,9 +112,7 @@ extension GAnalytics: AnalyticsService {
     public func logCrash(_ crash: Error) {
         let errorUserInfo = (crash as? CustomNSError)?.errorUserInfo ?? [:]
         
-        let paramsToLog = additionalParameters.merging(errorUserInfo) { lhs, _ in
-            lhs
-        }
+        let paramsToLog = mergeAdditionalParameters(errorUserInfo)
 
         crashLogger.record(error: crash, userInfo: paramsToLog)
     }

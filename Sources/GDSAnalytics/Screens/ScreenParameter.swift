@@ -1,4 +1,4 @@
-public enum ScreenParameter: String {
+public enum ScreenParameter: String, Sendable {
     case reason
     case endpoint
     case status

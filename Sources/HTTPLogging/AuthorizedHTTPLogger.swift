@@ -4,7 +4,7 @@ import Foundation
 ///
 /// A struct for sending HTTP requests to endpoints secured with scoped access tokens.
 /// This logger can be used to log user/journey specific insights for app metrics and performance.
-public struct AuthorizedHTTPLogger {
+public struct AuthorizedHTTPLogger: Sendable {
     /// `URL` address for sending HTTP requests
     let loggingURL: URL
     /// `NetworkClient` from the Networking package dependency to handle HTTP networking
@@ -12,14 +12,14 @@ public struct AuthorizedHTTPLogger {
     /// Scope for service access token
     let scope: String
     /// callback to handle possible errors resulting from `HTTPLoggingNetworkClient`'s `makeRequest` method
-    let handleError: ((Error) -> Void)?
+    let handleError: (@Sendable (Error) -> Void)?
 
     /// Initialiser for class with default methods for `networkClient` and `handleError` parameters
     public init(
         url: URL,
         networkClient: HTTPLoggingNetworkClient,
         scope: String,
-        handleError: ((Error) -> Void)? = nil
+        handleError: (@Sendable (Error) -> Void)? = nil
     ) {
         loggingURL = url
         self.scope = scope

@@ -1,4 +1,4 @@
-public enum EventName: String {
+public enum EventName: String, Sendable {
     case navigation
     case formResponse = "form_response"
     case popup

@@ -1,13 +1,15 @@
+import Foundation
 @testable import GAnalytics
 
 final class MockApp: AnalyticsApp {
-    private(set) static var calledConfigure = false
+    nonisolated(unsafe) private(set) static var calledConfigure = false
+    static let workQueue = DispatchQueue(label: "mock-analytics-app-queue")
     
     static func configure() {
-        calledConfigure = true
+        workQueue.sync { calledConfigure = true }
     }
     
     static func reset() {
-        calledConfigure = false
+        workQueue.sync { calledConfigure = false }
     }
 }

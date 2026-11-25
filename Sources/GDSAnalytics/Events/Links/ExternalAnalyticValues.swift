@@ -1,4 +1,4 @@
-public enum ExternalLinkParameter: String {
+public enum ExternalLinkParameter: String, Sendable {
     case `false`
     case `true`
 }

@@ -12,7 +12,7 @@ public struct HTTPLogger: LoggingService {
     /// sessionID for user/journey identication
     let sessionID: String
     /// callback to handle possible errors resulting from `NetworkClient`'s `makeRequest` method
-    let handleError: ((Error) -> Void)?
+    let handleError: (@Sendable (Error) -> Void)?
     
     /// Sends HTTP POST request to designated URL, handling errors received back from `NetworkClient`'s `makeRequest` method
     public func logEvent(_ event: LoggableEvent,
@@ -40,7 +40,7 @@ public struct HTTPLogger: LoggingService {
     public init(sessionID: String,
                 url: URL,
                 networkClient: HTTPLoggingNetworkClient,
-                handleError: ((Error) -> Void)? = nil) {
+                handleError: (@Sendable (Error) -> Void)? = nil) {
         loggingURL = url
         self.sessionID = sessionID
         self.networkClient = networkClient

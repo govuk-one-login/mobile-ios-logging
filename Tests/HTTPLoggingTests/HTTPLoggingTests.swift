@@ -15,11 +15,13 @@ final class HTTPLoggingTests: XCTestCase {
     private var client: NetworkClient!
     private var configuration: URLSessionConfiguration!
     
-    override func setUp() {
-        super.setUp()
-        configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockURLProtocol.self]
-        client = NetworkClient(configuration: configuration)
+    override func setUp() async throws {
+        try await super.setUp()
+        var testConfiguration = URLSessionConfiguration.ephemeral
+        testConfiguration = URLSessionConfiguration.ephemeral
+        testConfiguration.protocolClasses = [MockURLProtocol.self]
+        configuration = testConfiguration
+        client = await MainActor.run { NetworkClient(configuration: testConfiguration) }
         
         sessionID = UUID().uuidString
         
@@ -36,35 +38,37 @@ final class HTTPLoggingTests: XCTestCase {
         """
     }
     
-    override func tearDown() {
+    override func tearDown() async throws {
         sessionID = nil
         sut = nil
         mockRequest = nil
         client = nil
-        MockURLProtocol.clear()
+        await MainActor.run { MockURLProtocol.clear() }
         configuration = nil
-        super.tearDown()
+        
+        try await super.tearDown()
     }
 }
 
 extension HTTPLoggingTests {
-    func test_successfulTXMAEventLog() throws {
+    func test_successfulTXMAEventLog() async throws {
         // GIVEN network client returns 200
-        MockURLProtocol.handler = {
-            (Data(), HTTPURLResponse(statusCode: 200))
+        await MainActor.run {
+            MockURLProtocol.handler = { (Data(), HTTPURLResponse(statusCode: 200)) }
         }
         
         // WHEN an event is logged
         sut.logEvent(MockEvent.testEvent)
         
-        wait(for: [
+        await fulfillment(of: [
             XCTNSPredicateExpectation(predicate: .init(block: { _, _ in
                 MockURLProtocol.requests.count == 1
             }), object: nil)
         ], timeout: 3)
         
         // THEN the request succeeds
-        let request = try XCTUnwrap(MockURLProtocol.requests.first)
+        let requests = await MainActor.run { MockURLProtocol.requests }
+        let request = try XCTUnwrap(requests.first)
         XCTAssertEqual(request.httpMethod, "POST")
         XCTAssertEqual(request.url?.scheme, "https")
         XCTAssertEqual(request.url?.host, "example.com")
@@ -81,24 +85,24 @@ extension HTTPLoggingTests {
         XCTAssertEqual(MockEvent.testEvent.rawValue, eventName)
     }
     
-    func test_TXMAEventLog_throwsError() throws {
+    func test_TXMAEventLog_throwsError() async throws {
         // GIVEN network client returns 401 error
-        MockURLProtocol.handler = {
-            (Data(), HTTPURLResponse(statusCode: 401))
+        await MainActor.run {
+            MockURLProtocol.handler = { (Data(), HTTPURLResponse(statusCode: 401)) }
         }
         
         // WHEN a TXMA event is logged
         sut.logEvent(MockEvent.testEvent)
-        wait(for: [
+        await fulfillment(of: [
             XCTNSPredicateExpectation(predicate: .init(block: { _, _ in
                 MockURLProtocol.requests.count == 1
             }), object: nil)
         ], timeout: 3)
         // XCTAssertEqual(error.errorCode, 401)
         
-        XCTAssertEqual(MockURLProtocol.requests.count, 1)
-        
-        let request = try XCTUnwrap(MockURLProtocol.requests.first)
+        let requests = await MainActor.run { MockURLProtocol.requests }
+        let request = try XCTUnwrap(requests.first)
+        XCTAssertEqual(requests.count, 1)
         XCTAssertEqual(request.httpMethod, "POST")
         XCTAssertEqual(request.url?.scheme, "https")
         XCTAssertEqual(request.url?.host, "example.com")

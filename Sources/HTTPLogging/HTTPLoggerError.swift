@@ -1,5 +1,5 @@
 import Foundation
 
-enum HTTPLoggerError: Error {
+enum HTTPLoggerError: Error, Sendable {
     case couldNotSerializeData
 }

@@ -1,4 +1,4 @@
-public protocol ScreenType: CustomStringConvertible {
+public protocol ScreenType: CustomStringConvertible, Sendable {
     var name: String { get }
 }
 

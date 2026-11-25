@@ -1,4 +1,4 @@
-public protocol LoggableError: Error {
+public protocol LoggableError: Error, Sendable {
     var reason: String? { get }
     var endpoint: String? { get }
     var statusCode: String? { get }
