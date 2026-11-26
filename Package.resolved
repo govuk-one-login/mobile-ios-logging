@@ -106,7 +106,7 @@
       "location" : "https://github.com/govuk-one-login/mobile-ios-networking.git",
       "state" : {
         "branch" : "fire-break/structured-concurrency/struct-actor",
-        "revision" : "be1096bd10d668ef0696d993c3bfbddc5314f52b"
+        "revision" : "0b690a6077c1fdb8853685a2b639614a0746a3aa"
       }
     },
     {
